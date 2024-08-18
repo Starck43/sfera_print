@@ -8,7 +8,8 @@ export async function getPosts(endpoint: string) {
 	// get post by endpoint ('<page>/<id | slug>')
 	const res = await fetch(normalizeUrlPath(`${process.env.NEXT_PUBLIC_API_SERVER}/api/${endpoint}/`))
 	if (!res.ok) {
-		throw new Error('Failed to fetch data')
+		console.log(res.statusText)
+		//throw new Error('Failed to fetch data')
 	}
 	return await res.json()
 }
