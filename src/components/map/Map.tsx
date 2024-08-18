@@ -125,7 +125,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 	}, [regionsData, setZoomedRegion, width, height, citiesData])
 
 	const regionsMap = useMemo(() => (
-		regionsData.map((region, key) =>
+		regionsData?.map((region, key) =>
 			<path
 				key={region.id || key}
 				id={region.properties?.id || ''}
@@ -139,7 +139,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 
 	// Выводим маркеры с отметкой количества городов на общей карте регионов
 	const citiesMarkers = useMemo(() => (
-		Object.entries(citiesData).map(([key, value]) => {
+		Object.entries(citiesData)?.map(([key, value]) => {
 			const coord = value.regionSvg.center
 			const iconSize = Math.min(40, Math.max(20, Math.min(width, height) * 0.1))
 			const changedLocationSvg = changeSvgText({

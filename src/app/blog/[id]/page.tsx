@@ -19,7 +19,7 @@ export const generateMetadata = async ({params: {id}}: PageProps, parent: Resolv
 export async function generateStaticParams() {
 	const posts = await getBlog<PostType>()
 
-	return posts.map(post => ({
+	return posts?.map(post => ({
 		params: {id: post.id},
 	}))
 }

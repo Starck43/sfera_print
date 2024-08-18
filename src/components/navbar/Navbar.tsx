@@ -39,12 +39,12 @@ const Navbar = ({data, className}: NavbarProps) => {
 				<Col gap='sm' align='baseline' justify='start' className={cls.navmenu}>
 					<Flex gap='xs' justify='between' fullWidth style={{marginBottom: 'auto'}}>
 						<Col gap='xs' className={cls.navitems}>
-							{pages.map(item =>
+							{pages?.map(item =>
 								<NavItem key={item.path} {...item} />
 							)}
 						</Col>
 						<Col gap='xs' className={cls.socials}>
-							{socials.map(({name, title, link}) => (
+							{socials?.map(({name, title, link}) => (
 								<a key={'social-' + name} href={link} target="_blank" className={cls.social__link}>
 									<Image src={`/svg/socials/${name}.svg`} alt={title} sizes="100%" fill/>
 								</a>

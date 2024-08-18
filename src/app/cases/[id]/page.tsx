@@ -32,7 +32,7 @@ export const generateMetadata = async ({params: {id}}: PageProps, parent: Resolv
 export async function generateStaticParams() {
 	const data= await getCases<CityCases>()
 
-	return data.map(post => ({
+	return data?.map(post => ({
 		params: {
 			id: post.id
 		},

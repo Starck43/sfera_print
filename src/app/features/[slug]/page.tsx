@@ -17,7 +17,7 @@ export const generateMetadata = async ({params: {slug}}: PageProps, parent: Reso
 export async function generateStaticParams() {
 	const posts = await getFeatures<PostType>()
 
-	return posts.map(post => ({
+	return posts?.map(post => ({
 		params: {slug: post.slug},
 	}))
 }

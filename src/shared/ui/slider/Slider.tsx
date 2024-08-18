@@ -67,7 +67,7 @@ export const Slider = (props: SliderProps) => {
 					}}
 					className={cls.slider}
 				>
-					{media.map((item, idx) => (
+					{media?.map((item, idx) => (
 						<SwiperSlide key={'slide-' + idx + '_' + item.id}>
 							{item?.video || (orientation === 'portrait' && item?.video_portrait)
 								? <Player

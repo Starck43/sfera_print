@@ -78,7 +78,7 @@ export default async function RootLayout({children = null}: Readonly<{ children:
 			</div>
 			<NavigationProvider>
 				<RouteEvents/>
-				<PageHeader data={featuresData}/>
+				<PageHeader data={featuresData || []}/>
 				<BurgerButton/>
 				<Navbar data={menuData} className='navbar'/>
 			</NavigationProvider>
