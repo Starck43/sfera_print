@@ -1,0 +1,22 @@
+@import "@/app/styles/mixins"
+
+.cookie__popup
+	position: fixed
+	left: 0
+	bottom: 0
+	height: auto
+	width: 100%
+	padding: 1rem
+	background-color: var(--white-color)
+	border: var(--border-thickness) var(--border-color-default) solid
+	transition: all 600ms ease
+	transform: translateY(100%)
+	opacity: 0
+	z-index: calc(var(--overlay-z-index) + 3)
+
+	&.visible
+		transform: none
+		opacity: 1
+
+	p
+		color: var(--grey-color)

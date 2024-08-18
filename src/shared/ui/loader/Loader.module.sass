@@ -1,0 +1,33 @@
+@import "src/app/styles/mixins"
+
+.loader__container
+	@include transform-pos
+	opacity: 0
+	transition: opacity 300ms ease-out
+
+	&.isOpening, &.isOpen
+		opacity: 1
+
+
+.spinner
+	position: absolute
+	width: 1rem
+	height: 1rem
+
+
+.spinner div
+	animation: spinner-4t3wzl 1.875s infinite backwards
+	background-color: #478631
+	border-radius: 50%
+	height: 100%
+	position: absolute
+	width: 100%
+	+animation-delays(5, 0, 150ms, #478631)
+
+
+@keyframes spinner-4t3wzl
+	0%
+		transform: rotate(0deg) translateY(-200%)
+
+	60%, 100%
+		transform: rotate(360deg) translateY(-200%)

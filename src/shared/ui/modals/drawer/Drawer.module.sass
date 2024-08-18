@@ -1,0 +1,94 @@
+@import "@/app/styles/mixins"
+
+
+.drawer
+	--drawer-width-default: 100%
+	--drawer-height-default: 100%
+	--radius: var(--border-radius-default)
+
+	@include push--fixed
+	touch-action: none
+	z-index: calc(var(--overlay-z-index) + 1)
+
+.drawer__content
+	position: absolute
+	max-width: 100%
+	max-height: 100%
+
+.rounded
+	--radius: calc(var(--border-radius-index) * 6em)
+
+
+.shadowed
+	box-shadow: 0 0 2rem -0.5rem var(--box-shadow)
+
+.left
+	left: 0
+	transform: translate(-100%, -50%)
+	border-top-right-radius: var(--radius)
+	border-bottom-right-radius: var(--radius)
+
+	&.bordered
+		border-left: none
+
+.right
+	right: 0
+	transform: translate(100%, -50%)
+	border-top-left-radius: var(--radius)
+	border-bottom-left-radius: var(--radius)
+
+	&.bordered
+		border-right: none
+
+.top
+	top: 0
+	transform: translate(-50%, -100%)
+	border-bottom-left-radius: var(--radius)
+	border-bottom-right-radius: var(--radius)
+
+	&.bordered
+		border-top: none
+
+	.body
+		flex-grow: 0
+
+.bottom
+	bottom: 0
+	transform: translate(-50%, 100%)
+	border-top-left-radius: var(--radius)
+	border-top-right-radius: var(--radius)
+
+	&.bordered
+		border-bottom: none
+
+.left, .right
+	top: 50%
+	max-width: var(--drawer-height-default)
+	height:  var(--drawer-width-default)
+
+	&.show
+		transform: translate(0, -50%)
+
+	&.fullSize
+		height: 100%
+
+		&.bordered
+			border-top: none
+			border-bottom: none
+
+
+.bottom, .top
+	left: 50%
+	width: var(--drawer-width-default)
+	max-height:  var(--drawer-height-default)
+
+	&.show
+		transform: translate(-50%, 0)
+
+	&.fullSize
+		width: 100%
+		height: var(--drawer-width-default)
+
+		&.bordered
+			border-left: none
+			border-right: none

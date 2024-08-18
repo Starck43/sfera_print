@@ -1,0 +1,121 @@
+@import "@/app/styles/mixins"
+@import "@/app/styles/vars"
+@import "@/app/styles/common"
+
+$controls-padding: 0.3em
+
+.button
+	@extend .centered
+	gap: 0.35em
+	transition: all 0.2s ease-out
+	line-height: 1
+	cursor: pointer
+	user-select: none
+
+	&.clear
+		border: 0
+		color: var(--link-color)
+		background-color: transparent
+
+	&:not(.clear)
+		padding: .6em .9em
+		color: inherit
+		background-color: inherit
+		//font-family: var(--font-family-secondary)
+		border: var(--border-thickness) solid transparent
+		border-radius: var(--border-radius-default)
+
+		&:hover, &:focus
+			color: var(--secondary-color)
+
+	&.with__icon.with__title
+		justify-content: space-between
+
+	&.bordered
+		border-color: var(--border-color-default)
+		&:hover
+			box-shadow: 0 0 0.7rem -0.2em var(--box-shadow)
+
+	&.rounded
+		border-radius: var(--border-radius-button)
+
+	&.squared
+		min-width: unset
+		width: var(--controls-height)
+		height: var(--controls-height)
+
+	&.underlined
+		border-top-color: transparent
+		border-left-color: transparent
+		border-right-color: transparent
+
+	&.disabled
+		pointer-events: none
+		opacity: 0.5 !important
+
+	&.blank
+		color: var(--white-color)
+		background-color: var(--primary-color)
+		&.bordered
+			border-color: black
+
+	&.inverted
+		color: var(--primary-color)
+		background-color: white
+		&:hover
+			color: white
+			background-color: var(--primary-color)
+
+	&.shadowed
+		box-shadow: 0 0.3em 1.1em -0.4em var(--box-shadow)
+
+
+.fullWidth
+	width: 100%
+
+.left
+	flex-direction: row
+
+.right
+	flex-direction: row-reverse
+
+.small
+	font-size: 0.7rem
+
+	svg
+		width: var(--icon-size-sm)
+		height: var(--icon-size-sm)
+
+.normal
+	font-size: inherit
+
+	svg
+		width: var(--icon-size-md)
+		height: var(--icon-size-md)
+
+.large
+	font-size: 1.5rem
+
+	svg
+		width: var(--icon-size-lg)
+		height: var(--icon-size-lg)
+
+
+.has__title:not(.squared, .is__link, .clear)
+	min-height: var(--controls-height)
+	min-width: 4em
+	padding: $controls-padding $controls-padding * 5
+
+.link
+	display: flex
+	align-items: center
+	color: inherit
+
+.icon__with__title, .icon__with__title>a
+	justify-content: space-between
+
+.only__icon
+	line-height: 0
+
+	&:not(.clear)
+		padding: $controls-padding

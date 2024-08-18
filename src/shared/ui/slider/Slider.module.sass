@@ -1,0 +1,85 @@
+@import "@/app/styles/mixins"
+
+.section
+	--slider-controls-width: calc(var(--icon-size-lg) + 3vw)
+	height: auto
+
+	+media-min(sm)
+		padding: 0 !important
+
+
+.slider__container
+	position: relative
+	width: 100%
+	flex: 1
+	margin-top: calc(var(--icon-size-xs) * -1)
+
+	+media-min(sm)
+		padding-left: var(--slider-controls-width)
+		padding-right: var(--slider-controls-width)
+
+	@media (orientation: portrait)
+		padding-left: 0
+		padding-right: 0
+
+.slider__wrapper
+	+responsive-ratio(16, 9)
+	@media (orientation: portrait)
+		+responsive-ratio(9, 16)
+
+.slider
+	position: absolute !important
+	top: 0
+	bottom: 0
+	left: 0
+	right: 0
+	//@media (min-width: 575.98px) and (orientation: landscape)
+		left: var(--slider-controls-width)
+		right: var(--slider-controls-width)
+
+	img
+		object-fit: cover
+	//@media (orientation: portrait)
+
+.slider__controls
+	+push--absolute
+
+.image
+	transition: opacity 300ms ease-out
+	opacity: 0
+
+.arrow
+	width: var(--slider-controls-width)
+	padding: 1rem
+	height: 100%
+	z-index: 1
+	pointer-events: visibleStroke
+	cursor: pointer
+	+media-max(sm)
+		height: auto
+		filter: invert(1)
+
+.thumbs__container
+	display: none
+	+media-min(sm)
+		width: 100%
+		//max-width: var(--paragraph-container-max-width)
+		padding: 0 var(--slider-controls-width)
+		display: grid
+		grid-template-columns: repeat(auto-fill, minmax(100px, auto))
+		grid-gap: var(--icon-size-xs)
+
+.thumb
+	+responsive-ratio(1, 1)
+	opacity: 0.7
+	filter: grayscale(1)
+	transition: all 300ms ease-in-out
+	background-color: lightgrey
+	cursor: pointer
+	img
+		object-fit: cover
+
+	&.active
+		opacity: 1
+		filter: none
+

@@ -1,0 +1,30 @@
+@import "@/app/styles/mixins"
+
+.section
+	position: relative
+	max-width: var(--container-max-width)
+	padding: var(--page-padding)
+	flex: 1 0 auto
+	transform: translateY(var(--translate-y-in-view))
+	opacity: 0
+	overflow-x: hidden
+
+	&.inView
+		transition: all 600ms ease-out
+		//transform: none
+		//opacity: 1
+
+.title
+	&.upperFirst
+		text-transform: lowercase
+
+		&::first-letter
+			text-transform: uppercase
+
+	&.lowerCase
+		text-transform: lowercase
+
+	&.upperCase
+		text-transform: uppercase
+
+

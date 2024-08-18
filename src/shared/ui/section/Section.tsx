@@ -1,0 +1,73 @@
+'use client'
+
+import React, {CSSProperties, HTMLAttributes, memo, ReactNode, RefObject, useCallback, useRef} from "react"
+import {useInView} from "react-intersection-observer"
+
+import type {SizeType} from "@/shared/types/ui"
+import {Col} from "@/shared/ui/stack"
+import {classnames} from "@/shared/lib/helpers/classnames"
+
+import cls from "./Section.module.sass"
+
+
+type FlexAlign = "start" | "end" | "center"
+type Transform = "upperFirst" | "upperCase" | "lowerCase"
+
+export interface InfoProps extends HTMLAttributes<HTMLDivElement> {
+	as?: keyof HTMLElementTagNameMap
+	title?: string
+	titleTag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5'
+	gap?: SizeType
+	align?: FlexAlign
+	transform?: Transform
+	className?: string
+	style?: CSSProperties
+	children: ReactNode
+}
+
+const Section = (props: InfoProps) => {
+	const {
+		as: tag="section",
+		title = null,
+		titleTag: Title = "h3",
+		gap = "md" as SizeType,
+		align = "start" as FlexAlign,
+		transform = "upperCase" as Transform,
+		className,
+		children,
+		style,
+		...others
+	} = props
+
+	const ref = useRef<RefObject<HTMLDivElement> | undefined>()
+	const {ref: inViewRef, inView} = useInView({
+		//rootMargin: '10px 0px 0px 0px',
+		threshold: 0.1,
+		fallbackInView: true,
+		triggerOnce: true
+	})
+
+	const setRefs = useCallback((node:  any) => {
+		ref.current = node
+		inViewRef(node)
+	}, [inViewRef])
+
+	return (
+		<Col
+			ref={setRefs}
+			as={tag}
+			fullWidth
+			gap={gap}
+			align={align}
+			justify="start"
+			className={classnames(cls, ["section"], {inView}, [className])}
+			style={{...style, opacity: inView ? 1 : 0, transform: inView ? 'none' : ''}}
+			{...others}
+		>
+			{title && <Title className={classnames(cls, ["title", transform])}>{title}</Title>}
+			{children}
+		</Col>
+	)
+}
+
+export default memo(Section)

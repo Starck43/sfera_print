@@ -1,0 +1,72 @@
+.flex
+	display: flex
+
+	&.wrap
+		flex-wrap: wrap
+
+	&.fullWidth
+		width: 100%
+
+.justify
+	&__start
+		justify-content: flex-start
+
+	&__center
+		justify-content: center
+
+	&__end
+		justify-content: flex-end
+
+	&__between
+		justify-content: space-between
+
+	&__evenly
+		justify-content: space-evenly
+
+.align
+	&__start
+		align-items: flex-start
+
+	&__center
+		align-items: center
+
+	&__end
+		align-items: flex-end
+
+	&__baseline
+		align-items: baseline
+
+.direction
+	&__row
+		flex-direction: row
+
+	&__rowReverse
+		flex-direction: row-reverse
+
+	&__column
+		flex-direction: column
+
+	&__columnReverse
+		flex-direction: column-reverse
+
+.gap
+	&__none
+		gap: 0
+
+	&__xs
+		gap: var(--gap)
+
+	&__sm
+		gap: calc(var(--gap) * 2)
+
+	&__md
+		gap: calc(var(--gap) * 4)
+
+	&__lg
+		gap: calc(var(--gap) * 6)
+
+	&__xl
+		gap: calc(var(--gap) * 8)
+
+	&__xxl
+		gap: calc(var(--gap) * 10)

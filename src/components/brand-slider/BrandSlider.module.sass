@@ -1,0 +1,39 @@
+@import '@/app/styles/mixins'
+
+.slider
+	width: 100%
+	height: auto
+
+.slide
+	display: flex !important
+	justify-content: center
+
+.brand
+	position: relative
+	width: 22vw
+	height: 22vw
+	max-width: 120px
+	max-height: 120px
+	padding: 0.5rem
+	color: var(--white-color)
+	border-radius: 50rem
+	background-color: var(--primary-color)
+	overflow: hidden
+	img
+		padding: 0.5rem
+
+	+media-min(sm)
+		width: 18vw
+		height: 18vw
+		max-width: 125px
+		max-height: 125px
+
+	+media-min(xl)
+		width: 22vw
+		height: 22vw
+		max-width: 120px
+		max-height: 120px
+
+	+media-min(xxl)
+		max-width: 140px
+		max-height: 140px

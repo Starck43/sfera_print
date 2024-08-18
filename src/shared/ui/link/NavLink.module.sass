@@ -1,0 +1,96 @@
+@import "/src/app/styles/vars"
+
+.link
+	display: inline-flex
+	align-items: center
+	justify-content: center
+	width: max-content
+	min-height: 1em
+	padding: 0 1em
+	//font-family: var(--font-family-secondary)
+	color: inherit
+	line-height: 0
+	border-radius: var(--border-radius-default)
+	transition: all 0.2s ease-out
+	user-select: none
+	cursor: pointer
+
+	&.clear
+		padding: 0
+		text-decoration: underline
+		font-weight: bold
+
+	&.fullWidth
+		width: 100%
+
+	&.squared
+		min-width: var(--controls-height)
+		min-height: var(--controls-height)
+		gap: 0
+		padding: 0
+
+	&.disabled
+		pointer-events: none
+		opacity: 0.5
+
+	&.bordered
+		border: var(--border-thickness) solid transparent
+
+
+	&.underlined
+		.title
+			border-top: 1px solid transparent
+			border-bottom: 1px solid var(--secondary-color)
+
+		&:hover
+			.title
+				border-bottom-color: inherit
+
+	&.animation:hover
+		.icon
+			transform: translateX(-0.25em)
+
+.inverted:hover
+	filter: invert(1)
+
+.underlined:hover
+	.title
+		border-bottom-color: var(--link-color)
+
+.bordered:hover
+	border-color: var(--link-color)
+
+.rounded
+	border-radius: calc(var(--border-radius-index) * 6em)
+	overflow: hidden
+
+.shadowed
+	box-shadow: 0 5px 3px var(--box-shadow)
+
+.reverse
+	flex-direction: row-reverse
+
+	.icon
+		transform: rotate(180deg)
+
+	&.animation:hover
+		.icon
+			transform: rotate(180deg) translateX(-0.25em)
+
+.small
+	font-size: 0.7rem
+
+	.icon
+		width: var(--icon-size-sm)
+
+.normal
+	font-size: inherit
+
+	.icon
+		width: var(--icon-size)
+
+.large
+	font-size: 1.5rem
+
+	.icon
+		width: var(--icon-size-lg)

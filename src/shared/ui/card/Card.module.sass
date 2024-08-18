@@ -1,0 +1,40 @@
+.card
+	position: relative
+	color: var(--black-color)
+	background-color: var(--white-color)
+	border: var(--border-thickness) solid transparent
+	// border-radius: var(--border-radius-default)
+	overflow: hidden
+	user-select: none
+
+	&.rounded
+		border-radius: calc(var(--border-radius-index) * 6em)
+
+	&.bordered
+		padding: 1.5rem
+		border-color: var(--border-color-default)
+
+	&.inverted
+		color: var(--white-color)
+		background-color: var(--grey-color)
+
+	&.shadowed
+		box-shadow: 0 0.3em 1.1em -0.4em var(--box-shadow)
+
+	&.linked
+		transition: all 200ms ease-out
+
+		&:hover
+			transform: translateY(3px)
+		a
+			color: var(--primary-color)
+
+.card__link
+	display: block
+	width: 100%
+	height: 100%
+	text-decoration: none
+	.card
+		height: 100%
+		// background-color: var(--placeholder-color)
+

@@ -1,0 +1,81 @@
+@import "@/app/styles/mixins"
+$social_width: 2.4rem
+
+.navmenu__container
+	width: 100%
+	padding-left: 0 !important
+	background-color: var(--white-color)
+
+	+media-min(sm)
+		width: 75%
+
+	+media-min(md)
+		width: 55%
+
+	+media-min(lg)
+		width: 45%
+
+	+media-min(xl)
+		width: 35%
+
+.navmenu
+	height: 100%
+	padding-left: calc(var(--modal-padding) + var(--gap))
+	padding-right: var(--gap)
+	overflow-y: auto
+	direction: rtl
+	> *
+		direction: ltr
+
+.navitems
+	margin-right: $social_width
+
+.title
+	line-height: 1.1
+	font-weight: bold
+	text-transform: uppercase
+	font-size: clamp(1.6rem, 0.8rem + 1.4vw, 2.6rem)
+	color: var(--navbar-link-color)
+
+.subtitle
+	font-family: var(--font-family-secondary)
+	font-weight: 400
+	font-size: 0.9em
+	color: var(--text-color)
+
+
+.socials
+	position: fixed
+	right: calc(var(--modal-padding) + var(--gap))
+	top: 0
+	width: $social_width
+	height: 100%
+	+animation(socials, 1000ms 400ms, fade, 100%, 0, 0, 0)
+
+.social__link
+	+responsive-ratio(1, 1)
+	box-sizing: content-box
+	border: 3px solid black
+	border-radius: 50%
+
+
+.navbar__links
+	margin-top: auto
+
+	> .policy
+		margin-bottom: 0.5rem
+		color: var(--text-color)
+
+.tel
+	width: auto
+	margin-bottom: 1rem
+	color: var(--primary-color)
+	font-weight: bold
+
+	svg
+		height: var(--icon-size-xs)
+
+.copyright
+	font-size: 0.8rem
+	color: var(--text-color)
+	padding-left: calc(var(--modal-padding) + var(--gap))

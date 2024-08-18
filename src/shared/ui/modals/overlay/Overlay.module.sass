@@ -1,0 +1,20 @@
+@import "@/app/styles/mixins"
+@import "@/app/styles/vars"
+
+
+.overlay
+	@include push--fixed
+
+	display: none
+	background-color: var(--overlay-bg-color)
+	cursor: pointer
+	z-index: -1
+
+.open
+	display: block
+	transition: opacity 180ms linear
+	opacity: 0
+	z-index: var(--overlay-z-index)
+
+	&.show
+		opacity: 1

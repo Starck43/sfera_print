@@ -1,0 +1,131 @@
+@import "@/app/styles/mixins"
+$border-thick: 3px
+
+.timeline
+	max-width: var(--container-max-width)
+	padding: 0
+	--line-color: var(--white-color)
+
+.vertical__line
+	width: 100%
+	padding: 0
+	margin-top: 5vh
+
+.element
+	color: var(--white-color)
+
+.element__icon
+	background-color: var(--white-color)
+	display: flex
+	align-items: center
+	justify-content: center
+	border: solid var(--border-thickness) var(--primary-color)
+	box-shadow: none
+
+	svg
+		width: 30%
+		color: #fff
+		left: 0
+		top: 0
+		margin: auto
+
+.element__content
+	top: -0.4rem
+	padding: 0 !important
+	border: solid $border-thick var(--primary-color)
+	border-radius: calc(var(--border-radius-index) * 4rem)
+	background-color: rgba(var(--page-background-color), 0.5) !important
+	box-shadow: 1rem 1rem 3rem var(--box-shadow) !important
+
+	svg
+		stroke-width: .3px
+
+	&::after
+		content: none
+
+.content__wrapper
+	position: relative
+	width: 100%
+	height: 100%
+	display: flex
+	flex-direction: column
+	gap: var(--gap)
+	padding: calc(var(--gap) + 2vw)
+	color: var(--text-color)
+	overflow: hidden
+
+.element__date
+	display: none !important
+
+.element__content__inner
+	position: relative
+	flex: 1
+	background-color: transparent
+
+	.date
+		color: var(--secondary-color)
+		font-size: 2em
+		text-transform: capitalize
+
+		&.hidden
+			display: none !important
+
+	.title
+		font-weight: bold
+
+	.excerpt
+		color: var(--text-color)
+		opacity: 0.7
+		margin-top: 0
+
+.cover__wrapper
+	position: relative
+	width: calc(5rem + 5vw)
+	height: calc(5rem + 5vw)
+	max-width: 150px
+	max-height: 150px
+	overflow: hidden
+	border-radius: 50%
+
+	.cover
+		transition: opacity 300ms ease-out
+		opacity: 0
+		object-fit: cover
+
+.desc
+	+push--absolute()
+	background-color: #fff
+	padding: 1.5rem
+	transform: translateX(100%)
+	opacity: 0
+	transition: all 600ms ease-out
+	overflow-y: auto
+
+	&.show
+		opacity: 1
+		transform: none !important
+
+
+@media only screen and (min-width: 576px)
+	.element__content
+		flex-direction: row
+
+@media only screen and (min-width: 1170px)
+	.timeline
+		max-width: 100%
+
+	.element__content
+		flex-direction: column
+
+	.element:nth-child(even)
+		.element__content
+			align-items: flex-end
+
+			.desc
+				transform: translateX(-100%)
+
+		.element__content__inner
+			text-align: right
+
+	.element__icon svg
+		width: 50%

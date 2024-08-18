@@ -1,0 +1,86 @@
+//@import "/src/app/styles/common"
+
+.header
+	width: auto
+	color: inherit
+	--info-success: green
+	--info-warning: orange
+	--info-error: red
+
+	&:not(.inlined)
+		.title
+			width: 100%
+
+.title, .subtitle
+	flex: 100%
+	overflow: hidden
+	text-overflow: ellipsis
+
+.title
+	//display: block
+	//display: flex
+	//align-items: center
+
+	&.fullWidth
+		flex: 0 1 auto
+
+	&.start
+		text-align: left
+
+	&.center
+		text-align: center
+
+	&.end
+		text-align: right
+
+
+	&.xl
+		font-size: 1.6em
+
+	&.lg
+		font-size: 1.2em
+
+	&.md
+		font-size: 1em
+
+	&.sm
+		font-size: 0.8em
+
+.inlined
+	.title
+		display: flex
+		align-items: center
+		flex: auto
+		&.fullWidth
+			flex: 100%
+
+	.subtitle
+		flex: 0 1 auto
+
+
+.shadowed
+	text-shadow: 1px 1px 2px var(--box-shadow)
+
+.upperFirst
+	text-transform: lowercase
+
+	&::first-letter
+		text-transform: uppercase
+
+.lowerCase
+	text-transform: lowercase
+
+.upperCase
+	text-transform: uppercase
+
+.link
+	color: var(--link-color)
+
+.success
+	color: var(--info-success)
+
+.warning
+	color: var(--info-warning)
+
+.error
+	color: var(--info-error)
