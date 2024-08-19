@@ -1,4 +1,4 @@
-import React, {memo, MutableRefObject, useEffect, useRef, useState} from 'react'
+import React, {MutableRefObject, useEffect, useRef, useState} from 'react'
 
 import {checkCookie, setCookie} from "@/shared/lib/helpers/cookie"
 import {classnames} from "@/shared/lib/helpers/classnames"
@@ -19,6 +19,10 @@ const CookiePopup = ({file, onClose}: CookiePopupProps) => {
 	const timer = useRef(null) as MutableRefObject<any>
 
 	useEffect(() => {
+		if (approved_policy && file) {
+			window.open(file, '_blank')
+		}
+
 		timer.current = setTimeout(() => {
 			//const cookiePolicyAccepted = checkCookie('cookie_policy')
 			setVisible(true)
