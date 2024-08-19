@@ -15,12 +15,10 @@ import type {Menu} from "./types"
 import PhoneIcon from "/public/svg/mobile-phone.svg"
 import cls from "./Navbar.module.sass"
 
-
 interface NavbarProps {
 	data: Menu
 	className?: string
 }
-
 
 const Navbar = ({data, className}: NavbarProps) => {
 	const {pages, contact, socials, policy, agreement, cookie} = data
@@ -53,13 +51,21 @@ const Navbar = ({data, className}: NavbarProps) => {
 					</Flex>
 
 					<Col gap="none" className={cls.navbar__links}>
-						<ContactItem item={contact} Icon={PhoneIcon} className={cls.tel}/>
-						<a href={policy} target="_blank" className={cls.policy}>
-							Политика конфиденциальности
-						</a>
-						<a href={agreement} target="_blank" className={cls.policy}>
-							Соглашение на использование материалов
-						</a>
+						{contact &&
+                            <ContactItem item={contact} Icon={PhoneIcon} className={cls.tel}/>
+						}
+
+						{policy &&
+                            <a href={policy} target="_blank" className={cls.policy}>
+                                Политика конфиденциальности
+                            </a>
+						}
+
+						{agreement &&
+                            <a href={agreement} target="_blank" className={cls.policy}>
+                                Соглашение на использование материалов
+                            </a>
+						}
 						<div onClick={() => setIsCookieOpen(true)} className={cls.policy}>
 							Соглашение на обработку персональных данных
 						</div>

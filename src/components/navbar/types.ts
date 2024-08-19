@@ -11,10 +11,10 @@ interface Socials {
 export interface Menu {
     pages: NavItemType[]
 	contact: Contact
-	socials: Socials[]
-	policy: string
-	agreement: string
-	cookie: string
+	socials?: Socials[]
+	policy?: string
+	agreement?: string
+	cookie?: string
 }
 
 export interface NavItemType {
