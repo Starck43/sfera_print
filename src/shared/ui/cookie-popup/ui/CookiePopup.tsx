@@ -9,30 +9,30 @@ import {Row} from "@/shared/ui/stack"
 import cls from './CookiePopup.module.sass'
 
 interface CookiePopupProps {
-	onClose: () => void
 	file: string
+	onClose: () => void
 }
 
-const CookiePopup = ({onClose, file}: CookiePopupProps) => {
-	const policy_status = checkCookie('cookie_policy')
+const CookiePopup = ({file, onClose}: CookiePopupProps) => {
+	const approved_policy = checkCookie('cookie_policy')
 	const [visible, setVisible] = useState(false)
 	const timer = useRef(null) as MutableRefObject<any>
 
 	useEffect(() => {
 		timer.current = setTimeout(() => {
-			const cookiePolicyAccepted = checkCookie('cookie_policy')
+			//const cookiePolicyAccepted = checkCookie('cookie_policy')
 			setVisible(true)
-		}, !policy_status ? 2000 : 0)
+		}, !approved_policy ? 2000 : 0)
 
 		return () => clearTimeout(timer.current)
-	}, [policy_status])
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const handleClose = () => {
+		setCookie('cookie_policy', 'true', 365);
 		setVisible(false)
 
-		if (!policy_status) {
-			setCookie('cookie_policy', 'true', 365);
-		}
 		timer.current = setTimeout(() => {
 			onClose()
 		}, 600)
@@ -41,16 +41,16 @@ const CookiePopup = ({onClose, file}: CookiePopupProps) => {
 	}
 
 	return (
-		<Row className={classnames(cls, ['cookie__popup'], {visible})}>
+		<Row align="center" justify="between" className={classnames(cls, ['cookie__popup'], {visible})}>
 			<p>
 				Этот сайт использует файлы cookie для улучшения пользовательского опыта. Продолжая пользоваться
-				сайтом, Вы {!policy_status ? 'соглашаетесь' : 'согласились'} с использованием файлов cookie. Рекомендуем ознакомиться с политикой &nbsp;
-				<NavLink href={`${file}`} target="_blank" rel="noopener noreferrer">здесь</NavLink>.
+				сайтом, Вы {!approved_policy ? 'соглашаетесь' : 'согласились'} с использованием файлов cookie. Рекомендуем ознакомиться с политикой &nbsp;
+				<NavLink href={file} target="_blank" rel="noopener noreferrer">здесь</NavLink>.
 			</p>
-			<Button rounded onClick={handleClose}>{!policy_status ? 'Принять' : 'ОК'}</Button>
+			<Button rounded onClick={handleClose}>{!approved_policy ? 'Принять' : 'ОК'}</Button>
 		</Row>
 	);
 }
 
 
-export default memo(CookiePopup)
+export default CookiePopup

@@ -78,7 +78,12 @@ const Navbar = ({data, className}: NavbarProps) => {
 	return (
 		<>
 			{navbarContent}
-			{isCookieOpen && <CookiePopup onClose={() => setIsCookieOpen(false)} file={cookie}/>}
+			{isCookieOpen && cookie &&
+				<CookiePopup
+					file={cookie}
+					onClose={() => setIsCookieOpen(false)}
+				/>
+			}
 		</>
 	)
 }
