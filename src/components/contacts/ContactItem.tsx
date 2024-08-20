@@ -5,7 +5,7 @@ import {NavLink} from "@/shared/ui/link"
 import PhoneIcon from "/public/svg/mobile-phone.svg"
 
 
-const ContactItem = ({item, Icon = null, className}: {
+const ContactItem = ({item, className}: {
 	item: Contact,
 	className?: string
 }) => {
