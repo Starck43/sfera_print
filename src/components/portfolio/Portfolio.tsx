@@ -1,15 +1,16 @@
 import React, {memo} from "react"
 
-import {Col} from "@/shared/ui/stack"
-import {Slider} from "@/shared/ui/slider"
 import type {PostType} from "@/components/post"
 
+import {Col} from "@/shared/ui/stack"
+import {Slider} from "@/shared/ui/slider"
+import {Loader} from "@/shared/ui/loader"
+
 import cls from './Portfolio.module.sass'
-import {Header} from "@/shared/ui/header";
 
 
 const Portfolio = ({items}: {items: PostType[]}) => {
-	if (!items?.length) return <Header fullWidth={false} transform={'upperFirst'} title={'Пока пусто!'}/>
+	if (!items?.length) return <Loader/>
 
 	return (
 		items?.map(({id, title, desc, media}) => (

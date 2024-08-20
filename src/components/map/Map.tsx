@@ -11,13 +11,14 @@ import useDynamicSVG from "@/shared/lib/hooks/useDynamicSVG"
 import {changeSvgText} from "@/shared/lib/helpers/svg"
 
 import type {City, CityCases, GeoJson, Region, RegionCitiesProps, ZoomedRegion} from "./types"
+import {useFetch} from "@/shared/lib/hooks/useFetch"
+
 import {Portfolio} from "../portfolio"
 import {useZoomRegion} from "./UseZoomRegion"
 import {generateRegionsMap} from "./helpers"
 
 import geoJson from '@/assets/regions.ru.json'
 import cls from './Map.module.sass'
-import {useFetch} from "@/shared/lib/hooks/useFetch";
 
 
 interface MapProps {

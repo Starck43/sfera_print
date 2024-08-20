@@ -5,11 +5,11 @@ import {formatDate} from "@/shared/lib/helpers/datetime"
 import {Slider} from "@/shared/ui/slider"
 import {Header} from "@/shared/ui/header"
 import {Col} from "@/shared/ui/stack"
+import {Loader} from "@/shared/ui/loader"
 
 import type {Media, PostType} from "./types"
 
 import cls from "./Post.module.sass"
-import {Loader} from "@/shared/ui/loader";
 
 interface ContentProps {
 	data?: PostType | undefined

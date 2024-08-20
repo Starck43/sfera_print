@@ -1,19 +1,19 @@
-import {FC, memo, SVGProps} from "react"
+import {memo} from "react"
 import type {Contact} from "./types"
 
 import {NavLink} from "@/shared/ui/link"
+import PhoneIcon from "/public/svg/mobile-phone.svg"
 
 
 const ContactItem = ({item, Icon = null, className}: {
 	item: Contact,
-	Icon?: FC<SVGProps<SVGSVGElement>> | null
 	className?: string
 }) => {
 	return (
 		item.link ? (
 			<NavLink
 				href={item.link}
-				Icon={Icon}
+				Icon={item.link.startsWith("tel") ? PhoneIcon : null}
 				target={(item.type === "email" || item.type === "tel") ? undefined : "_blank"}
 				className={className}
 			>

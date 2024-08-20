@@ -1,11 +1,12 @@
 import {ReactNode} from "react"
 
+import {useNavigation} from "@/shared/lib/providers/NavigationProvider"
 import {classnames} from "@/shared/lib/helpers/classnames"
+
 import {PositionType} from "@/shared/types/ui"
 import {Drawer} from "@/shared/ui/modals"
 
 import cls from "../Navbar.module.sass"
-import {useNavigation} from "@/shared/lib/providers/NavigationProvider";
 
 interface NavMenuProps {
 	position?: PositionType

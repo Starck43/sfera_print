@@ -1,4 +1,4 @@
-import {normalizeUrlPath} from "@/shared/lib/helpers/url";
+import {normalizeUrlPath} from "@/shared/lib/helpers/url"
 
 type frequencyType = 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never' | undefined
 

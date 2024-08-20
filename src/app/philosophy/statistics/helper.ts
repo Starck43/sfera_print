@@ -48,26 +48,26 @@ function describeArc(
 	endAngle: number,
 	rotation: number
 ): string {
-	const start = polarToCartesian(x, y, radius, startAngle + rotation);
-	const end = polarToCartesian(x, y, radius, endAngle + rotation);
+	const start = polarToCartesian(x, y, radius, startAngle + rotation)
+	const end = polarToCartesian(x, y, radius, endAngle + rotation)
 
-	const arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
+	const arcSweep = endAngle - startAngle <= 180 ? "0" : "1"
 
 	return [
 		"M", start.x, start.y,
 		"A", radius, radius, 0, arcSweep, 1, end.x, end.y
-	].join(" ");
+	].join(" ")
 }
 
 function generateCirclePath(centerX: number, centerY: number, radius: number, startAngle: number): string {
-	const start = polarToCartesian(centerX, centerY, radius, startAngle);
-	const end = polarToCartesian(centerX, centerY, radius, startAngle + 180);
+	const start = polarToCartesian(centerX, centerY, radius, startAngle)
+	const end = polarToCartesian(centerX, centerY, radius, startAngle + 180)
 
 	return [
 		"M", start.x, start.y,
 		"A", radius, radius, 0, 0, 0, end.x, end.y,
 		"A", radius, radius, 0, 0, 0, start.x, start.y, "Z"
-	].join(" ");
+	].join(" ")
 }
 
 function describeReference(
@@ -79,8 +79,8 @@ function describeReference(
 	distance: number
 ): RefSvgProps {
 
-	const {x: startX, y: startY} = polarToCartesian(x, y, radius, angle + rotation);
-	const {x: endX, y: endY} = polarToCartesian(x, y, radius + distance, angle + rotation);
+	const {x: startX, y: startY} = polarToCartesian(x, y, radius, angle + rotation)
+	const {x: endX, y: endY} = polarToCartesian(x, y, radius + distance, angle + rotation)
 
 	return {
 		path: `M ${startX} ${startY} L ${endX} ${endY}`,
@@ -90,7 +90,7 @@ function describeReference(
 			singX: Math.sign(startX - endX),
 			singY: Math.sign(startY - endY)
 		}
-	};
+	}
 }
 
 export function generateSvgChart(

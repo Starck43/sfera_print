@@ -3,11 +3,11 @@
 import {memo, ReactElement, ReactSVGElement} from "react"
 
 import {VerticalTimeline, VerticalTimelineElement} from "react-vertical-timeline-component"
+import {PostType} from "@/components/post"
 import {TimelineElement} from "./TimelineElement"
 
 import "react-vertical-timeline-component/style.min.css"
 import cls from "./Timeline.module.sass"
-import {PostType} from "@/components/post";
 
 
 interface TimelineProps<T> {

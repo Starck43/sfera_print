@@ -12,7 +12,6 @@ import {NavMenu} from "./nav-menu/NavMenu"
 import {ContactItem} from "@/components/contacts"
 import type {Menu} from "./types"
 
-import PhoneIcon from "/public/svg/mobile-phone.svg"
 import cls from "./Navbar.module.sass"
 
 interface NavbarProps {
@@ -36,7 +35,7 @@ const Navbar = ({data, className}: NavbarProps) => {
 			<NavMenu>
 				<Col gap='sm' align='baseline' justify='start' className={cls.navmenu}>
 					<Flex gap='xs' justify='between' fullWidth style={{marginBottom: 'auto'}}>
-						<Col gap='xs' className={cls.navitems}>
+						<Col gap='sm' className={cls.navitems}>
 							{pages?.map(item =>
 								<NavItem key={item.path} {...item} />
 							)}
@@ -52,7 +51,7 @@ const Navbar = ({data, className}: NavbarProps) => {
 
 					<Col gap="none" className={cls.navbar__links}>
 						{contact &&
-                            <ContactItem item={contact} Icon={PhoneIcon} className={cls.tel}/>
+                            <ContactItem item={contact} className={cls.tel}/>
 						}
 
 						{policy &&
