@@ -12,7 +12,7 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'api.sfera-print.ru',
+                hostname: 'sferaprint.istarck.ru',
                 port: '',
             },
             {
@@ -28,7 +28,7 @@ const nextConfig = {
     },
     webpack(config, {isServer}) {
         if (isServer) {
-            config.devtool = 'eval-source-map'
+            //config.devtool = 'eval-source-map'
         }
 
         const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.(".svg"));
