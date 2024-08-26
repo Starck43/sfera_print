@@ -44,7 +44,7 @@ const CityCasesPage = async ({params: {id}}: PageProps) => {
 	return (
 		<PageLayout
 			title={'Кейсы' + ' – ' + name}
-			titleTag='h2'
+			titleTag='h1'
 			gap='sm'
 			sectionMode={false}
 			className='portfolio__detail'

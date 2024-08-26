@@ -21,7 +21,7 @@ interface SectionLayoutProps {
 	gap?: SizeType
 	sectionMode?: boolean
 	handleOnClose?: () => void
-	children: ReactNode
+	children: ReactNode | null
 	className?: string
 }
 

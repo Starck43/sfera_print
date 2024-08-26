@@ -11,6 +11,7 @@ import type {Media, PostType} from "./types"
 
 import cls from "./Post.module.sass"
 
+
 interface ContentProps {
 	data?: PostType | undefined
 	className?: string

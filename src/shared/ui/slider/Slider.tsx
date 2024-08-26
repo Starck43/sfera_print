@@ -67,22 +67,26 @@ export const Slider = (props: SliderProps) => {
 					}}
 					className={cls.slider}
 				>
-					{media?.map((item, idx) => (
-						<SwiperSlide key={'slide-' + idx + '_' + item.id}>
-							{item?.video || (orientation === 'portrait' && item?.video_portrait)
+					{media?.map(({id, image, video, video_portrait, image_portrait, title, link}, idx) => (
+						<SwiperSlide key={'slide-' + idx + '_' + id}>
+							{link || video || (orientation === 'portrait' && video_portrait)
 								? <Player
-									src={orientation === 'portrait' ? item.video_portrait : item.video}
-									poster={getDeviceSrc(orientation === 'portrait' && item?.image_portrait ? item.image_portrait : item.image)}
+									src={link || orientation === 'portrait' ? video_portrait : video}
+									poster={getDeviceSrc(orientation === 'portrait' && image_portrait ? image_portrait : image)}
 									muted
 									style={{width: '100%', height: '100%'}}
 								>
-									<style>{'/src/app/styles/third-party/video-player.css'}</style>
+									<style>{`
+									:root {--media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}
+									::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;}
+									::part(seek-backward), ::part(seek-forward) {display: none;}
+									`}</style>
 								</Player>
 
 								: <Image
-									src={getDeviceSrc(orientation === 'portrait' && item?.image_portrait ? item.image_portrait : item.image)}
-									//srcSet={'srcset' in item.image && item.image.srcset.length ? createSrcSet(item.image.srcset) : undefined}
-									alt={item.title}
+									src={getDeviceSrc(orientation === 'portrait' && image_portrait ? image_portrait : image)}
+									//srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
+									alt={title}
 									fill
 									quality={85}
 									onLoad={(e) => e.currentTarget.style.opacity = '1'}

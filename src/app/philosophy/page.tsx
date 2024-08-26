@@ -22,7 +22,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 }
 
 const PhilosophyPage = async () => {
-	const {content, title, sections: {achievements, stat, partners}} = await getPage<Page<any>>('philosophy')
+	const {content = null, title, sections: {achievements, stat, partners}} = await getPage<Page<any>>('philosophy')
 	return (
 		<PageLayout
 			title={title}

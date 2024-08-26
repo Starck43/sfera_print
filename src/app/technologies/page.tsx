@@ -17,7 +17,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 }
 
 const TechnologiesPage = async () => {
-	const {title, content, posts: technologiesData} = await getPage<Page<PostType>>('technologies')
+	const {title, content = null, posts: technologiesData} = await getPage<Page<PostType>>('technologies')
 	return (
 		<PageLayout
 			title={title}

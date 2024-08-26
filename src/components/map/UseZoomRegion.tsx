@@ -72,7 +72,7 @@ export const useZoomRegion = () => {
 
 	// Создаем увеличенный регион
 	// eslint-disable-next-line react/display-name
-	const renderRegion = useCallback((handleClick: (e, regionId?: number) => void) => (zoomedRegion: ZoomedRegion | undefined, style: string) => {
+	const renderRegion = useCallback((handleClick: (e: React.MouseEvent<SVGGElement>, regionId?: number) => void) => (zoomedRegion: ZoomedRegion | undefined, style: string) => {
 		if (!zoomedRegion) return null
 		return (
 			<g
@@ -88,7 +88,7 @@ export const useZoomRegion = () => {
 		)
 	}, [renderCity])
 
-	const showZoomedRegion = (handleClick: () => void) => {
+	const showZoomedRegion = (handleClick: (e: React.MouseEvent<SVGGElement>, regionId?: number | null) => void) => {
 		return (
 			<>
 				{renderRegion(handleClick)(zoomedRegion?.prev, 'prev')}
@@ -100,7 +100,7 @@ export const useZoomRegion = () => {
 	return {
 		zoomedRegion,
 		setZoomedRegion: updateZoomedRegion,
-		showZoomedRegion: showZoomedRegion,
+		showZoomedRegion,
 		activeCity,
 		setActiveCity
 	}

@@ -17,7 +17,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 }
 
 const BlogPage = async () => {
-	const {title, content, posts } = await getPage<Page<PostType>>('blog')
+	const {title, content = null, posts } = await getPage<Page<PostType>>('blog')
 
 	return (
 		<PageLayout

@@ -50,7 +50,7 @@ const CommonStat = ({data}: {data: Stat[]}) => {
 				delay: (el, i) => i * 100
 			})
 
-	}, [data, inView]);
+	}, [data, inView])
 
 	return (
 		<svg
@@ -70,6 +70,7 @@ const CommonStat = ({data}: {data: Stat[]}) => {
 				<rect x="5" y={-15} width="5" height="35" fill="lightblue"/>
 				<rect x="15" y={-20} width="5" height="40" fill="lightblue"/>
 			</g>
+
 			{orbits?.map((orbit, index) => {
 				const orbitOpacity = 1 - index * orbitOpacityStep
 				return (
@@ -86,7 +87,11 @@ const CommonStat = ({data}: {data: Stat[]}) => {
 
 			{satellites?.map(({x, y}, index) => {
 				return (
-					<g key={`satellite-${index}`} className="satellite">
+					<g
+						key={`satellite-${index}`}
+						className={classnames(cls, ['satellite__dot'], {}, ['satellite'])}
+						style={{opacity: 1}}
+					>
 						<circle
 							cx={x}
 							cy={y}
@@ -102,7 +107,7 @@ const CommonStat = ({data}: {data: Stat[]}) => {
 				const x = (text.x - text.singX).toFixed(2)
 				const y = (text.y - 20).toFixed(2)
 				return (
-					<g key={`ref-path-${index}`}>
+					<g key={`ref-path-${index}`} className={cls.ref__text} style={{opacity: 1}}>
 						<text
 							x={x}
 							y={y}

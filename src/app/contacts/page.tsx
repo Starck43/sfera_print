@@ -22,7 +22,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 
 
 const ContactsPage = async () => {
-	const {title, content, sections} = await getPage<Page<Contact>>('contacts')
+	const {title, content = null, sections} = await getPage<Page<Contact>>('contacts')
 	return (
 		<PageLayout
 			title={title}

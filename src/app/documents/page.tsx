@@ -17,7 +17,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 }
 
 const DocumentsPage = async () => {
-	const {title, content, posts: documentsData} = await getPage<Page<PostType>>('documents')
+	const {title, content = null, posts: documentsData} = await getPage<Page<PostType>>('documents')
 	return (
 		<PageLayout
 			title={title}

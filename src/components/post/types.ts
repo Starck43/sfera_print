@@ -10,7 +10,7 @@ export interface Media {
 	image_portrait?: Image | string
 	video?:  string
 	video_portrait?: string
-	//link?: string
+	link?: string
 }
 
 export interface PostType {

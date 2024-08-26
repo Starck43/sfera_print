@@ -1,6 +1,6 @@
 import React, {memo} from "react"
 
-import type {PostType} from "@/components/post"
+import type {Media, PostType} from "@/components/post"
 
 import {Col} from "@/shared/ui/stack"
 import {Slider} from "@/shared/ui/slider"
@@ -13,13 +13,13 @@ const Portfolio = ({items}: {items: PostType[]}) => {
 	if (!items?.length) return <Loader/>
 
 	return (
-		items?.map(({id, title, desc, media}) => (
+		items?.map(({id, title, desc, cover: image, media}) => (
 			<Slider
 				key={'case-' + id}
-				media={media || []}
+				media={[...(!media?.length && image ? [{id, image, title}] : media || [])] as Media[]}
 			>
 				<Col gap="sm" align='start' fullWidth className={cls.details}>
-					<h3>{title}</h3>
+					<h2>{title}</h2>
 					{desc && <div dangerouslySetInnerHTML={{__html: desc}} className={cls.desc}/>}
 				</Col>
 			</Slider>

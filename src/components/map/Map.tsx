@@ -75,7 +75,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 	//
 	// }, [selectedRegion])
 
-	const zoomRegionClick = useCallback((e: React.MouseEvent<SVGGElement>, regionId?: number | undefined) => {
+	const zoomRegionClick = useCallback((e: React.MouseEvent<SVGGElement>, regionId?: number | null) => {
 
 		if (!regionId && (e.target as SVGGElement)?.parentElement?.id?.startsWith('city-')) {
 			e.preventDefault()
@@ -183,7 +183,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 			{activeCity &&
                 <PageLayout
                     title={pageTitle + ' – ' + activeCity.name}
-                    titleTag='h2'
+                    titleTag='h1'
                     gap={'xs'}
                     sectionMode={false}
                     handleOnClose={() => setActiveCity(null)}

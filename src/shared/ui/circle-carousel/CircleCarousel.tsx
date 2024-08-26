@@ -1,6 +1,6 @@
 'use client'
 
-import React, {memo, SyntheticEvent, useCallback, useLayoutEffect, useRef, useState} from 'react'
+import React, {memo, SyntheticEvent, useCallback, useRef, useState} from 'react'
 import {useRouter} from "next/navigation"
 import NextImage from "next/image"
 

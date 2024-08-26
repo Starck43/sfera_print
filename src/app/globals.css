@@ -18,7 +18,7 @@
 	--navbar-link-color: var(--black-color);
 	--border-color-default: var(--grey-color);
 
-	--paragraph-container-max-width: 900px;
+	--paragraph-container-max-width: 1200px;
 	--container-max-width: 1400px;
 	--line-height-title: 1.25;
 	--line-height-paragraph: 1.5;
@@ -142,7 +142,6 @@ h2 {
 	font-family: var(--font-family-secondary);
 	font-size: clamp(1.6rem, 1rem + 1.8vw, 2.6rem);
 	line-height: var(--line-height-title);
-	text-transform: uppercase;
 	word-break: break-word;
 	font-weight: bold;
 }

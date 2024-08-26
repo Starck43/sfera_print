@@ -8,18 +8,23 @@
 	max-width: 900px
 
 .stat__diagram, .chart
-	width: 80%
-	max-width: 600px
+	//width: 80%
+	max-width: 800px
 	margin: auto
 
 .stat__diagram
 	opacity: 0
 	.title
 		color: var(--secondary-color)
+		font-size: 0.7rem
 		font-weight: bold
 
 	.desc
 		font-size: 0.5em
+
+	.satellite__dot, .ref__text
+		opacity: 0
+		transition: opacity 500ms ease-out
 
 .chart
 	opacity: 0
