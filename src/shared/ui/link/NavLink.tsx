@@ -23,7 +23,7 @@ export interface NavLinkProps extends LinkProps {
 	className?: string
 	target?: string
 	rel?: string
-	children: ReactNode
+	children: ReactNode | string
 }
 
 // eslint-disable-next-line react/display-name
