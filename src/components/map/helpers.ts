@@ -17,15 +17,17 @@ export function generateRegionsMap<T>(regionsJson: GeoJson, citiesJson: City[], 
 
 		citiesJson?.forEach((city) => {
 			// Если город внутри региона, добавляем его в объект городов
-			const coords: [number, number] = [city.latitude, city.longitude]
+			const coords: [number, number] = [city.longitude, city.latitude]
 			if (geoContains(feature, coords)) {
 				const coord = projection(coords)
+				if (!coord) return
+
 				const citySvg: CityProps = {
 					id: city.id,
 					name: city.name,
 					path: {
-						cx: coord?.[0] || 0,
-						cy: coord?.[1] || 0,
+						cx: coord[0] as number,
+						cy: coord[1] as number,
 					}
 				}
 

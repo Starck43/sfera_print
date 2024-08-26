@@ -47,7 +47,10 @@ export interface CityCases {
 export interface CityProps {
 	id: string
 	name: string
-	path: SVGProps<SVGCircleElement>
+	path: {
+		cx: number
+		cy: number
+	}
 }
 
 export interface RegionCitiesProps {

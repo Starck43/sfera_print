@@ -3,7 +3,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
 
 import PageLayout from "@/components/layout/page-layout"
-import type {PostType} from "@/components/post"
 
 import {useWindowDimensions} from "@/shared/lib/hooks/useWindowDimensions"
 import {classnames} from "@/shared/lib/helpers/classnames"
@@ -33,7 +32,11 @@ const Map = ({pageTitle, cities}: MapProps) => {
 	const [citiesData, setCitiesData] = useState<Record<number, RegionCitiesProps>>({})
 	// const [selectedRegion, setSelectedRegion] = useState<number | null>(null)
 	const {zoomedRegion, showZoomedRegion, setZoomedRegion, activeCity, setActiveCity} = useZoomRegion()
-	const {data: post} = useFetch<CityCases>(activeCity?.id ? `/cases/${activeCity.id}` : null, true, [activeCity?.id])
+	const {data: post} = useFetch<CityCases>(
+		activeCity?.id ? `/cases/${activeCity.id}`: null,
+		true,
+		[activeCity?.id]
+	)
 
 	const {svgContent: locationSvg, attributes: locationSvgAttr} = useDynamicSVG({
 		svgPath: '/svg/location.svg',
@@ -41,9 +44,9 @@ const Map = ({pageTitle, cities}: MapProps) => {
 			x: 254,
 			y: 235.25,
 			stroke: '#000',
-			fontSize: '140',
+			fontSize: 140,
 			fontFamily: 'Helvetica, Arial, sans-serif',
-			fontWeight: 'bold',
+			fontWeight: 700,
 			textAnchor: 'middle'
 		}
 	})

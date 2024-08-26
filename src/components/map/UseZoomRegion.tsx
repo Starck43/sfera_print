@@ -38,6 +38,8 @@ export const useZoomRegion = () => {
 	// eslint-disable-next-line react/display-name
 	const renderCity = useCallback(() => (city: CityProps, region: ZoomedRegion, opacity: number) => {
 		const scale = region?.scale || 1
+		const cx = Number(city.path.cx) - 12 / scale
+		const cy = Number(city.path.cy) - 16 / scale
 		return (
 			<g id={'city-' + city.id} key={'city-' + city.id} onClick={() => setActiveCity(city)}>
 				<circle
@@ -50,14 +52,14 @@ export const useZoomRegion = () => {
 				<circle
 					{...city.path}
 					r={10 / scale}
-					strokeWidth={4 / scale}
+					strokeWidth={6 / scale}
 					opacity={0.3}
 					stroke='black'
 					fill='none'
 				/>
 				<text
-					x={Number(city.path.cx) - 12 / scale}
-					y={Number(city.path.cy) - 12 / scale}
+					x={cx}
+					y={cy}
 					fontSize={14 / scale}
 					fill="black"
 					opacity={Math.max(0.5, opacity)}
@@ -70,7 +72,7 @@ export const useZoomRegion = () => {
 
 	// Создаем увеличенный регион
 	// eslint-disable-next-line react/display-name
-	const renderRegion = useCallback((handleClick: (e: React.MouseEvent<SVGGElement>, regionId?: number) => void) => (zoomedRegion: ZoomedRegion | undefined, style: string) => {
+	const renderRegion = useCallback((handleClick: (e, regionId?: number) => void) => (zoomedRegion: ZoomedRegion | undefined, style: string) => {
 		if (!zoomedRegion) return null
 		return (
 			<g
@@ -86,7 +88,7 @@ export const useZoomRegion = () => {
 		)
 	}, [renderCity])
 
-	const showZoomedRegion = (handleClick: (e: React.MouseEvent<SVGGElement>) => void) => {
+	const showZoomedRegion = (handleClick: () => void) => {
 		return (
 			<>
 				{renderRegion(handleClick)(zoomedRegion?.prev, 'prev')}
