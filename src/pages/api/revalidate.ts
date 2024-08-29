@@ -6,13 +6,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		return res.status(401).json({message: 'Invalid token'})
 	}
 
-	if (!req.query?.path) {
-		return res.status(400).json({message: 'No path'})
-	}
+	const path = <string>req.query?.path || '/'
 
 	try {
+		if (path == '/') {
+			await res.revalidate(path, 'layout' as any)
+		}
+
 		// e.g. "?path=/blog/1"
-		await res.revalidate(<string>req.query.path)
+		await res.revalidate(path)
 		const html = `
 			<h1>Success!</h1>
 			<div>Content revalidated</div>
