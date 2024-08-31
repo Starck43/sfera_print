@@ -49,9 +49,3 @@ export function getCityCases(slug = ''): Promise<any> {
 	return getPosts(endpoint)
 }
 
-export function getCases<T>(id: string, page: number): Promise<T>
-export function getCases<T>(): Promise<T[]>
-export function getCases(id = '', page = 1): Promise<any> {
-	const endpoint = `/cases/${id ? id : '?page=' + page}`
-	return getPosts(endpoint)
-}
