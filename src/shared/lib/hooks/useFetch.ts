@@ -1,8 +1,9 @@
 import {useCallback, useEffect, useState} from "react"
 import {normalizeUrlPath} from "@/shared/lib/helpers/url"
 
+type UrlParams = { [key: string]: number | string }
 
-export const useFetch = <T>(endpoint: string | null, params?: { [key: string]: string }, cache = true, deps: any[] = []): {
+export const useFetch = <T>(endpoint: string | null, params?: UrlParams, cache = true, deps: any[] = []): {
     data: T | undefined,
     isError: boolean,
     revalidate: () => void
