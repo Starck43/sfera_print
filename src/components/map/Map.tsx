@@ -14,11 +14,11 @@ import {useFetch} from "@/shared/lib/hooks/useFetch"
 
 import {Portfolio} from "../portfolio"
 import {useZoomRegion} from "./UseZoomRegion"
+import CasesList from "./CasesList"
 import {generateRegionsMap} from "./helpers"
 
 import geoJson from '@/assets/regions.ru.json'
 import cls from './Map.module.sass'
-import CasesList from "@/components/map/CasesList";
 
 
 interface MapProps {

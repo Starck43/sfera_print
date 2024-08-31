@@ -18,9 +18,12 @@ import BlogDetails from "../details/BlogDetails"
 import cls from "./BlogList.module.sass"
 
 
-const BlogList = ({posts}: {posts: PostType[]} ) => {
+const BlogList = ({posts}: { posts: PostType[] }) => {
 	const [activeBlog, setActiveBlog] = useState<number | null>(null)
-	const {data: post, isError} = useFetch<PostType>(activeBlog !== null ? posts[activeBlog].path : null, {},true, [activeBlog])
+	const {
+		data: post,
+		isError
+	} = useFetch<PostType>(activeBlog !== null ? posts[activeBlog].path : null, {}, true, [activeBlog])
 
 	const blogContent = useMemo(() => (
 		<div className={cls.blog__container}>
@@ -36,7 +39,7 @@ const BlogList = ({posts}: {posts: PostType[]} ) => {
                         <div className={cls.cover__wrapper}>
                             <Image
                                 src={typeof cover === 'object' && 'src' in cover ? cover.src : cover}
-                                //srcSet={createSrcSet(cover?.srcset) || undefined}
+								//srcSet={createSrcSet(cover?.srcset) || undefined}
                                 alt={title}
                                 sizes="max-width: 684px) 100vw, 50vw"
                                 fill
@@ -65,9 +68,9 @@ const BlogList = ({posts}: {posts: PostType[]} ) => {
                     handleOnClose={() => setActiveBlog(null)}
                     className='blog-detail'
                 >
-	                { isError
-		                ? <Header title='Ошибка загрузки статьи!' style={{ flex: '0 1 50%' }}/>
-		                : <BlogDetails data={post}/>
+					{isError
+						? <Header title='Ошибка загрузки статьи!' style={{flex: '0 1 50%'}}/>
+						: <BlogDetails data={post}/>
 					}
 
                 </PageLayout>

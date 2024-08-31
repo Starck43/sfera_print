@@ -22,7 +22,7 @@ export async function generateStaticParams() {
 	}))
 }
 
-const Features = async ({params: {slug}}: PageProps) => {
+const FeaturePage = async ({params: {slug}}: PageProps) => {
 	const featureData = await getFeatures<PostType>(slug)
 	return (
 		<PageLayout gap={'none'} className='feature__detail'>
@@ -31,4 +31,4 @@ const Features = async ({params: {slug}}: PageProps) => {
 	)
 }
 
-export default Features
+export default FeaturePage

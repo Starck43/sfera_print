@@ -6,7 +6,6 @@ import Image from "next/image"
 import {RouteEvents} from "@/components/routes/route-events"
 import PageHeader from "@/components/page-header"
 import {BurgerButton, Navbar} from "@/components/navbar"
-import type {PostType} from "@/components/post"
 
 import {NavigationProvider} from "@/shared/lib/providers/NavigationProvider"
 import {getMenu, getFeatures} from "@/shared/lib/api"

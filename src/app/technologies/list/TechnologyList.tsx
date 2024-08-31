@@ -17,7 +17,10 @@ import cls from "./TechnologyList.module.sass"
 
 const TechnologyList = ({items}: { items: PostType[] }) => {
 	const [activeTechnology, setActiveTechnology] = useState<number | null>(null)
-	const {data: post, isError} = useFetch<PostType>(activeTechnology !== null ? items[activeTechnology].path : null, {}, true, [activeTechnology])
+	const {
+		data: post,
+		isError
+	} = useFetch<PostType>(activeTechnology !== null ? items[activeTechnology].path : null, {}, true, [activeTechnology])
 
 	const technologiesContent = useMemo(() => (
 		<div className={cls.technologies__container}>
