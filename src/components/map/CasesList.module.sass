@@ -1,14 +1,11 @@
 @import "/src/app/styles/mixins"
 
-.blog__container
+.cases__container
+	margin-top: var(--translate-y-in-view)
 	display: grid
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
-	grid-gap: calc(var(--gap) * 5)
+	grid-gap: calc(var(--gap) * 2)
 	width: 100%
-	padding: 0 var(--page-padding) var(--page-padding)
-
-	+media-min(xxl)
-		grid-template-columns: repeat(2, 1fr)
 
 .article
 	padding: 0 0 var(--page-padding)
@@ -20,4 +17,3 @@
 
 .excerpt
 	flex: auto
-

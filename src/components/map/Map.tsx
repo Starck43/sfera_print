@@ -9,7 +9,7 @@ import {classnames} from "@/shared/lib/helpers/classnames"
 import useDynamicSVG from "@/shared/lib/hooks/useDynamicSVG"
 import {changeSvgText} from "@/shared/lib/helpers/svg"
 
-import type {City, CityCases, GeoJson, Region, RegionCitiesProps, ZoomedRegion} from "./types"
+import type {Cases, City, CityCases, GeoJson, Region, RegionCitiesProps, ZoomedRegion} from "./types"
 import {useFetch} from "@/shared/lib/hooks/useFetch"
 
 import {Portfolio} from "../portfolio"
@@ -18,6 +18,7 @@ import {generateRegionsMap} from "./helpers"
 
 import geoJson from '@/assets/regions.ru.json'
 import cls from './Map.module.sass'
+import CasesList from "@/components/map/CasesList";
 
 
 interface MapProps {
@@ -32,10 +33,18 @@ const Map = ({pageTitle, cities}: MapProps) => {
 	const [citiesData, setCitiesData] = useState<Record<number, RegionCitiesProps>>({})
 	// const [selectedRegion, setSelectedRegion] = useState<number | null>(null)
 	const {zoomedRegion, showZoomedRegion, setZoomedRegion, activeCity, setActiveCity} = useZoomRegion()
-	const {data: post} = useFetch<CityCases>(
-		activeCity?.id ? `/cases/${activeCity.id}`: null,
+	const {data: city} = useFetch<CityCases>(
+		activeCity?.id ? `/city_cases/${activeCity.id}`: null,
+		{},
 		true,
-		[activeCity?.id]
+		[activeCity?.id && width >= 600]
+	)
+	const [casesPage, setCasesPage] = useState(1)
+	const {data: cases} = useFetch<Cases>(
+		'/cases/',
+		{page: casesPage},
+		true,
+		[width && width < 600]
 	)
 
 	const {svgContent: locationSvg, attributes: locationSvgAttr} = useDynamicSVG({
@@ -53,7 +62,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 
 	useEffect(() => {
 		if (!width) return
-
+		
 		const {
 			regionsData: regions,
 			citiesData,
@@ -167,6 +176,10 @@ const Map = ({pageTitle, cities}: MapProps) => {
 		})
 	), [citiesData, height, locationSvg, locationSvgAttr, width, zoomRegionClick])
 
+	// Если ширина секции меньше 600px, то отобразим кейсы в виде плитки
+	if (width < 600 && cases) return <CasesList cases={cases.results}/>
+
+	// Выводим маркеры с отметкой количества городов на карте регионов
 	return (
 		<>
 			<div id="regionsData" className={cls.container} ref={containerRef}>
@@ -180,7 +193,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 				</svg>
 			</div>
 
-			{activeCity &&
+			{city && activeCity &&
                 <PageLayout
                     title={pageTitle + ' – ' + activeCity.name}
                     titleTag='h1'
@@ -189,7 +202,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
                     handleOnClose={() => setActiveCity(null)}
                     className='portfolio'
                 >
-	                <Portfolio items={post?.portfolio || []}/>
+	                <Portfolio items={city.portfolio || []}/>
                 </PageLayout>
 			}
 		</>

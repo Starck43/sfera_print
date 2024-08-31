@@ -5,7 +5,7 @@ import PageLayout from "@/components/layout/page-layout"
 import type {CityCases} from "@/components/map/types"
 import {Portfolio} from "@/components/portfolio"
 
-import {getCases} from "@/shared/lib/api"
+import {getCityCases} from "@/shared/lib/api"
 import constructMetadata from "@/shared/lib/helpers/metadata"
 
 import type {PageProps} from "../../types"
@@ -13,7 +13,7 @@ import type {PageProps} from "../../types"
 
 
 export const generateMetadata = async ({params: {id}}: PageProps, parent: ResolvingMetadata): Promise<Metadata> => {
-	const {portfolio, ...data} = await getCases<CityCases>(id)
+	const {portfolio, ...data} = await getCityCases<CityCases>(id)
 	return constructMetadata({
 			...data,
 			title: data?.title || 'Реализованные кейсы в городе ' + data.name,
@@ -30,7 +30,7 @@ export const generateMetadata = async ({params: {id}}: PageProps, parent: Resolv
 }
 
 export async function generateStaticParams() {
-	const data= await getCases<CityCases>()
+	const data= await getCityCases<CityCases>()
 
 	return data?.map(post => ({
 		params: {
@@ -40,7 +40,7 @@ export async function generateStaticParams() {
 }
 
 const CityCasesPage = async ({params: {id}}: PageProps) => {
-	const {name, portfolio} = await getCases<CityCases>(id)
+	const {name, portfolio} = await getCityCases<CityCases>(id)
 	return (
 		<PageLayout
 			title={'Кейсы' + ' – ' + name}

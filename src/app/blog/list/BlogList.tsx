@@ -20,7 +20,7 @@ import cls from "./BlogList.module.sass"
 
 const BlogList = ({posts}: {posts: PostType[]} ) => {
 	const [activeBlog, setActiveBlog] = useState<number | null>(null)
-	const {data: post, isError} = useFetch<PostType>(activeBlog !== null ? posts[activeBlog].path : null, true, [activeBlog])
+	const {data: post, isError} = useFetch<PostType>(activeBlog !== null ? posts[activeBlog].path : null, {},true, [activeBlog])
 
 	const blogContent = useMemo(() => (
 		<div className={cls.blog__container}>

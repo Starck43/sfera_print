@@ -42,9 +42,16 @@ export function getDocuments(slug = ''): Promise<any> {
 	return getPosts(endpoint)
 }
 
-export function getCases<T>(slug: string): Promise<T>
+export function getCityCases<T>(slug: string): Promise<T>
+export function getCityCases<T>(): Promise<T[]>
+export function getCityCases(slug = ''): Promise<any> {
+	const endpoint = `/city_cases/${slug}`
+	return getPosts(endpoint)
+}
+
+export function getCases<T>(id: string, page: number): Promise<T>
 export function getCases<T>(): Promise<T[]>
-export function getCases(slug = ''): Promise<any> {
-	const endpoint = `/cases/${slug}`
+export function getCases(id = '', page = 1): Promise<any> {
+	const endpoint = `/cases/${id ? id : '?page=' + page}`
 	return getPosts(endpoint)
 }

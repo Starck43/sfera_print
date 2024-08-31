@@ -1,5 +1,5 @@
 import {SVGProps} from "react"
-import {PostType} from "@/components/post"
+import {Media, PostType} from "@/components/post"
 
 export interface GeoJson {
 	type: string
@@ -42,6 +42,13 @@ export interface CityCases {
 	section?: string,
 	path: string,
 	portfolio?: PostType[]
+}
+
+export interface Cases {
+	count: number
+	next: string | null
+	previous: string | null
+	results: PostType[]
 }
 
 export interface CityProps {

@@ -17,6 +17,7 @@ const Portfolio = ({items}: {items: PostType[]}) => {
 			<Slider
 				key={'case-' + id}
 				media={[...(!media?.length && image ? [{id, image, title}] : media || [])] as Media[]}
+				style={{paddingTop: 0}}
 			>
 				<Col gap="sm" align='start' fullWidth className={cls.details}>
 					<h2>{title}</h2>

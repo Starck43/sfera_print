@@ -4,28 +4,29 @@
 	--slider-controls-width: calc(var(--icon-size-lg) + 3vw)
 	height: auto
 	margin: auto
-
-	+media-min(sm)
-		padding-left: 0 !important
-		padding-right: 0 !important
-
+	+media-min(md)
+		padding-left: 0
+		padding-right: 0
 
 .slider__container
 	position: relative
 	width: 100%
+	padding: 0
 	flex: 1
 
-	+media-min(sm)
+	+media-min(md)
 		padding-left: var(--slider-controls-width)
 		padding-right: var(--slider-controls-width)
 
-	@media (orientation: portrait)
-		padding-left: 0
-		padding-right: 0
+	// @media (orientation: portrait)
+
 
 .slider__wrapper
 	+responsive-ratio(16, 9)
-	@media (orientation: portrait)
+	top: 50%
+	transform: translateY(-50%)
+
+	@media (max-width: 575.98px) and (orientation: portrait)
 		+responsive-ratio(9, 16)
 
 .slider
@@ -43,7 +44,10 @@
 	//@media (orientation: portrait)
 
 .slider__controls
-	+push--absolute
+	+push--absolute(0, 0, 0, 0)
+	+media-max(md)
+		left: 1rem
+		right: 1rem
 
 .image
 	transition: opacity 300ms ease-out
@@ -52,7 +56,10 @@
 .arrow
 	width: var(--slider-controls-width)
 	padding: 1rem
-	height: 100%
+	//height: 100%
+	background-color: transparentize(white, 0.4)
+	border-radius: 50%
+	overflow: hidden
 	z-index: 1
 	pointer-events: visibleStroke
 	cursor: pointer
@@ -65,11 +72,13 @@
 	+media-min(sm)
 		width: 100%
 		//max-width: var(--paragraph-container-max-width)
-		padding: 0 var(--slider-controls-width)
 		margin-bottom: calc(var(--icon-size-xs) * -1)
 		display: grid
 		grid-template-columns: repeat(auto-fill, minmax(100px, auto))
 		grid-gap: var(--icon-size-xs)
+
+	+media-min(md)
+		padding: 0 var(--slider-controls-width)
 
 .thumb
 	+responsive-ratio(1, 1)
