@@ -28,7 +28,7 @@ interface MapProps {
 
 const Map = ({pageTitle, cities}: MapProps) => {
 	const containerRef = useRef<HTMLDivElement | null>(null)
-	const {width = 0, height = 0, ratio} = useWindowDimensions(containerRef?.current || document.body)
+	const {width = 0, height = 0, ratio} = useWindowDimensions(containerRef?.current || null)
 	const [regionsData, setRegionsData] = useState<Region[]>([])
 	const [citiesData, setCitiesData] = useState<Record<number, RegionCitiesProps>>({})
 	// const [selectedRegion, setSelectedRegion] = useState<number | null>(null)
@@ -170,8 +170,10 @@ const Map = ({pageTitle, cities}: MapProps) => {
 		})
 	), [citiesData, width, height, locationSvg, locationSvgAttr, zoomRegionClick])
 
-	// Если ширина секции меньше 600px, то отобразим кейсы в виде плитки
-	if (window.innerHeight && window.innerWidth / window.innerHeight < 1) return <CasesList />
+	// Если ширина окна меньше высоты, то отобразим кейсы в виде плитки
+	if (typeof window !== 'undefined' && window.innerHeight && window.innerWidth / window.innerHeight < 1) {
+		return <CasesList />
+	}
 
 	// Выводим маркеры с отметкой количества городов на карте регионов
 	return (
