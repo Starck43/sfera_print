@@ -95,8 +95,8 @@ const CircleCarousel = <T extends CarouselItemProps, >(props: CarouselProps<T>) 
                                 onLoad={(e) => onLoadImage(e, idx)}
                             />
 						}
-						<p className={cls.title}>{item.title}</p>
-						<div dangerouslySetInnerHTML={{__html: item?.excerpt || ''}} className={cls.excerpt}/>
+						<div className={cls.title}>{item.title}</div>
+						<p className={cls.excerpt}>{item?.excerpt || ''}</p>
 
 					</Col>
 				))}

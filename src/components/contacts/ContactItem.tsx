@@ -2,23 +2,24 @@ import {memo} from "react"
 import type {Contact} from "./types"
 
 import {NavLink} from "@/shared/ui/link"
-import PhoneIcon from "/public/svg/mobile-phone.svg"
 
 
-const ContactItem = ({item, className}: {
+interface ContactItemProps {
 	item: Contact,
 	className?: string
-}) => {
+}
+
+const ContactItem = ({item, className}: ContactItemProps) => {
 	return (
 		item.link ? (
 			<NavLink
+				title={item.value}
 				href={item.link}
-				Icon={item.link.startsWith("tel") ? PhoneIcon : null}
+				alt={item.value}
+				Icon={`/svg/${item.type}.svg`}
 				target={(item.type === "email" || item.type === "tel") ? undefined : "_blank"}
 				className={className}
-			>
-				{item.value}
-			</NavLink>
+			/>
 		) : (
 			item.value
 		)

@@ -2,6 +2,7 @@
 
 .link
 	display: inline-flex
+	gap: 5px
 	align-items: center
 	justify-content: center
 	width: max-content
@@ -50,6 +51,9 @@
 		.icon
 			transform: translateX(-0.25em)
 
+.icon
+	position: relative
+
 .inverted:hover
 	filter: invert(1)
 
@@ -81,16 +85,16 @@
 	font-size: 0.7rem
 
 	.icon
-		width: var(--icon-size-sm)
+		height: var(--icon-size-xs)
 
 .normal
 	font-size: inherit
 
 	.icon
-		width: var(--icon-size)
+		height: var(--icon-size-sm)
 
 .large
 	font-size: 1.5rem
 
 	.icon
-		width: var(--icon-size-lg)
+		height: var(--icon-size-lg)

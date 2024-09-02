@@ -193,7 +193,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
                 <PageLayout
                     title={pageTitle + ' – ' + activeCity.name}
                     titleTag='h1'
-                    gap={'xs'}
+                    gap='md'
                     sectionMode={false}
                     handleOnClose={() => setActiveCity(null)}
                     className='portfolio'

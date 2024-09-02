@@ -5,7 +5,7 @@ import {CircleCarousel} from "@/shared/ui/circle-carousel"
 import type {PageHeader} from "./types"
 import {SITE_TITLE} from "@/shared/const/page"
 
-import background from '/public/images/header-bg.jpg'
+import background from '@/images/header-bg.jpg'
 import cls from './PageHeader.module.sass'
 
 

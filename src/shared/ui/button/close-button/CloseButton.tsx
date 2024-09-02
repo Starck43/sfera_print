@@ -3,7 +3,7 @@ import {ButtonHTMLAttributes, FC, memo, ReactNode} from "react"
 import {classnames} from "@/shared/lib/helpers/classnames"
 import {Button} from "@/shared/ui/button"
 
-import CloseIcon from "/public/svg/close.svg"
+import CloseIcon from "@/svg/close.svg"
 import cls from "./CloseButton.module.sass"
 
 export interface CloseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

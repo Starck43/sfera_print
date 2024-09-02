@@ -4,8 +4,8 @@ import { useSwiper } from 'swiper/react'
 import {classnames} from "@/shared/lib/helpers/classnames"
 import {Flex} from "@/shared/ui/stack"
 
-import LeftArrowIcon from "/public/svg/arrow-left.svg"
-import RightArrowIcon from "/public/svg/arrow-right.svg"
+import LeftArrowIcon from "@/svg/arrow-left.svg"
+import RightArrowIcon from "@/svg/arrow-right.svg"
 import cls from "./Slider.module.sass"
 
 export interface SliderControlsProps {

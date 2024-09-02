@@ -73,7 +73,7 @@ export default async function RootLayout({children = null}: Readonly<{ children:
 		<body>
 		<header>
 			<div className='logo'>
-				<Image src='/sp-logo.svg' alt='Логотип Сфера Принт' width={150} height={75} sizes={'100%'} priority/>
+				<Image src='/sp-logo.svg' alt='Логотип Сфера Принт' sizes={'100%'} fill priority/>
 			</div>
 			<NavigationProvider>
 				<RouteEvents/>

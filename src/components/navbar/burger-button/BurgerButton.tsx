@@ -4,7 +4,7 @@ import {memo} from "react"
 import {useNavigation} from "@/shared/lib/providers/NavigationProvider"
 import {Button} from "@/shared/ui/button"
 
-import BurgerIcon from "/public/svg/burger-2.svg"
+import BurgerIcon from "@/svg/burger-2.svg"
 
 
 const BurgerButton = () => {

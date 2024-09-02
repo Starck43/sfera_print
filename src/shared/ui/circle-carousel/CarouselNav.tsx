@@ -5,7 +5,7 @@ import {getWindowDimensions} from "@/shared/lib/helpers/dom"
 import {calculateStrokeWidth} from "@/shared/lib/helpers/svg"
 import useCircleAnimation from "@/shared/lib/hooks/useCircleAnimation"
 
-import CircleNav from "/public/svg/carousel.svg"
+import CircleNav from "@/svg/carousel.svg"
 import cls from './CircleCarousel.module.sass'
 
 
@@ -37,7 +37,7 @@ const CarouselNav = <T,>(props: CarouselNavProps<T>) => {
 		const calculatedStrokeWidth = calculateStrokeWidth({
 			viewport: [width, height],
 			viewBox: [115, 115],
-			strokeWidth: 0.5,
+			strokeWidth: 0.3,
 			scaleFactor: 0.1
 		})
 		setStrokeWidth(() => calculatedStrokeWidth)

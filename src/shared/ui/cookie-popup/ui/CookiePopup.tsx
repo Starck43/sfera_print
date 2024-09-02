@@ -49,7 +49,7 @@ const CookiePopup = ({file, onClose}: CookiePopupProps) => {
 			<p>
 				Этот сайт использует файлы cookie для улучшения пользовательского опыта. Продолжая пользоваться
 				сайтом, Вы {!approved_policy ? 'соглашаетесь' : 'согласились'} с использованием файлов cookie. Рекомендуем ознакомиться с политикой &nbsp;
-				<NavLink href={file} target="_blank" rel="noopener noreferrer">здесь</NavLink>.
+				<NavLink href={file} title='здесь' target="_blank" rel="noopener noreferrer"/>.
 			</p>
 			<Button rounded onClick={handleClose}>{!approved_policy ? 'Принять' : 'ОК'}</Button>
 		</Row>

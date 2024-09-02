@@ -23,10 +23,10 @@
 	--line-height-title: 1.25;
 	--line-height-paragraph: 1.5;
 	--page-padding: clamp(1.2rem, 0.6rem + 3vw, 3rem);
-	--modal-padding: clamp(1rem, 0.5rem + 1.5vw, 2rem);
+	--modal-padding: clamp(1.8rem, 0.5rem + 2vw, 2.4rem);
 	--gap: 1rem;
 	--controls-height: 2.4rem;
-	--icon-size-xs: 1rem;
+	--icon-size-xs: 1.2rem;
 	--icon-size-sm: 1.8rem;
 	--icon-size-md: 2.4rem;
 	--icon-size-lg: 3.2rem;
@@ -48,8 +48,8 @@ html * /* override x.xhtml.ru style */
 
 *::-webkit-scrollbar,
 html *::-webkit-scrollbar {
-	height: 5px;
-	width: 5px;
+	height: 3px;
+	width: 3px;
 }
 
 *::-webkit-scrollbar-track,
@@ -60,7 +60,7 @@ html *::-webkit-scrollbar-track {
 *::-webkit-scrollbar-thumb,
 html *::-webkit-scrollbar-thumb {
 	background-color: var(--secondary-color);
-	border-radius: 5px;
+	border-radius: 1rem;
 }
 
 * {
@@ -69,6 +69,21 @@ html *::-webkit-scrollbar-thumb {
 	margin: 0;
 	line-height: 1.25;
 	user-select: none;
+}
+
+img:not([src]):not([srcset]) {
+  display: none;
+}
+
+img[src]::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(var(--page-background-color));
 }
 
 html {
@@ -101,15 +116,18 @@ header {
 
 .logo {
 	position: absolute;
-	top: 1em;
-	left: 1em;
+	top: 1.2rem;
+	left: 1rem;
+	width: 24%;
+    height: 75px;
+    max-width: 150px;
 	z-index: 1;
 }
 
 .burger {
 	position: absolute;
-	top: 1em;
-	right: 1em;
+	top: 2rem;
+	right: 1rem;
 	color: var(--secondary-color) !important;
 	z-index: 2;
 }

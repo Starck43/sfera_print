@@ -1,5 +1,5 @@
 @import "@/app/styles/mixins"
-$social_width: 2.4rem
+$social_width: 3rem
 
 .navmenu__container
 	width: 100%
@@ -20,15 +20,15 @@ $social_width: 2.4rem
 
 .navmenu
 	height: 100%
-	padding-left: calc(var(--modal-padding) + var(--gap))
-	padding-right: var(--gap)
+	padding-left: var(--modal-padding)
+	padding-right: 0 //var(--gap)
 	overflow-y: auto
 	direction: rtl
 	> *
 		direction: ltr
 
 .navitems
-	margin-right: $social_width
+	margin-right: calc($social_width + var(--gap))
 
 .title
 	line-height: 1.1
@@ -46,15 +46,20 @@ $social_width: 2.4rem
 
 .socials
 	position: fixed
-	right: calc(var(--modal-padding) + var(--gap))
+	right: var(--modal-padding)
 	top: 0
 	width: $social_width
 	height: 100%
-	+animation(socials, 1000ms 400ms, fade, 100%, 0, 0, 0)
+	+animation(socials, 400ms, fade, 100%, 0, 0, 0)
+	animation-delay: 1000ms
 
-.social__link
+
+.social__image__link
 	+responsive-ratio(1, 1)
 	box-sizing: content-box
+
+.social__link
+	@extend .social__image__link
 	border: 3px solid black
 	border-radius: 50%
 
@@ -75,6 +80,8 @@ $social_width: 2.4rem
 	margin-bottom: 1rem
 	color: var(--primary-color)
 	font-weight: bold
+	img
+		height: var(--icon-size-xs) !important
 
 	svg
 		height: var(--icon-size-xs)

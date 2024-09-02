@@ -3,7 +3,7 @@ import {ButtonHTMLAttributes, FC, memo, ReactNode} from "react"
 import {classnames} from "@/shared/lib/helpers/classnames"
 import {Button} from "@/shared/ui/button"
 
-import BackIcon from "/public/svg/arrow-right.svg"
+import BackIcon from "@/svg/arrow-right.svg"
 import cls from "./BackButton.module.sass"
 
 export interface CloseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

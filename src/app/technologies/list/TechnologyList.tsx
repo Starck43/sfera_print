@@ -51,7 +51,7 @@ const TechnologyList = ({items}: { items: PostType[] }) => {
                             />
 						}
 					</div>
-					<Header tag='h3' title={title} transform='upperCase'/>
+					<Header tag='h3' title={title} transform ='upperFirst'/>
 					<p className={cls.excerpt}>{excerpt}</p>
 				</Section>
 			))}

@@ -6,6 +6,7 @@ interface Socials {
 	name: string
 	title: string
 	link: string
+	image?: string
 }
 
 export interface Menu {

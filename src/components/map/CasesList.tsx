@@ -76,7 +76,7 @@ const CasesList = () => {
 	const caseDetailContent = useMemo(() => (
 		activeCase !== null &&
         <PageLayout
-            gap={'none'}
+            gap='none'
             sectionMode={false}
             handleOnClose={() => setActiveCase(null)}
             className='case-detail'

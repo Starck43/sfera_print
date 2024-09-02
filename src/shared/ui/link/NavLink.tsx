@@ -1,15 +1,16 @@
-import {FC, ReactNode, SVGProps} from "react"
+import {FC, SVGProps} from "react"
 import Link, {type LinkProps} from "next/link"
-
-import type {NavLinkFeatureType, NavLinkSizeType} from "./types"
+import Image from "next/image"
 
 import {classnames} from "@/shared/lib/helpers/classnames"
+import type {NavLinkFeatureType, NavLinkSizeType} from "./types"
 
 import cls from "./NavLink.module.sass"
 
 export interface NavLinkProps extends LinkProps {
+	title?: string
 	alt?: string
-	Icon?: FC<SVGProps<SVGSVGElement>> | null
+	Icon?: FC<SVGProps<SVGSVGElement>> | string
 	feature?: NavLinkFeatureType
 	size?: NavLinkSizeType
 	fullWidth?: boolean
@@ -23,15 +24,14 @@ export interface NavLinkProps extends LinkProps {
 	className?: string
 	target?: string
 	rel?: string
-	children: ReactNode | string
 }
 
-// eslint-disable-next-line react/display-name
 export const NavLink = (props: NavLinkProps) => {
 	const {
 		href,
+		title,
 		alt,
-		Icon = null,
+		Icon,
 		feature = "clear",
 		size = "normal",
 		fullWidth = false,
@@ -43,11 +43,10 @@ export const NavLink = (props: NavLinkProps) => {
 		underlined = false,
 		animation = false,
 		className,
-		children,
 		...other
 	} = props
 
-	if (!href) return children
+	if (!href) return title
 
 	return (
 		<Link
@@ -55,14 +54,24 @@ export const NavLink = (props: NavLinkProps) => {
 			title={alt}
 			className={classnames(
 				cls,
-				["link", feature, size, Icon && !children ? "squared" : undefined],
+				["link", feature, size, Icon && !title ? "squared" : undefined],
 				{fullWidth, squared, reverse, rounded, shadowed, underlined, animation, disabled},
 				[className],
 			)}
 			{...other}
 		>
-			{Icon && <Icon className={cls.icon}/>}
-			<span className={cls.title}>{children}</span>
+			{typeof Icon === "string"
+				? <Image
+					src={Icon}
+					alt={alt || ''}
+					className={cls.icon}
+					width={24}
+					height={24}
+					style={{width: 'auto'}}
+				/>
+				: Icon ? <Icon className={cls.icon}/> : null
+			}
+			<span className={cls.title}>{title}</span>
 		</Link>
 	)
 }

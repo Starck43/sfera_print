@@ -21,8 +21,13 @@ const nextConfig = {
                 port: '8000',
             },
         ],
-        minimumCacheTTL: 60 * 60 * 24 * 365,
+        //minimumCacheTTL: 60 * 60 * 24 * 365,
     },
+    // logging: {
+    //     fetches: {
+    //         fullUrl: true,
+    //     },
+    // },
     experimental: {
         cssChunking: 'loose', // default
     },

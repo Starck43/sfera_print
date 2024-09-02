@@ -20,7 +20,14 @@ interface NavbarProps {
 }
 
 const Navbar = ({data, className}: NavbarProps) => {
-	const {pages, contact, socials, policy, agreement, cookie} = data
+	const {
+		pages,
+		contact,
+		socials,
+		policy = null,
+		agreement = null,
+		cookie = null
+	} = data
 	const [isCookieOpen, setIsCookieOpen] = useState(false)
 
 	useEffect(() => {
@@ -31,7 +38,7 @@ const Navbar = ({data, className}: NavbarProps) => {
 	}, [])
 
 	const navbarContent = useMemo(() => (
-		<div role="navigation" className={className}>
+		<div role="navigation" className={className || ''}>
 			<NavMenu>
 				<Col gap='sm' align='baseline' justify='start' className={cls.navmenu}>
 					<Flex gap='xs' justify='between' fullWidth style={{marginBottom: 'auto'}}>
@@ -40,13 +47,20 @@ const Navbar = ({data, className}: NavbarProps) => {
 								<NavItem key={item.path} {...item} />
 							)}
 						</Col>
-						<Col gap='xs' className={cls.socials}>
-							{socials?.map(({name, title, link}) => (
-								<a key={'social-' + name} href={link} target="_blank" className={cls.social__link}>
-									<Image src={`/svg/socials/${name}.svg`} alt={title} sizes="100%" fill/>
+
+						{socials &&
+						<Col gap='xs' align='end' className={cls.socials}>
+							{socials.map(({name, title, link, image}) => (
+								<a
+									key={'social-' + name}
+									href={link} target="_blank"
+									className={image? cls.social__image__link : cls.social__link}
+								>
+									<Image src={image || `/svg/socials/${name}.svg`} alt={title} sizes="100%" fill/>
 								</a>
 							))}
 						</Col>
+						}
 					</Flex>
 
 					<Col gap="none" className={cls.navbar__links}>

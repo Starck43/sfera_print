@@ -1,6 +1,5 @@
 import 'server-only'
 
-import {Suspense} from "react"
 import {Metadata, ResolvingMetadata} from "next"
 
 import PageLayout from "@/components/layout/page-layout"
@@ -35,9 +34,7 @@ const ContactsPage = async () => {
                     <div dangerouslySetInnerHTML={{__html: content}}/>
 				}
 				<Col gap='xs' className={cls.contacts__block}>
-					<Suspense fallback={null}>
-						<Contacts data={sections as Contact[]}/>
-					</Suspense>
+					<Contacts data={sections as Contact[]}/>
 				</Col>
 				Форма Битрикс
 			</Section>
