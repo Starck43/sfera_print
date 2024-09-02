@@ -1,18 +1,19 @@
 @import "src/app/styles/mixins"
 
 .loader__container
+	+push--fixed
+	pointer-events: none
+
+.spinner
 	@include transform-pos
+	position: absolute
+	width: 1rem
+	height: 1rem
 	opacity: 0
 	transition: opacity 300ms ease-out
 
 	&.isOpening, &.isOpen
 		opacity: 1
-
-
-.spinner
-	position: absolute
-	width: 1rem
-	height: 1rem
 
 
 .spinner div

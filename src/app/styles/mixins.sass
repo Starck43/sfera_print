@@ -1,7 +1,7 @@
 @use "sass:math"
 
 @mixin transform-pos($x:50%, $y:50%, $zoom:1)
-	position: fixed
+	position: absolute
 	top: $x
 	left: $y
 	transform: translate(-$x, -$y) scale($zoom)

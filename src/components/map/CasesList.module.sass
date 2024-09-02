@@ -6,14 +6,19 @@
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
 	grid-gap: calc(var(--gap) * 2)
 	width: 100%
+	transition: opacity 300ms ease-in-out
 
 .article
 	padding: 0 0 var(--page-padding)
 
 .cover__wrapper
 	+responsive-ratio(16, 9)
-
 	margin-bottom: var(--gap)
+	background-color: rgba(var(--grey-color-alpha), 0.1)
+	&.skeleton
+		+skeleton-background(#eee)
+
 
 .excerpt
 	flex: auto
+

@@ -9,7 +9,7 @@ import {classnames} from "@/shared/lib/helpers/classnames"
 import useDynamicSVG from "@/shared/lib/hooks/useDynamicSVG"
 import {changeSvgText} from "@/shared/lib/helpers/svg"
 
-import type {Cases, City, CityCases, GeoJson, Region, RegionCitiesProps, ZoomedRegion} from "./types"
+import type {City, CityCases, GeoJson, Region, RegionCitiesProps, ZoomedRegion} from "./types"
 import {useFetch} from "@/shared/lib/hooks/useFetch"
 
 import {Portfolio} from "../portfolio"
@@ -28,23 +28,16 @@ interface MapProps {
 
 const Map = ({pageTitle, cities}: MapProps) => {
 	const containerRef = useRef<HTMLDivElement | null>(null)
-	const {width = 0, height = 0} = useWindowDimensions(containerRef?.current || null)
+	const {width = 0, height = 0, ratio} = useWindowDimensions(containerRef?.current || document.body)
 	const [regionsData, setRegionsData] = useState<Region[]>([])
 	const [citiesData, setCitiesData] = useState<Record<number, RegionCitiesProps>>({})
 	// const [selectedRegion, setSelectedRegion] = useState<number | null>(null)
 	const {zoomedRegion, showZoomedRegion, setZoomedRegion, activeCity, setActiveCity} = useZoomRegion()
 	const {data: city} = useFetch<CityCases>(
 		activeCity?.id ? `/city_cases/${activeCity.id}`: null,
-		{},
+		null,
 		true,
-		[activeCity?.id && width >= 600]
-	)
-	const [casesPage, setCasesPage] = useState(1)
-	const {data: cases} = useFetch<Cases>(
-		'/cases/',
-		{page: casesPage},
-		true,
-		[width && width < 600]
+		[activeCity?.id]
 	)
 
 	const {svgContent: locationSvg, attributes: locationSvgAttr} = useDynamicSVG({
@@ -61,7 +54,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 	})
 
 	useEffect(() => {
-		if (!width) return
+		if (!width || width / height < 1) return
 		
 		const {
 			regionsData: regions,
@@ -71,7 +64,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 		setRegionsData(regions)
 		setCitiesData(citiesData)
 
-	}, [cities, height, width])
+	}, [cities, width, height])
 
 
 	// const selectRegionClick = useCallback((id: number) => {
@@ -85,6 +78,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 	// }, [selectedRegion])
 
 	const zoomRegionClick = useCallback((e: React.MouseEvent<SVGGElement>, regionId?: number | null) => {
+		if (!width || width / height < 1) return
 
 		if (!regionId && (e.target as SVGGElement)?.parentElement?.id?.startsWith('city-')) {
 			e.preventDefault()
@@ -135,7 +129,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 			setZoomedRegion(zoomedRegionsProps)
 		}
 
-	}, [regionsData, setZoomedRegion, width, height, citiesData])
+	}, [citiesData, regionsData, width, height, setZoomedRegion])
 
 	const regionsMap = useMemo(() => (
 		regionsData?.map((region, key) =>
@@ -174,10 +168,10 @@ const Map = ({pageTitle, cities}: MapProps) => {
 				</foreignObject>
 			)
 		})
-	), [citiesData, height, locationSvg, locationSvgAttr, width, zoomRegionClick])
+	), [citiesData, width, height, locationSvg, locationSvgAttr, zoomRegionClick])
 
 	// Если ширина секции меньше 600px, то отобразим кейсы в виде плитки
-	if (width < 600 && cases) return <CasesList cases={cases.results}/>
+	if (window.innerHeight && window.innerWidth / window.innerHeight < 1) return <CasesList />
 
 	// Выводим маркеры с отметкой количества городов на карте регионов
 	return (
@@ -193,7 +187,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 				</svg>
 			</div>
 
-			{city && activeCity &&
+			{city && activeCity !== null &&
                 <PageLayout
                     title={pageTitle + ' – ' + activeCity.name}
                     titleTag='h1'
