@@ -86,7 +86,7 @@ const Navbar = ({data, className}: NavbarProps) => {
 				</Col>
 			</NavMenu>
 		</div>
-	), [contact, pages, socials, policy, agreement, className,])
+	), [contact, pages, socials, policy, agreement, className])
 
 	return (
 		<>

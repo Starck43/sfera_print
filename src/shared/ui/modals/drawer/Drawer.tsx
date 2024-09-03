@@ -1,3 +1,5 @@
+'use client'
+
 import {CSSProperties, useCallback, useEffect, useRef} from "react"
 import {AnimatedProps, InterpolatorArgs} from "@react-spring/web"
 

@@ -10,11 +10,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	try {
 		if (path == '/') {
-			await res.revalidate(path, 'layout' as any)
+			const paths = ['/blog', '/cases', '/contacts', '/documents', '/features', '/philosophy', '/technologies']
+			await Promise.any(paths.map(async (path) => {
+				await res.revalidate(path)
+			}))
 		}
 
 		// e.g. "?path=/blog/1"
-		await res.revalidate(path)
+		await res.revalidate(path, 'layout' as any)
 		const html = `
 			<h1>Success!</h1>
 			<div>Content revalidated</div>
