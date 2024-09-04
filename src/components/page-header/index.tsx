@@ -2,7 +2,6 @@ import React, {memo} from "react"
 import Image from "next/image"
 
 import {CircleCarousel} from "@/shared/ui/circle-carousel"
-import type {PageHeader} from "./types"
 import {SITE_TITLE} from "@/shared/const/page"
 
 import background from '@/images/header-bg.jpg'
@@ -11,7 +10,7 @@ import cls from './PageHeader.module.sass'
 
 const carouselLoopDuration = 10000
 
-const PageHeader = ({data}: { data: PageHeader[] }) => (
+const PageHeader = () => (
 	<div className={cls.container}>
 		<Image
 			alt={SITE_TITLE}
@@ -24,14 +23,11 @@ const PageHeader = ({data}: { data: PageHeader[] }) => (
 				objectFit: 'cover',
 			}}
 		/>
-		{data?.length &&
-            <CircleCarousel
-                items={data}
-                infinite={false}
-                duration={300}
-                loopDuration={carouselLoopDuration}
-            />
-		}
+        <CircleCarousel
+            infinite={false}
+            duration={300}
+            loopDuration={carouselLoopDuration}
+        />
 	</div>
 )
 

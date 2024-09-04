@@ -8,7 +8,6 @@ import PageHeader from "@/components/page-header"
 import {BurgerButton, Navbar} from "@/components/navbar"
 
 import {NavigationProvider} from "@/shared/lib/providers/NavigationProvider"
-import {getMenu, getFeatures} from "@/shared/lib/api"
 import {SITE_DESCRIPTION, SITE_TITLE, SITE_URL} from "@/shared/const/page"
 
 import "./globals.css"
@@ -65,9 +64,6 @@ const brandFont = localFont({
 
 
 export default async function RootLayout({children = null}: Readonly<{ children: React.ReactNode }>) {
-	const featuresData = await getFeatures<any>()
-	const menuData = await getMenu()
-
 	return (
 		<html lang="ru" className={brandFont.className} suppressHydrationWarning>
 		<body>
@@ -77,9 +73,9 @@ export default async function RootLayout({children = null}: Readonly<{ children:
 			</div>
 			<NavigationProvider>
 				<RouteEvents/>
-				<PageHeader data={featuresData || []}/>
+				<PageHeader/>
 				<BurgerButton/>
-				<Navbar data={menuData} className='navbar'/>
+				<Navbar className='navbar'/>
 			</NavigationProvider>
 		</header>
 		{children}

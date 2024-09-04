@@ -2,32 +2,28 @@
 
 import {useEffect, useMemo, useState} from "react"
 import Image from "next/image"
-import {checkCookie} from "@/shared/lib/helpers/cookie"
-import {Col, Flex} from "@/shared/ui/stack"
-import {CookiePopup} from "@/shared/ui/cookie-popup"
-
-import NavItem from "./nav-item/NavItem"
-import {NavMenu} from "./nav-menu/NavMenu"
 
 import {ContactItem} from "@/components/contacts"
+
+import {checkCookie} from "@/shared/lib/helpers/cookie"
+import {useFetch} from "@/shared/lib/hooks/useFetch"
+
+import {Col, Flex} from "@/shared/ui/stack"
+import {Loader} from "@/shared/ui/loader"
+import {CookiePopup} from "@/shared/ui/cookie-popup"
+
 import type {Menu} from "./types"
+import NavItem from "./nav-item/NavItem"
+import {NavMenu} from "./nav-menu/NavMenu"
 
 import cls from "./Navbar.module.sass"
 
 interface NavbarProps {
-	data: Menu
 	className?: string
 }
 
-const Navbar = ({data, className}: NavbarProps) => {
-	const {
-		pages,
-		contact,
-		socials,
-		policy = null,
-		agreement = null,
-		cookie = null
-	} = data
+const Navbar = ({className}: NavbarProps) => {
+	const {data} = useFetch<Menu>('menu')
 	const [isCookieOpen, setIsCookieOpen] = useState(false)
 
 	useEffect(() => {
@@ -43,14 +39,14 @@ const Navbar = ({data, className}: NavbarProps) => {
 				<Col gap='sm' align='baseline' justify='start' className={cls.navmenu}>
 					<Flex gap='xs' justify='between' fullWidth style={{marginBottom: 'auto'}}>
 						<Col gap='sm' className={cls.navitems}>
-							{pages?.map(item =>
+							{data?.pages?.map(item =>
 								<NavItem key={item.path} {...item} />
 							)}
 						</Col>
 
-						{socials &&
+						{data?.socials &&
 						<Col gap='xs' align='end' className={cls.socials}>
-							{socials.map(({name, title, link, image}) => (
+							{data.socials.map(({name, title, link, image}) => (
 								<a
 									key={'social-' + name}
 									href={link} target="_blank"
@@ -64,18 +60,18 @@ const Navbar = ({data, className}: NavbarProps) => {
 					</Flex>
 
 					<Col gap="none" className={cls.navbar__links}>
-						{contact &&
-                            <ContactItem item={contact} className={cls.tel}/>
+						{data?.contact &&
+                            <ContactItem item={data.contact} className={cls.tel}/>
 						}
 
-						{policy &&
-                            <a href={policy} target="_blank" className={cls.policy}>
+						{data?.policy &&
+                            <a href={data.policy} target="_blank" className={cls.policy}>
                                 Политика конфиденциальности
                             </a>
 						}
 
-						{agreement &&
-                            <a href={agreement} target="_blank" className={cls.policy}>
+						{data?.agreement &&
+                            <a href={data.agreement} target="_blank" className={cls.policy}>
                                 Соглашение на использование материалов
                             </a>
 						}
@@ -86,14 +82,16 @@ const Navbar = ({data, className}: NavbarProps) => {
 				</Col>
 			</NavMenu>
 		</div>
-	), [contact, pages, socials, policy, agreement, className])
+	), [data, className])
+
+	if (!data) return <Loader/>
 
 	return (
 		<>
 			{navbarContent}
-			{isCookieOpen &&
+			{data?.cookie && isCookieOpen &&
 				<CookiePopup
-					file={cookie || ''}
+					file={data.cookie}
 					onClose={() => setIsCookieOpen(false)}
 				/>
 			}
