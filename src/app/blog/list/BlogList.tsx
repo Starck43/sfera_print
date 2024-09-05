@@ -27,7 +27,7 @@ const BlogList = ({posts}: { posts: PostType[] }) => {
 
 	const blogContent = useMemo(() => (
 		<div className={cls.blog__container}>
-			{posts?.map(({id, title, excerpt, cover = null, event_date = null, desc}, idx) => (
+			{posts?.map(({id, title, excerpt = null, cover = null, event_date = null, desc}, idx) => (
 				<Section
 					key={'blog-' + id}
 					as='article'
@@ -51,8 +51,8 @@ const BlogList = ({posts}: { posts: PostType[] }) => {
 					}
 					<Header tag='h3' title={title} transform='upperFirst'/>
 					{event_date && <span style={{marginTop: '-0.5rem'}}>{formatDate(event_date)}</span>}
-					<p className={cls.excerpt}>{excerpt}</p>
-					<Button title='Подробнее' onClick={() => setActiveBlog(idx)}/>
+					{excerpt && <p className={cls.excerpt}>{excerpt}</p>}
+					<Button title='Подробнее' rounded onClick={() => setActiveBlog(idx)}/>
 				</Section>
 			))}
 		</div>

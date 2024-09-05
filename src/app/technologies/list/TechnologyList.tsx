@@ -29,8 +29,9 @@ const TechnologyList = ({items}: { items: PostType[] }) => {
 					key={slug}
 					as='article'
 					gap='xs'
+					align='center'
 					onClick={() => setActiveTechnology(idx)}
-					style={{padding: 0}}
+					style={{padding: 0, height: 'max-content'}}
 				>
 					<div className={cls.cover__wrapper}>
 						{cover &&
@@ -51,8 +52,13 @@ const TechnologyList = ({items}: { items: PostType[] }) => {
                             />
 						}
 					</div>
-					<Header tag='h3' title={title} transform ='upperFirst'/>
-					<p className={cls.excerpt}>{excerpt}</p>
+					<Header
+						tag='h3'
+						title={title}
+						subTitle={excerpt}
+						align='center'
+						transform ='upperFirst'
+					/>
 				</Section>
 			))}
 		</div>

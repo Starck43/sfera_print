@@ -15,7 +15,7 @@ type HeaderProps = {
     tag?: ElementType
     href?: string
     title: ReactNode
-    subTitle?: ReactNode
+    subTitle?: ReactNode | string
     align?: FlexAlign
     inlined?: boolean
     fullWidth?: boolean
@@ -71,7 +71,7 @@ export const Header = memo((props: HeaderProps) => {
                 wrap={!inlined && !fullWidth}
                 fullWidth={inlined}
                 direction={inlined ? "row" : "column"}
-                className={classnames(cls, ["header", status, size], { inlined }, [className])}
+                className={classnames(cls, ["header", status, size, align], { inlined }, [className])}
             >
                 {content}
                 {subtitle}

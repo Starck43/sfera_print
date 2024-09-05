@@ -12,7 +12,7 @@
 	position: relative
 	width: 100%
 	padding: 0
-	flex: 1
+	flex: 0
 
 	+media-min(md)
 		padding-left: var(--slider-controls-width)
@@ -41,7 +41,10 @@
 
 	img
 		object-fit: cover
-	//@media (orientation: portrait)
+
+	@media (orientation: portrait)
+		img
+			object-fit: contain
 
 .slider__controls
 	+push--absolute(0, 0, 0, 0)

@@ -171,7 +171,7 @@ const Map = ({pageTitle, cities}: MapProps) => {
 	), [citiesData, width, height, locationSvg, locationSvgAttr, zoomRegionClick])
 
 	// Если ширина окна меньше высоты, то отобразим кейсы в виде плитки
-	if (typeof window !== 'undefined' && window.innerHeight && window.innerWidth / window.innerHeight < 1) {
+	if (typeof window !== 'undefined' && window.innerWidth < 768) {
 		return <CasesList />
 	}
 

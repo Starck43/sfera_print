@@ -59,9 +59,9 @@ const Navbar = ({className}: NavbarProps) => {
 						}
 					</Flex>
 
-					<Col gap="none" className={cls.navbar__links}>
+					<Col gap="xs" className={cls.navbar__links}>
 						{data?.contact &&
-                            <ContactItem item={data.contact} className={cls.tel}/>
+                            <ContactItem item={data.contact} className={cls.contact}/>
 						}
 
 						{data?.policy &&
@@ -84,7 +84,7 @@ const Navbar = ({className}: NavbarProps) => {
 		</div>
 	), [data, className])
 
-	if (!data) return <Loader/>
+	if (!data) return null
 
 	return (
 		<>

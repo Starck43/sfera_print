@@ -1,4 +1,4 @@
-import React from "react"
+import React, {CSSProperties} from "react"
 
 import {classnames} from "@/shared/lib/helpers/classnames"
 import {formatDate} from "@/shared/lib/helpers/datetime"
@@ -15,7 +15,7 @@ import cls from "./Post.module.sass"
 interface ContentProps {
 	data?: PostType | undefined
 	className?: string
-	style?: React.CSSProperties
+	style?: CSSProperties
 }
 
 const Post = ({data, style, className}: ContentProps) => {

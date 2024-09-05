@@ -3,7 +3,8 @@
 .technologies__container
 	display: grid
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
-	grid-gap: calc(var(--gap) * 2)
+	grid-gap: calc(var(--gap) * 4)
+	grid-column-gap: calc(var(--gap) * 2)
 	flex: auto
 	width: 100%
 	padding: 0 var(--page-padding) var(--page-padding)
@@ -13,7 +14,7 @@
 
 .cover__wrapper
 	+responsive-ratio(16, 9)
-	background-color: rgba(var(--grey-color-alpha), 0.1)
+	// background-color: rgba(var(--grey-color-alpha), 0.1)
 
 .excerpt
 	flex: auto
