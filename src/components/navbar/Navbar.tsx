@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useMemo, useState} from "react"
+import {useEffect, useMemo, useState, Fragment} from "react"
 import Image from "next/image"
 
 import {ContactItem} from "@/components/contacts"
@@ -9,7 +9,6 @@ import {checkCookie} from "@/shared/lib/helpers/cookie"
 import {useFetch} from "@/shared/lib/hooks/useFetch"
 
 import {Col, Flex} from "@/shared/ui/stack"
-import {Loader} from "@/shared/ui/loader"
 import {CookiePopup} from "@/shared/ui/cookie-popup"
 
 import type {Menu} from "./types"
@@ -17,6 +16,7 @@ import NavItem from "./nav-item/NavItem"
 import {NavMenu} from "./nav-menu/NavMenu"
 
 import cls from "./Navbar.module.sass"
+
 
 interface NavbarProps {
 	className?: string
@@ -45,17 +45,30 @@ const Navbar = ({className}: NavbarProps) => {
 						</Col>
 
 						{data?.socials &&
-						<Col gap='xs' align='end' className={cls.socials}>
-							{data.socials.map(({name, title, link, image}) => (
-								<a
-									key={'social-' + name}
-									href={link} target="_blank"
-									className={image? cls.social__image__link : cls.social__link}
-								>
-									<Image src={image || `/svg/socials/${name}.svg`} alt={title} sizes="100%" fill/>
-								</a>
-							))}
-						</Col>
+                            <Col gap='xs' align='end' className={cls.socials}>
+                                <style>
+									{data.socials.map((_, idx) => <Fragment key={idx}>{`
+								          a:nth-child(${idx + 2})::after {
+								             animation-delay: ${1000 + idx * 200}ms;
+								          }
+								          a:nth-child(${idx + 2})::before {
+								             animation-delay: ${1400 + idx * 200}ms;
+								          }
+								       `
+										}</Fragment>
+									)}
+                                </style>
+								{data.socials.map(({name, title, link, image}, idx) => (
+									<a
+										key={'social-' + name}
+										href={link} target="_blank"
+										className={image ? cls.social__image__link : cls.social__link}
+										style={{animationDelay: `${1000 + idx * 200}ms`}}
+									>
+										<Image src={image || `/svg/socials/${name}.svg`} alt={title} sizes="100%" fill/>
+									</a>
+								))}
+                            </Col>
 						}
 					</Flex>
 
@@ -90,10 +103,10 @@ const Navbar = ({className}: NavbarProps) => {
 		<>
 			{navbarContent}
 			{data?.cookie && isCookieOpen &&
-				<CookiePopup
-					file={data.cookie}
-					onClose={() => setIsCookieOpen(false)}
-				/>
+                <CookiePopup
+                    file={data.cookie}
+                    onClose={() => setIsCookieOpen(false)}
+                />
 			}
 		</>
 	)

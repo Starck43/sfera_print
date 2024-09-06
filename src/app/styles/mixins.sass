@@ -122,7 +122,7 @@
 		@return calc(#{$parent_h} - #{$h}px)
 
 
-@mixin animation($name, $animation, $fade:no-fade, $x:0, $y:0, $x1:0, $y1:0)
+@mixin animation($name, $animation, $effect:no-fade, $x:0, $y:0, $x1:0, $y1:0)
 	animation: animation-#{$name} $animation
 	animation-timing-function: cubic-bezier(.03, .2, .3, 1)
 	animation-fill-mode: both
@@ -130,17 +130,31 @@
 
 	@keyframes animation-#{$name}
 		0%
-			@if $fade != no-fade
-				opacity: if($fade == fade-out, 1, 0)
+			@if $effect == zoom
+				transform: scale(0)
+				filter: grayscale(1)
+			@else if $effect != no-fade
+				opacity: if($effect == fade-out or $effect != fade-in, 1, 0)
 			@if strip-units($x)+strip-units($y) != 0
 				transform: translate($x, $y)
-		50%
-			@if $fade != no-fade
-				opacity: if($fade == In, 0, 0.5)
+		30%
+			@if $effect == zoom
+				transform: scale(1.4) //rotateY(0deg)
+				filter: grayscale(1)
+
+		60%
+			@if $effect == zoom
+				transform: scale(1)
+				filter: grayscale(1)
+			@else if $effect != no-fade
+				opacity: if($effect == fade-in or $effect == fade-out, 0.5, 1)
 
 		100%
-			@if $fade != no-fade
-				opacity: if($fade == fade-out, 0, 1)
+			@if $effect == zoom
+				transform: scale(1) //rotateY(360deg)
+				filter: grayscale(0)
+			@else if $effect != no-fade
+				opacity: if($effect == fade-out, 0, 1)
 			@if strip-units($x1)+strip-units($y1) != 0
 				transform: translate($x1, $y1)
 
