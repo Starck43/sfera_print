@@ -122,7 +122,7 @@ const CommonStat = ({data}: {data: Stat[]}) => {
 							>
 								{data[index].title || ''}
 							</tspan>
-							<tspan x={x} dy="0.75rem" className={cls.desc}>{data[index].desc || ''}</tspan>
+							<tspan x={x} dy="12" className={cls.desc}>{data[index].desc || ''}</tspan>
 						</text>
 					</g>
 				)

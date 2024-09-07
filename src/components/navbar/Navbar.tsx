@@ -49,10 +49,10 @@ const Navbar = ({className}: NavbarProps) => {
                                 <style>
 									{data.socials.map((_, idx) => <Fragment key={idx}>{`
 								          a:nth-child(${idx + 2})::after {
-								             animation-delay: ${1000 + idx * 200}ms;
+								             animation-delay: ${600 + idx * 200}ms;
 								          }
 								          a:nth-child(${idx + 2})::before {
-								             animation-delay: ${1400 + idx * 200}ms;
+								             animation-delay: ${1000 + idx * 200}ms;
 								          }
 								       `
 										}</Fragment>
