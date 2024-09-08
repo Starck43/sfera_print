@@ -3,7 +3,7 @@ import withBundleAnalyzer from '@next/bundle-analyzer'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    productionBrowserSourceMaps: false,
+    productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
     images: {
         dangerouslyAllowSVG: true,
         contentDispositionType: 'attachment',
@@ -23,17 +23,23 @@ const nextConfig = {
         ],
         //minimumCacheTTL: 60 * 60 * 24 * 365,
     },
-    // logging: {
-    //     fetches: {
-    //         fullUrl: true,
-    //     },
-    // },
+    logging: process.env.NODE_ENV === 'development' ? {
+        fetches: {
+            fullUrl: true,
+        },
+    } : {},
     experimental: {
         cssChunking: 'loose', // default
     },
-    webpack(config, {isServer}) {
-        if (isServer) {
-            //config.devtool = 'eval-source-map'
+    sassOptions: {
+        outputStyle: 'expanded',
+    },
+    webpack(config, {dev}) {
+        if (dev) {
+            Object.defineProperty(config, 'devtool', {
+                get() {return 'source-map'},
+                set() {},
+            })
         }
 
         const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.(".svg"));
