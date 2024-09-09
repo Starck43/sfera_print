@@ -1,6 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, MutableRefObject } from "react"
+import {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    MutableRefObject
+} from 'react'
 
 interface HookModalProps {
     onSubmit?: () => void
@@ -17,7 +23,12 @@ interface HookModalProps {
  * @param animationTime
  */
 
-export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModalProps) => {
+export const useModal = ({
+    onSubmit,
+    onClose,
+    isOpen,
+    animationTime
+}: HookModalProps) => {
     const [isShown, setIsShown] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
     const timerRef = useRef() as MutableRefObject<ReturnType<typeof setTimeout>>
@@ -42,11 +53,11 @@ export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModal
 
     const onPressKey = useCallback(
         (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
+            if (e.key === 'Escape') {
                 handleClose()
             }
         },
-        [handleClose],
+        [handleClose]
     )
 
     useEffect(() => {
@@ -61,11 +72,11 @@ export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModal
     useEffect(() => {
         if (isOpen) {
             setIsMounted(true)
-            window.addEventListener("keydown", onPressKey)
+            window.addEventListener('keydown', onPressKey)
         }
         return () => {
             clearTimeout(timerRef.current)
-            window.removeEventListener("keydown", onPressKey)
+            window.removeEventListener('keydown', onPressKey)
         }
     }, [isOpen, onPressKey])
 
@@ -73,6 +84,6 @@ export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModal
         isShown,
         handleSubmit,
         handleClose,
-        isMounted,
+        isMounted
     }
 }

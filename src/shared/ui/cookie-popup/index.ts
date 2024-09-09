@@ -1,1 +1,1 @@
-export {default as CookiePopup} from './ui/CookiePopup'
+export { default as CookiePopup } from './ui/CookiePopup'

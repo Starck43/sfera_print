@@ -1,26 +1,30 @@
-import {SVGProps} from "react"
+import { SVGProps } from 'react'
 
 export interface SvgContentProps {
-	svgContent: string
-	newText?: string
-	newAttributes?: SVGProps<SVGTextElement>
+    svgContent: string
+    newText?: string
+    newAttributes?: SVGProps<SVGTextElement>
 }
 
-export const changeSvgText = ({svgContent, newText, newAttributes}: SvgContentProps) => {
+export const changeSvgText = ({
+    svgContent,
+    newText,
+    newAttributes
+}: SvgContentProps) => {
     if (!newText) return svgContent
 
     const parser = new DOMParser()
-    const doc = parser.parseFromString(svgContent, "image/svg+xml")
-    const textElement = doc.querySelector("text")
+    const doc = parser.parseFromString(svgContent, 'image/svg+xml')
+    const textElement = doc.querySelector('text')
 
     if (textElement) {
         textElement.textContent = newText
 
         // Применяем новые атрибуты, если они есть
         Object.entries(newAttributes || {}).forEach(([key, value]) => {
-	        if (typeof value === "string") {
-		        textElement.setAttribute(key, value)
-	        }
+            if (typeof value === 'string') {
+                textElement.setAttribute(key, value)
+            }
         })
 
         // Возвращаем обновленный SVG контент
@@ -37,10 +41,14 @@ interface CalculateStrokeWidthProps {
     scaleFactor: number
 }
 
-export const calculateStrokeWidth = ({viewport, viewBox, strokeWidth=1, scaleFactor}: CalculateStrokeWidthProps) => {
+export const calculateStrokeWidth = ({
+    viewport,
+    viewBox,
+    strokeWidth = 1,
+    scaleFactor
+}: CalculateStrokeWidthProps) => {
+    const widthRatio = viewport[0] / viewBox[0]
+    const heightRatio = viewport[1] / viewBox[1]
 
-	const widthRatio = viewport[0] / viewBox[0]
-	const heightRatio = viewport[1] / viewBox[1]
-
-	return  strokeWidth * Math.min(widthRatio, heightRatio) * scaleFactor
+    return strokeWidth * Math.min(widthRatio, heightRatio) * scaleFactor
 }

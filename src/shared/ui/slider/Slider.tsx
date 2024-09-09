@@ -1,127 +1,173 @@
 'use client'
 
-import React, {CSSProperties, ReactNode, useMemo, useRef, useState} from "react"
-import Image from "next/image"
-import {Swiper, SwiperSlide} from 'swiper/react'
-import type {Swiper as SwiperCore} from 'swiper/types'
-import {EffectFade} from "swiper/modules"
+import React, {
+    CSSProperties,
+    ReactNode,
+    useMemo,
+    useRef,
+    useState
+} from 'react'
+import Image from 'next/image'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import type { Swiper as SwiperCore } from 'swiper/types'
+import { EffectFade } from 'swiper/modules'
 import Player from 'next-video/player'
 
-import {classnames} from "@/shared/lib/helpers/classnames"
-import {useWindowDimensions} from "@/shared/lib/hooks/useWindowDimensions"
-import {Section} from "@/shared/ui/section"
-import type {Media} from "@/components/post"
+import { classnames } from '@/shared/lib/helpers/classnames'
+import { useWindowDimensions } from '@/shared/lib/hooks/useWindowDimensions'
+import { Section } from '@/shared/ui/section'
+import type { Media } from '@/components/post'
 
-import SliderThumbs from "./SliderThumbs"
-import SliderControls from "./SliderControls"
+import SliderThumbs from './SliderThumbs'
+import SliderControls from './SliderControls'
 
 import 'swiper/css'
-import "swiper/css/effect-fade"
+import 'swiper/css/effect-fade'
 import cls from './Slider.module.sass'
-
 
 export type ContentPosition = 'header' | 'footer'
 
 interface SliderProps {
-	media: Media[]
-	childrenPosition?: ContentPosition
-	children?: ReactNode
-	className?: string
-	style?: CSSProperties
-
+    media: Media[]
+    childrenPosition?: ContentPosition
+    children?: ReactNode
+    className?: string
+    style?: CSSProperties
 }
 
 function getDeviceSrc(image: Media['image']): string {
-	return typeof image === 'object' && 'src' in image ? image.src : image
+    return typeof image === 'object' && 'src' in image ? image.src : image
 }
 
 export const Slider = (props: SliderProps) => {
-	const {
-		media,
-		childrenPosition = 'header',
-		children = null,
-		className,
-		style
-	} = props
-	const swiperRef = useRef<SwiperCore | null>(null)
-	const [thumbsIndex, setThumbsIndex] = useState(0)
-	const {orientation} = useWindowDimensions()
+    const {
+        media,
+        childrenPosition = 'header',
+        children = null,
+        className,
+        style
+    } = props
+    const swiperRef = useRef<SwiperCore | null>(null)
+    const [thumbsIndex, setThumbsIndex] = useState(0)
+    const { orientation } = useWindowDimensions()
 
-	const innerContent = useMemo(() => children, [children])
+    const innerContent = useMemo(() => children, [children])
 
-	const sliderContent = useMemo(() => (
-		<div className={cls.slider__container}>
-			<div className={cls.slider__wrapper}>
-				<Swiper
-					modules={[EffectFade]}
-					effect='fade'
-					spaceBetween={0}
-					slidesPerView={1}
-					loop={media?.length > 1}
-					lazyPreloadPrevNext={1}
-					onBeforeInit={(swiper) => {
-						swiperRef.current = swiper
-					}}
-					onSlideChange={(swiper) => {
-						setThumbsIndex(swiper.realIndex)
-					}}
-					className={cls.slider}
-				>
-					{media?.map(({id, image, video, video_portrait, image_portrait, title, link}, idx) => (
-						<SwiperSlide key={'slide-' + idx + '_' + id}>
-							{link || video || (orientation === 'portrait' && video_portrait)
-								? <Player
-									src={link || orientation === 'portrait' ? video_portrait : video}
-									poster={getDeviceSrc(orientation === 'portrait' && image_portrait ? image_portrait : image)}
-									muted
-									style={{width: '100%', height: '100%'}}
-								>
-									<style>{`
+    const sliderContent = useMemo(
+        () => (
+            <div className={cls.slider__container}>
+                <div className={cls.slider__wrapper}>
+                    <Swiper
+                        modules={[EffectFade]}
+                        effect="fade"
+                        spaceBetween={0}
+                        slidesPerView={1}
+                        loop={media?.length > 1}
+                        lazyPreloadPrevNext={1}
+                        onBeforeInit={(swiper) => {
+                            swiperRef.current = swiper
+                        }}
+                        onSlideChange={(swiper) => {
+                            setThumbsIndex(swiper.realIndex)
+                        }}
+                        className={cls.slider}
+                    >
+                        {media?.map(
+                            (
+                                {
+                                    id,
+                                    image,
+                                    video,
+                                    video_portrait,
+                                    image_portrait,
+                                    title,
+                                    link
+                                },
+                                idx
+                            ) => (
+                                <SwiperSlide key={'slide-' + idx + '_' + id}>
+                                    {link ||
+                                    video ||
+                                    (orientation === 'portrait' &&
+                                        video_portrait) ? (
+                                        <Player
+                                            src={
+                                                link ||
+                                                orientation === 'portrait'
+                                                    ? video_portrait
+                                                    : video
+                                            }
+                                            poster={getDeviceSrc(
+                                                orientation === 'portrait' &&
+                                                    image_portrait
+                                                    ? image_portrait
+                                                    : image
+                                            )}
+                                            muted
+                                            style={{
+                                                width: '100%',
+                                                height: '100%'
+                                            }}
+                                        >
+                                            <style>{`
 									:root {--media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}
 									::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;}
 									::part(seek-backward), ::part(seek-forward) {display: none;}
 									`}</style>
-								</Player>
+                                        </Player>
+                                    ) : (
+                                        <Image
+                                            src={getDeviceSrc(
+                                                orientation === 'portrait' &&
+                                                    image_portrait
+                                                    ? image_portrait
+                                                    : image
+                                            )}
+                                            //srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
+                                            alt={title}
+                                            fill
+                                            quality={85}
+                                            onLoad={(e) =>
+                                                (e.currentTarget.style.opacity =
+                                                    '1')
+                                            }
+                                            className={cls.image}
+                                        />
+                                    )}
+                                </SwiperSlide>
+                            )
+                        )}
+                    </Swiper>
+                </div>
 
-								: <Image
-									src={getDeviceSrc(orientation === 'portrait' && image_portrait ? image_portrait : image)}
-									//srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
-									alt={title}
-									fill
-									quality={85}
-									onLoad={(e) => e.currentTarget.style.opacity = '1'}
-									className={cls.image}
-								/>
-							}
-						</SwiperSlide>
-					))}
-				</Swiper>
-			</div>
+                {media?.length > 1 && (
+                    <SliderControls
+                        onClickNext={() => swiperRef.current?.slideNext()}
+                        onClickPrev={() => swiperRef.current?.slidePrev()}
+                    />
+                )}
+            </div>
+        ),
+        [media, orientation]
+    )
 
-			{
-				media?.length > 1 && <SliderControls
-                    onClickNext={() => swiperRef.current?.slideNext()}
-                    onClickPrev={() => swiperRef.current?.slidePrev()}
+    return (
+        <Section
+            gap="sm"
+            align="start"
+            className={classnames(cls, ['section'], {}, [className])}
+            style={style}
+        >
+            {childrenPosition === 'header' && innerContent}
+            {swiperRef && media?.length > 1 && (
+                <SliderThumbs
+                    media={media}
+                    activeIndex={thumbsIndex}
+                    swiperRef={swiperRef}
                 />
-			}
-		</div>
-	), [media, orientation])
-
-	return (
-		<Section
-			gap="sm"
-			align='start'
-			className={classnames(cls, ['section'], {}, [className])}
-			style={style}
-		>
-			{childrenPosition === 'header' && innerContent}
-			{
-				swiperRef && media?.length > 1 &&
-                <SliderThumbs media={media} activeIndex={thumbsIndex} swiperRef={swiperRef}/>
-			}
-			{media?.length ? sliderContent : null}
-			{childrenPosition === 'footer' && innerContent}
-		</Section>
-
-	)
+            )}
+            {media?.length ? sliderContent : null}
+            {childrenPosition === 'footer' && innerContent}
+        </Section>
+    )
 }

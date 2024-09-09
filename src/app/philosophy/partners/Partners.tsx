@@ -1,9 +1,6 @@
-import type {Partner} from "../types"
-import {BrandSlider} from "@/components/brand-slider"
+import type { Partner } from '../types'
+import { BrandSlider } from '@/components/brand-slider'
 
-
-export const Partners = ({data}: {data: Partner[] }) => {
-	return (
-		<BrandSlider items={data}/>
-	)
+export const Partners = ({ data }: { data: Partner[] }) => {
+    return <BrandSlider items={data} />
 }

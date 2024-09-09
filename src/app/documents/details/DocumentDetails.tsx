@@ -1,7 +1,6 @@
-import {memo} from "react"
-import {type PostType} from "@/components/post"
+import { memo } from 'react'
+import { type PostType } from '@/components/post'
 
-
-const DocumentDetails = ({data}: { data: PostType | undefined }) => null
+const DocumentDetails = ({ data }: { data: PostType | undefined }) => null
 
 export default memo(DocumentDetails)

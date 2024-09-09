@@ -1,32 +1,35 @@
-import {useLayoutEffect, useMemo} from "react"
-import anime from "animejs/lib/anime.es"
+import { useLayoutEffect, useMemo } from 'react'
+import anime from 'animejs/lib/anime.es'
 
 export default function usePageAnimation(className: string) {
+    const animationOptions = useMemo(
+        () => ({
+            targets: '.' + className,
+            direction: 'normal',
+            duration: 800,
+            easing: 'easeInOutQuad'
+        }),
+        [className]
+    )
 
-	const animationOptions = useMemo(() => ({
-		targets: '.' + className,
-		direction: 'normal',
-		duration: 800,
-		easing: 'easeInOutQuad',
-	}), [className])
+    useLayoutEffect(() => {
+        anime({
+            ...animationOptions,
+            translateY: ['100%', 0]
+            //opacity: [0.5, 1],
+        })
+    }, [animationOptions])
 
-	useLayoutEffect(() => {
-		anime({
-			...animationOptions,
-			translateY: ['100%', 0],
-			//opacity: [0.5, 1],
-		})
-	}, [animationOptions])
+    const handleClick = (fn?: () => void) => {
+        const effect = anime({
+            ...animationOptions,
+            translateY: [0, '100%']
+            //opacity: [1, 0],
+        })
 
-	const handleClick = (fn?: () => void) => {
-		const effect = anime({
-			...animationOptions,
-			translateY: [0, '100%'],
-			//opacity: [1, 0],
-		})
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        fn && effect.finished.then(fn)
+    }
 
-		fn && effect.finished.then(fn)
-	}
-
-	return {handleClick}
+    return { handleClick }
 }

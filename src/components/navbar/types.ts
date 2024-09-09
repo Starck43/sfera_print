@@ -1,21 +1,20 @@
-import type {Contact} from "@/components/contacts/types"
-
+import type { Contact } from '@/components/contacts/types'
 
 interface Socials {
-	id: number
-	name: string
-	title: string
-	link: string
-	image?: string
+    id: number
+    name: string
+    title: string
+    link: string
+    image?: string
 }
 
 export interface Menu {
     pages: NavItemType[]
-	contact: Contact
-	socials?: Socials[]
-	policy?: string
-	agreement?: string
-	cookie?: string
+    contact: Contact
+    socials?: Socials[]
+    policy?: string
+    agreement?: string
+    cookie?: string
 }
 
 export interface NavItemType {

@@ -1,6 +1,14 @@
-export type PositionType = "top" | "right" | "left" | "bottom"
-export type DirectionType = "row" | "column"
-export type AlignType = "left" | "center" | "right"
-export type SizeType = "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "auto" | "none"
-export type FlexAlign = "start" | "end" | "center"
+export type PositionType = 'top' | 'right' | 'left' | 'bottom'
+export type DirectionType = 'row' | 'column'
+export type AlignType = 'left' | 'center' | 'right'
+export type SizeType =
+    | 'xs'
+    | 'sm'
+    | 'md'
+    | 'lg'
+    | 'xl'
+    | 'xxl'
+    | 'auto'
+    | 'none'
+export type FlexAlign = 'start' | 'end' | 'center'
 export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'

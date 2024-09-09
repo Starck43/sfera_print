@@ -1,12 +1,13 @@
-import {ButtonHTMLAttributes, FC, memo, ReactNode} from "react"
+import { ButtonHTMLAttributes, FC, memo, ReactNode } from 'react'
 
-import {classnames} from "@/shared/lib/helpers/classnames"
-import {Button} from "@/shared/ui/button"
+import { classnames } from '@/shared/lib/helpers/classnames'
+import { Button } from '@/shared/ui/button'
 
-import CloseIcon from "@/svg/close.svg"
-import cls from "./CloseButton.module.sass"
+import CloseIcon from '@/svg/close.svg'
+import cls from './CloseButton.module.sass'
 
-export interface CloseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface CloseButtonProps
+    extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
     handleOnClick: () => void
     children?: ReactNode
@@ -22,7 +23,7 @@ export const CloseButton: FC<CloseButtonProps> = memo((props) => {
             feature="clear"
             size="large"
             onClick={handleOnClick}
-            className={classnames(cls, ["close__button"], {}, [className])}
+            className={classnames(cls, ['close__button'], {}, [className])}
         >
             {children}
         </Button>

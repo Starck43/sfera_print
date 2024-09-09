@@ -1,1 +1,1 @@
-export {default as CircleCarousel} from './CircleCarousel'
+export { default as CircleCarousel } from './CircleCarousel'

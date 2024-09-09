@@ -7,16 +7,15 @@ import {
     forwardRef,
     ReactElement,
     ReactSVGElement
-} from "react"
-import Link from "next/link"
+} from 'react'
+import Link from 'next/link'
 
-import {classnames} from "@/shared/lib/helpers/classnames"
-import {AlignType} from "@/shared/types/ui"
+import { classnames } from '@/shared/lib/helpers/classnames'
+import { AlignType } from '@/shared/types/ui'
 
-import type {ButtonFeature, ButtonSize} from "./types"
+import type { ButtonFeature, ButtonSize } from './types'
 
-import cls from "./Button.module.sass"
-
+import cls from './Button.module.sass'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     feature?: ButtonFeature
@@ -36,70 +35,78 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // eslint-disable-next-line react/display-name
-export const Button: FC<ButtonProps> = forwardRef((props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
-    const {
-        Icon,
-        title,
-        href,
-        target = "_self",
-        feature = "blank",
-        size = "normal",
-        align = "center",
-        fullWidth = false,
-        rounded = false,
-        bordered = false,
-        squared = false,
-        shadowed = false,
-        disabled = false,
-        className,
-        children,
-        ...other
-    } = props
+export const Button: FC<ButtonProps> = forwardRef(
+    (props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
+        const {
+            Icon,
+            title,
+            href,
+            target = '_self',
+            feature = 'blank',
+            size = 'normal',
+            align = 'center',
+            fullWidth = false,
+            rounded = false,
+            bordered = false,
+            squared = false,
+            shadowed = false,
+            disabled = false,
+            className,
+            children,
+            ...other
+        } = props
 
-    let content = (
-        <>
-            {Icon}
-            {children || title || null}
-        </>
-    )
+        let content = (
+            <>
+                {Icon}
+                {children || title || null}
+            </>
+        )
 
-    if (href) {
-        content = (
-            <Link className={classnames(cls, ["link"])} target={target} href={href}>
+        if (href) {
+            content = (
+                <Link
+                    className={classnames(cls, ['link'])}
+                    target={target}
+                    href={href}
+                >
+                    {content}
+                </Link>
+            )
+        }
+
+        return (
+            <button
+                ref={ref}
+                type="button"
+                disabled={disabled}
+                {...other}
+                className={classnames(
+                    cls,
+                    [
+                        'button',
+                        feature,
+                        size,
+                        align,
+                        Icon && (children || title)
+                            ? 'icon__with__title'
+                            : undefined,
+                        children || title ? 'has__title' : 'only__icon',
+                        href ? 'is__link' : undefined
+                    ],
+                    {
+                        fullWidth,
+                        bordered,
+                        rounded,
+                        squared,
+                        shadowed,
+                        disabled
+                    },
+                    [className]
+                )}
+            >
                 {content}
-            </Link>
+            </button>
         )
     }
-
-    return (
-        <button
-            ref={ref}
-            type="button"
-            disabled={disabled}
-            {...other}
-            className={classnames(
-                cls,
-                [
-                    "button",
-                    feature,
-                    size,
-                    align,
-                    Icon && (children || title) ? "icon__with__title" : undefined,
-                    children || title ? "has__title" : "only__icon",
-                    href ? "is__link" : undefined,
-                ],
-                {
-                    fullWidth,
-                    bordered,
-                    rounded,
-                    squared,
-                    shadowed,
-                    disabled,
-                },
-                [className],
-            )}
-        >
-            {content}
-        </button>
-    )
-})
+)

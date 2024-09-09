@@ -1,8 +1,8 @@
 export default function NotFound() {
-	return (
-		<div>
-			<style>
-			{`
+    return (
+        <div>
+            <style>
+                {`
 				h2 {
 					position: absolute;
 					display: flex;
@@ -13,8 +13,11 @@ export default function NotFound() {
 					transform: translate(-50%, -50%);
 				}
 			`}
-			</style>
-			<h2>404<b style={{'color': '#FFF'}}>&nbsp;|&nbsp;</b>Страница не найдена</h2>
-		</div>
-	)
+            </style>
+            <h2>
+                404<b style={{ color: '#FFF' }}>&nbsp;|&nbsp;</b>Страница не
+                найдена
+            </h2>
+        </div>
+    )
 }
