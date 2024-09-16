@@ -30,17 +30,17 @@ $social_width: 3rem
 		direction: ltr
 
 .navitems
-	margin-right: calc($social_width + var(--gap))
+	margin-right: calc($social_width + var(--gap) + 1rem)
 
 .title
 	line-height: 1.1
 	font-weight: bold
 	text-transform: uppercase
-	font-size: clamp(1.6rem, 0.8rem + 1.4vw, 2.6rem)
+	font-size: clamp(1.6rem, 0.8rem + 1.2vw, 2.4rem)
 	color: var(--navbar-link-color)
 
 .subtitle
-	font-family: var(--font-family-secondary)
+	font-family: var(--font-family-secondary), serif
 	font-weight: 400
 	font-size: 0.9em
 	color: var(--text-color)
@@ -63,7 +63,7 @@ $social_width: 3rem
 				transform: scale(0.3)
 				opacity: 0
 
-			50%
+			30%
 				opacity: 0.5
 
 			100%
@@ -90,6 +90,13 @@ $social_width: 3rem
 			background-color: var(--secondary-color)
 			//animation-delay: 0.2s
 
+		&:hover
+			&::before
+				animation: wave 1.8s infinite
+				animation-delay: 0.4s
+			&::after
+				animation: wave 1.8s infinite
+				animation-delay: 0.8s
 
 .social__image__link
 	+responsive-ratio(1, 1)
