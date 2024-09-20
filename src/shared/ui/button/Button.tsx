@@ -1,6 +1,5 @@
 import {
     ButtonHTMLAttributes,
-    FC,
     ForwardedRef,
     HTMLAttributeAnchorTarget,
     ReactNode,
@@ -18,6 +17,7 @@ import type { ButtonFeature, ButtonSize } from './types'
 import cls from './Button.module.sass'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    ref?: ForwardedRef<HTMLButtonElement>
     feature?: ButtonFeature
     Icon?: ReactElement<ReactSVGElement>
     size?: ButtonSize
@@ -35,7 +35,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // eslint-disable-next-line react/display-name
-export const Button: FC<ButtonProps> = forwardRef(
+export const Button = forwardRef(
     (props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
         const {
             Icon,

@@ -7,7 +7,7 @@ import anime from 'animejs/lib/anime.es'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import type { Stat } from '../types'
 
-import { generateSvgDiagram } from './helper'
+import { generateSvgDiagram, splitTextIntoArray } from './helper'
 
 import cls from '../Philosophy.module.sass'
 
@@ -15,8 +15,7 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
     const viewBoxWidth = 300
     const startOrbitRadius = viewBoxWidth / 8
     const orbitOpacityStep = 0.8 / data.length
-    const orbitRadiusStep =
-        (viewBoxWidth - 50 - startOrbitRadius * 2) / data.length / 2
+    const orbitRadiusStep = (viewBoxWidth - 50 - startOrbitRadius * 2) / data.length / 2
     const totalDuration = 2000
     const { orbits, satellites, refs } = generateSvgDiagram(
         data,
@@ -66,19 +65,6 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
             className={cls.stat__diagram}
             ref={ref}
         >
-            <g
-                transform={`translate(${viewBoxWidth / 2}, ${
-                    viewBoxWidth / 2
-                })`}
-            >
-                <circle cx="0" cy="0" r={startOrbitRadius} fill="orange" />
-                <rect x="-25" y={0} width="5" height="20" fill="lightblue" />
-                <rect x="-15" y={-5} width="5" height="25" fill="lightblue" />
-                <rect x="-5" y={-10} width="5" height="30" fill="lightblue" />
-                <rect x="5" y={-15} width="5" height="35" fill="lightblue" />
-                <rect x="15" y={-20} width="5" height="40" fill="lightblue" />
-            </g>
-
             {orbits?.map((orbit, index) => {
                 const orbitOpacity = 1 - index * orbitOpacityStep
                 return (
@@ -97,50 +83,45 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
                 return (
                     <g
                         key={`satellite-${index}`}
-                        className={classnames(cls, ['satellite__dot'], {}, [
-                            'satellite'
-                        ])}
+                        className={classnames(cls, ['satellite__dot'], {}, ['satellite'])}
                         style={{ opacity: 1 }}
                     >
-                        <circle
-                            cx={x}
-                            cy={y}
-                            r={3}
-                            fill="orange"
-                            className="satellite-circle"
-                        />
+                        <circle cx={x} cy={y} r={3} fill="orange" className="satellite-circle" />
                     </g>
                 )
             })}
 
             {refs?.map(({ text }, index) => {
+                const descArray = splitTextIntoArray(data[index].desc || '', 10)
                 const x = (text.x - text.singX).toFixed(2)
-                const y = (text.y - 20).toFixed(2)
+                const y = (text.y - text.singY * (20 + descArray.length * 6)).toFixed(3)
                 return (
-                    <g
-                        key={`ref-path-${index}`}
-                        className={cls.ref__text}
-                        style={{ opacity: 1 }}
-                    >
+                    <g key={`ref-path-${index}`} className={cls.ref__text} style={{ opacity: 1 }}>
                         <text
                             x={x}
                             y={y}
-                            textAnchor={'middle'}
+                            textAnchor={"middle"}
                             fill="currentColor"
                             className="ref-text"
                         >
                             <tspan
                                 x={x}
-                                dy="0"
-                                className={classnames(cls, ['title'], {}, [
-                                    'text-title'
-                                ])}
+                                dy={0}
+                                className={classnames(cls, ['title'], {}, ['text-title'])}
                             >
                                 {data[index].title || ''}
                             </tspan>
-                            <tspan x={x} dy="12" className={cls.desc}>
-                                {data[index].desc || ''}
-                            </tspan>
+
+                            {descArray.map((word, idx) => (
+                                <tspan
+                                    key={`word-${idx}`}
+                                    x={x}
+                                    dy={12}
+                                    className={classnames(cls, ['desc'], {}, ['text-desc'])}
+                                >
+                                    {word}
+                                </tspan>
+                            ))}
                         </text>
                     </g>
                 )

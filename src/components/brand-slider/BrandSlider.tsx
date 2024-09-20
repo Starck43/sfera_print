@@ -31,6 +31,7 @@ const BrandSlider = <T,>({ items }: { items: Partial<T>[] }) => {
                 delay: 2000,
                 pauseOnMouseEnter: true
             }}
+            lazyPreloadPrevNext={1}
             slidesPerView={3}
             spaceBetween={10}
             speed={3500}

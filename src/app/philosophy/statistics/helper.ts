@@ -5,15 +5,12 @@ interface RefSvgProps {
     text: { x: number; y: number; singX: number; singY: number }
 }
 
-export function calculatePercentByGroup(
-    partners: Partner[]
-): { group: string; percent: number }[] {
+export function calculatePercentByGroup(partners: Partner[]): { group: string; percent: number }[] {
     const categoryCountMap: { [key: string]: number } = {}
 
     // Count the amount of partners for each group
     partners.forEach((partner) => {
-        categoryCountMap[partner.group] =
-            (categoryCountMap[partner.group] || 0) + 1
+        categoryCountMap[partner.group] = (categoryCountMap[partner.group] || 0) + 1
     })
 
     // Calculate the total amount of partners
@@ -55,19 +52,7 @@ function describeArc(
 
     const arcSweep = endAngle - startAngle <= 180 ? '0' : '1'
 
-    return [
-        'M',
-        start.x,
-        start.y,
-        'A',
-        radius,
-        radius,
-        0,
-        arcSweep,
-        1,
-        end.x,
-        end.y
-    ].join(' ')
+    return ['M', start.x, start.y, 'A', radius, radius, 0, arcSweep, 1, end.x, end.y].join(' ')
 }
 
 function generateCirclePath(
@@ -111,18 +96,8 @@ function describeReference(
     rotation: number,
     distance: number
 ): RefSvgProps {
-    const { x: startX, y: startY } = polarToCartesian(
-        x,
-        y,
-        radius,
-        angle + rotation
-    )
-    const { x: endX, y: endY } = polarToCartesian(
-        x,
-        y,
-        radius + distance,
-        angle + rotation
-    )
+    const { x: startX, y: startY } = polarToCartesian(x, y, radius, angle + rotation)
+    const { x: endX, y: endY } = polarToCartesian(x, y, radius + distance, angle + rotation)
 
     return {
         path: `M ${startX} ${startY} L ${endX} ${endY}`,
@@ -160,24 +135,10 @@ export function generateSvgChart(
         if (index === data.length - 1) endAngle -= 0.01
 
         // Construct path for the segment as an arc
-        const path = describeArc(
-            startX,
-            startY,
-            radius,
-            startAngle,
-            endAngle,
-            initialRotation
-        )
+        const path = describeArc(startX, startY, radius, startAngle, endAngle, initialRotation)
         arcPaths.push(path)
         // Construct ray path with text coords
-        const ref = describeReference(
-            startX,
-            startY,
-            radius,
-            endAngle,
-            initialRotation - 10,
-            30
-        )
+        const ref = describeReference(startX, startY, radius, endAngle, initialRotation - 10, 30)
         refPaths.push(ref)
     })
 
@@ -203,30 +164,40 @@ export function generateSvgDiagram(
         const orbitRadius = startRadius + (index + 1) * orbitRadiusStep
         const center = viewBoxWidth / 2
         const offsetAngle = (startAngle + (360 / data.length) * index) % 360
-        const orbitPath = generateCirclePath(
-            center,
-            center,
-            orbitRadius,
-            offsetAngle
-        )
-        const satelliteCoords = polarToCartesian(
-            center,
-            center,
-            orbitRadius,
-            offsetAngle
-        )
-        const ref = describeReference(
-            center,
-            center,
-            orbitRadius,
-            offsetAngle,
-            0,
-            1
-        )
+        const orbitPath = generateCirclePath(center, center, orbitRadius, offsetAngle)
+        const satelliteCoords = polarToCartesian(center, center, orbitRadius, offsetAngle)
+        const ref = describeReference(center, center, orbitRadius, offsetAngle, 0, 1)
         orbitPaths.push(orbitPath)
         satellitePaths.push(satelliteCoords)
         refPaths.push(ref)
     })
 
     return { orbits: orbitPaths, satellites: satellitePaths, refs: refPaths }
+}
+
+export function splitTextIntoArray(text: string, maxChars: number = 15) {
+    const textArray = []
+    const words = text.split(' ')
+    let currentText = ''
+    let currentCharCount = 0
+
+    for (const word of words) {
+        if (currentCharCount + word.length + 1 > maxChars) {
+            textArray.push(currentText)
+            currentText = word
+            currentCharCount = word.length
+        } else {
+            if (currentText) {
+                currentText += ' '
+            }
+            currentText += word
+            currentCharCount += word.length + 1
+        }
+    }
+
+    if (currentText) {
+        textArray.push(currentText)
+    }
+
+    return textArray
 }

@@ -13,8 +13,9 @@ import { Col } from '@/shared/ui/stack'
 import { BackButton } from '@/shared/ui/button'
 
 import cls from './Layout.module.sass'
+import ScrollToTop from '@/components/scroll-to-top/ScrollToTop'
 
-interface SectionLayoutProps {
+interface PageLayoutProps {
     title?: string | ReactNode
     titleTag?: 'h1' | 'h2' | 'h3'
     gap?: SizeType
@@ -22,9 +23,10 @@ interface SectionLayoutProps {
     handleOnClose?: () => void
     children: ReactNode | null
     className?: string
+    style?: React.CSSProperties
 }
 
-export default function PageLayout(props: SectionLayoutProps) {
+export default function PageLayout(props: PageLayoutProps) {
     const {
         title,
         titleTag = 'h1',
@@ -32,7 +34,8 @@ export default function PageLayout(props: SectionLayoutProps) {
         sectionMode = false,
         handleOnClose,
         children,
-        className = 'page__layout'
+        className = 'page__layout',
+        style
     } = props
     const router = useRouter()
     const { handleClick } = usePageAnimation(className)
@@ -48,6 +51,7 @@ export default function PageLayout(props: SectionLayoutProps) {
             className={classnames(cls, ['container'], { sectionMode }, [
                 className
             ])}
+            style={style}
         >
             <Header
                 tag={titleTag as ElementType}
@@ -58,6 +62,7 @@ export default function PageLayout(props: SectionLayoutProps) {
                 className={cls.title}
             />
             {children}
+            <ScrollToTop/>
         </Col>
     )
 

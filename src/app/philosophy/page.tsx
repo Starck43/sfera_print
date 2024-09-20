@@ -1,4 +1,5 @@
 import { Metadata, ResolvingMetadata } from 'next'
+import Image from 'next/image'
 
 import PageLayout from '@/components/layout/page-layout'
 
@@ -17,10 +18,7 @@ import { Partners } from './partners/Partners'
 
 import cls from './Philosophy.module.sass'
 
-export const generateMetadata = async (
-    _: any,
-    parent: ResolvingMetadata
-): Promise<Metadata> => {
+export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<any>>('philosophy')
     return constructMetadata(data, await parent)
 }
@@ -32,18 +30,10 @@ const PhilosophyPage = async () => {
         sections: { achievements, stat, partners }
     } = await getPage<Page<any>>('philosophy')
     return (
-        <PageLayout
-            title={title}
-            gap="none"
-            sectionMode
-            className="philosophy-page"
-        >
+        <PageLayout title={title} gap="none" sectionMode className="philosophy-page">
             {content && (
-                <Section className={cls.section}>
-                    <div
-                        dangerouslySetInnerHTML={{ __html: content }}
-                        className={cls.desc}
-                    />
+                <Section className={cls.section} style={{ paddingTop: 0 }}>
+                    <div dangerouslySetInnerHTML={{ __html: content }} className={cls.desc} />
                 </Section>
             )}
             <Section
@@ -61,7 +51,7 @@ const PhilosophyPage = async () => {
                 titleTag="h2"
                 align="end"
                 transform="lowerCase"
-                className={classnames(cls, ['section'], {}, ['green__style'])}
+                className={classnames(cls, ['section'], {}, ['darkgrey__style'])}
             >
                 <CommonStat data={stat as Stat[]} />
             </Section>

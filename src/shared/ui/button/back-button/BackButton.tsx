@@ -15,7 +15,7 @@ export interface CloseButtonProps
 
 // eslint-disable-next-line react/display-name
 export const BackButton: FC<CloseButtonProps> = memo((props) => {
-    const { handleOnClick, className, children } = props
+    const { handleOnClick, className, children, ...extra } = props
 
     return (
         <Button
@@ -24,6 +24,7 @@ export const BackButton: FC<CloseButtonProps> = memo((props) => {
             size="large"
             onClick={handleOnClick}
             className={classnames(cls, ['back__button'], {}, [className])}
+            {...extra}
         >
             {children}
         </Button>

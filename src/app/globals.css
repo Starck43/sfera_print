@@ -186,6 +186,10 @@ p {
     background-color: rgba(var(--grey-color-alpha), 0.2);
 }
 
+.darkgrey__style {
+    background-color: rgba(var(--grey-color-alpha), 1);
+}
+
 .green__style {
     background-color: var(--primary-color);
     color: var(--white-color);
