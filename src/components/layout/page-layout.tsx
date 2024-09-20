@@ -23,7 +23,6 @@ interface PageLayoutProps {
     handleOnClose?: () => void
     children: ReactNode | null
     className?: string
-    style?: React.CSSProperties
 }
 
 export default function PageLayout(props: PageLayoutProps) {
@@ -35,7 +34,6 @@ export default function PageLayout(props: PageLayoutProps) {
         handleOnClose,
         children,
         className = 'page__layout',
-        style
     } = props
     const router = useRouter()
     const { handleClick } = usePageAnimation(className)
@@ -51,7 +49,6 @@ export default function PageLayout(props: PageLayoutProps) {
             className={classnames(cls, ['container'], { sectionMode }, [
                 className
             ])}
-            style={style}
         >
             <Header
                 tag={titleTag as ElementType}

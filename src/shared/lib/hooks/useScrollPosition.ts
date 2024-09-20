@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 export const useScrollPosition = (
     container: HTMLElement | null | undefined,
-    targetScroll: number = window.innerHeight
+    targetScroll: number = typeof window !== 'undefined' ? window.innerHeight : 0
 ) => {
     const [scroll, setScroll] = useState({
         position: 0,
@@ -10,7 +10,7 @@ export const useScrollPosition = (
     })
 
     useEffect(() => {
-        if (!container) return
+        if (!container || !targetScroll) return
         const handleScroll = () => {
             setScroll({
                 position: container.scrollTop,
