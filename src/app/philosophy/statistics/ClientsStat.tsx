@@ -4,7 +4,7 @@ import React, { useLayoutEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import anime from 'animejs/lib/anime.es'
 
-import { generateSvgChart } from './helper'
+import { calcHexColor, generateSvgChart, splitTextIntoArray } from './helper'
 import { classnames } from '@/shared/lib/helpers/classnames'
 
 import cls from '../Philosophy.module.sass'
@@ -18,6 +18,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
     const viewBoxWidth = 300
     const chartRadius = viewBoxWidth / 6
     const totalDuration = 3000
+    const arcColor = calcHexColor('#737681', '#22201e', data.length)
     const { arcs, refs } = generateSvgChart(data, viewBoxWidth, chartRadius)
     const { ref, inView } = useInView({
         //rootMargin: '10px 0px 0px 0px',
@@ -77,8 +78,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
                 duration: 1000,
                 update: (anim) => {
                     percentElements.forEach((el, index) => {
-                        const value =
-                            (anim.progress / 100) * data[index].percent
+                        const value = (anim.progress / 100) * data[index].percent
                         el.innerHTML = Math.round(value) + '%'
                     })
                 }
@@ -100,11 +100,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
                     <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
                     <feOffset in="blur" dx="0.7" dy="0.7" result="offsetBlur" />
                     <feOffset dx="1" dy="1" result="offsetblur" />
-                    <feFlood
-                        floodColor="#3D4574"
-                        floodOpacity="0.3"
-                        result="offsetColor"
-                    />
+                    <feFlood floodColor="#3D4574" floodOpacity="0.3" result="offsetColor" />
                     <feComposite
                         in="offsetColor"
                         in2="offsetBlur"
@@ -116,32 +112,26 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
 
             {arcs?.map((path, index) => (
                 <g key={`arc-path-${index}`}>
-                    <use
-                        xlinkHref={`#arc${index + 1}`}
-                        filter="url(#dropshadow)"
-                    />
+                    <use xlinkHref={`#arc${index + 1}`} filter="url(#dropshadow)" />
                     <path
                         d={path}
-                        stroke={`hsl(${index * (360 / data.length)}, 70%, 50%)`}
-                        strokeWidth={(index + 1) * 2}
+                        stroke={arcColor(index)}
+                        strokeWidth={(index + 1) * 3}
                         id={`arc${index + 1}`}
-                        className={classnames(cls, ['arc__path'], {}, [
-                            'arc-path'
-                        ])}
+                        className={classnames(cls, ['arc__path'], {}, ['arc-path'])}
                     />
                 </g>
             ))}
 
             {refs?.map((item, index) => {
+                const descArray = splitTextIntoArray(data[index].group || '', 12)
                 const x = (item.text.x - item.text.singX * 8).toFixed(2)
                 const y = (item.text.y - item.text.singY * 4).toFixed(2)
                 return (
                     <g key={`ref-path-${index}`}>
                         <path
                             d={item.path}
-                            className={classnames(cls, ['ref__path'], {}, [
-                                'ref-path'
-                            ])}
+                            className={classnames(cls, ['ref__path'], {}, ['ref-path'])}
                         />
                         <text
                             x={x}
@@ -154,15 +144,20 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
                             <tspan
                                 x={x}
                                 dy="0"
-                                className={classnames(cls, ['percent'], {}, [
-                                    'text-percent'
-                                ])}
+                                className={classnames(cls, ['percent'], {}, ['text-percent'])}
                             >
                                 0%
                             </tspan>
-                            <tspan x={x} dy="0.75rem" className={cls.group}>
-                                {data[index].group || ''}
-                            </tspan>
+                            {descArray.map((word, idx) => (
+                                <tspan
+                                    key={`ref-word-${idx}`}
+                                    x={x}
+                                    dy={idx === 0 ? 14 : 10}
+                                    className={cls.group}
+                                >
+                                    {word}
+                                </tspan>
+                            ))}
                         </text>
                     </g>
                 )

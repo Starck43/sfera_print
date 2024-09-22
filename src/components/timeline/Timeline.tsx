@@ -2,10 +2,7 @@
 
 import { memo, ReactElement, ReactSVGElement } from 'react'
 
-import {
-    VerticalTimeline,
-    VerticalTimelineElement
-} from 'react-vertical-timeline-component'
+import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 import { PostType } from '@/components/post'
 import { TimelineElement } from './TimelineElement'
 
@@ -21,11 +18,9 @@ interface TimelineProps<T> {
 const Timeline = <T,>({ items, icon, topIcon }: TimelineProps<T>) => {
     return (
         <VerticalTimeline className={cls.timeline} layout="2-columns">
-            <VerticalTimelineElement
-                visible
-                icon={topIcon}
-                iconClassName={cls.element__icon}
-            />
+            {topIcon && (
+                <VerticalTimelineElement visible icon={topIcon} iconClassName={cls.element__icon} />
+            )}
             {items?.map((item, idx) => (
                 <TimelineElement
                     key={`timeline-${idx}`}

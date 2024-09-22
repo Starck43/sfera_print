@@ -9,18 +9,26 @@ $border-thick: 3px
 .vertical__line
 	width: 100%
 	padding: 0
-	margin-top: 5vh
+	margin-top: 4vh
 
 .element
 	color: var(--white-color)
 
 .element__icon
-	background-color: var(--white-color)
 	display: flex
 	align-items: center
 	justify-content: center
-	border: solid var(--border-thickness) var(--primary-color)
-	box-shadow: none
+	border: solid 1px var(--primary-color)
+	box-shadow: none !important
+	&::after
+		content: ''
+		position: absolute
+		top: 25%
+		left: 25%
+		width: 50%
+		height: 50%
+		background-color: var(--primary-color)
+		border-radius: calc(var(--border-radius-index) * 4rem)
 
 	svg
 		width: 30%
@@ -34,26 +42,15 @@ $border-thick: 3px
 	padding: 0 !important
 	border: solid $border-thick var(--primary-color)
 	border-radius: calc(var(--border-radius-index) * 4rem) !important
-	background-color: rgba(var(--page-background-color), 0.5) !important
-	box-shadow: 1rem 1rem 3rem var(--box-shadow) !important
-	overflow: hidden
+	//background-color: rgba(var(--page-background-color), 0.5) !important
+	//box-shadow: 1rem 1rem 3rem var(--box-shadow) !important
+	//overflow: hidden
 
 	svg
 		stroke-width: .3px
 
 	&::after
 		content: none
-
-.content__wrapper
-	position: relative
-	width: 100%
-	height: 100%
-	display: flex
-	flex-direction: column
-	gap: var(--gap)
-	padding: calc(var(--gap) + 2vw)
-	color: var(--text-color)
-	overflow: hidden
 
 .element__date
 	display: none !important
@@ -65,7 +62,7 @@ $border-thick: 3px
 
 	.date
 		color: var(--secondary-color)
-		font-size: 2em
+		font-size: 1.5em
 		text-transform: capitalize
 
 		&.hidden
@@ -79,33 +76,50 @@ $border-thick: 3px
 		opacity: 0.7
 		margin-top: 0
 
-.cover__wrapper
+//.cover__wrapper
+//	position: relative
+//	width: calc(5rem + 5vw)
+//	height: calc(5rem + 5vw)
+//	max-width: 150px
+//	max-height: 150px
+//	overflow: hidden
+//	//border-radius: 50%
+
+.content__wrapper
 	position: relative
-	width: calc(5rem + 5vw)
-	height: calc(5rem + 5vw)
-	max-width: 150px
-	max-height: 150px
-	overflow: hidden
-	//border-radius: 50%
+	width: 100%
+	height: 100%
+	display: flex
+	flex-direction: column
+	gap: var(--gap)
+	padding: calc(var(--gap) + 2vw)
+	color: var(--text-color)
+	//overflow: hidden
 
 	.cover
-		transition: opacity 300ms ease-out
+		width: 100%
+		height: auto
+		object-fit: contain
+		transition: all 300ms ease-out
+		transform: none
 		opacity: 0
-		object-fit: cover
 
-.desc
-	+push--absolute()
-	background-color: #fff
-	padding: 1.5rem
-	transform: translateX(100%)
-	transition: all 500ms ease-out
-	overflow-y: auto
-	p
-		pointer-events: none
+		&.hovered
+			transform: scale(3)
 
-	&.show
-		opacity: 1
-		transform: none !important
+//.desc
+//	+push--absolute()
+//	background-color: #fff
+//	padding: 1.5rem
+//	transform: translateX(100%)
+//	transition: all 500ms ease-out
+//	overflow-y: auto
+//	p
+//		pointer-events: none
+//
+//	&.show
+//		opacity: 1
+//		transform: none !important
 
 
 @media only screen and (min-width: 576px)
@@ -123,8 +137,8 @@ $border-thick: 3px
 		.element__content
 			align-items: flex-end
 
-			.desc
-				transform: translateX(-100%)
+			//.desc
+			//	transform: translateX(-100%)
 
 		.element__content__inner
 			text-align: right

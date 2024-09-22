@@ -34,58 +34,53 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
                 borderRightColor: 'inherit',
                 borderWidth: '0.7rem'
             }}
-            dateClassName={classnames(cls, ['element__date'])}
             icon={icon}
-            className={cls.element}
+            className={classnames(cls, ['element'])}
+            dateClassName={cls.element__date}
             textClassName={cls.element__content}
-            iconClassName={cls.element__icon}
+            iconClassName={classnames(cls, ['element__icon'], {}, ['grey__style'])}
         >
             <div
                 ref={ref}
-                onMouseEnter={desc ? onMouseEnter : undefined}
+                onMouseEnter={desc || cover ? onMouseEnter : undefined}
                 onMouseLeave={onMouseLeave}
-                className={cls.content__wrapper}
+                className={classnames(cls, ['content__wrapper'])}
             >
-                <div className={cls.element__content__inner}>
-                    {event_date && (
-                        <span className={cls.date}>
-                            {new Date(event_date)
-                                .toLocaleDateString('ru-RU', {
-                                    month: 'long',
-                                    year: 'numeric'
-                                })
-                                .replace(' г.', '')}
-                        </span>
-                    )}
-                    {title && <p className={cls.title}>{title}</p>}
-                    {excerpt && <p className={cls.excerpt}>{excerpt}</p>}
-                </div>
+                {/*<div className={cls.element__content__inner}>*/}
+                {/*    {event_date && (*/}
+                {/*        <span className={cls.date}>*/}
+                {/*            {new Date(event_date)*/}
+                {/*                .toLocaleDateString('ru-RU', {*/}
+                {/*                    month: 'long',*/}
+                {/*                    year: 'numeric'*/}
+                {/*                })*/}
+                {/*                .replace(' г.', '')}*/}
+                {/*        </span>*/}
+                {/*    )}*/}
+                {/*    {title && <p className={cls.title}>{title}</p>}*/}
+                {/*    {excerpt && <p className={cls.excerpt}>{excerpt}</p>}*/}
+                {/*</div>*/}
+
                 {cover && (
-                    <div className={cls.cover__wrapper}>
-                        <Image
-                            src={
-                                typeof cover === 'object' && 'src' in cover
-                                    ? cover.src
-                                    : cover
-                            }
-                            alt={title}
-                            sizes="(max-width: 1169px) 100vw, 50vw"
-                            fill
-                            onLoad={(e) =>
-                                (e.currentTarget.style.opacity = '1')
-                            }
-                            className={cls.cover}
-                        />
-                    </div>
-                )}
-                {desc && (
-                    <div
-                        dangerouslySetInnerHTML={{ __html: desc }}
-                        onClick={onMouseLeave}
-                        //onMouseLeave={onMouseLeave}
-                        className={classnames(cls, ['desc'], { show: isHover })}
+                    <Image
+                        src={typeof cover === 'object' && 'src' in cover ? cover.src : cover}
+                        alt={title}
+                        sizes="(max-width: 1169px) 100vw, 50vw"
+                        width={600}
+                        height={600}
+                        onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                        unoptimized
+                        className={classnames(cls, ['cover'], { hovered: isHover })}
                     />
                 )}
+                {/*{desc && (*/}
+                {/*    <div*/}
+                {/*        dangerouslySetInnerHTML={{ __html: desc }}*/}
+                {/*        onClick={onMouseLeave}*/}
+                {/*        //onMouseLeave={onMouseLeave}*/}
+                {/*        className={classnames(cls, ['desc'], { show: isHover })}*/}
+                {/*    />*/}
+                {/*)}*/}
             </div>
         </VerticalTimelineElement>
     )

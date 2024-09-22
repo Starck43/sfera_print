@@ -5,6 +5,13 @@ interface RefSvgProps {
     text: { x: number; y: number; singX: number; singY: number }
 }
 
+const hexToRgb = (h: string): number[] => {
+    // Convert hex to RGB
+    const match = h.replace('#', '').match(/.{1,2}/g)
+    if (!match) return [0, 0, 0]
+    return match.map((e) => parseInt(e, 16))
+}
+
 export function calculatePercentByGroup(partners: Partner[]): { group: string; percent: number }[] {
     const categoryCountMap: { [key: string]: number } = {}
 
@@ -155,6 +162,8 @@ export function generateSvgDiagram(
     satellites: { x: number; y: number }[]
     refs: RefSvgProps[]
 } {
+    if (!data?.length) return { orbits: [], satellites: [], refs: [] }
+
     const orbitPaths: ReturnType<typeof generateCirclePath>[] = []
     const satellitePaths: ReturnType<typeof polarToCartesian>[] = []
     const refPaths: ReturnType<typeof describeReference>[] = []
@@ -175,15 +184,31 @@ export function generateSvgDiagram(
     return { orbits: orbitPaths, satellites: satellitePaths, refs: refPaths }
 }
 
-export function splitTextIntoArray(text: string, maxChars: number = 15) {
+export function calcHexColor(startColor: string, endColor: string, stepsCount: number) {
+    const [r1, g1, b1] = hexToRgb(startColor)
+    const [r2, g2, b2] = hexToRgb(endColor)
+    const rStep = (r2 - r1) / stepsCount
+    const gStep = (g2 - g1) / stepsCount
+    const bStep = (b2 - b1) / stepsCount
+
+    return function (index: number) {
+        const r = Math.abs(Math.round(r1 + rStep * index))
+        const g = Math.abs(Math.round(g1 + gStep * index))
+        const b = Math.abs(Math.round(b1 + bStep * index))
+        return `rgb(${r},${g},${b})`
+    }
+}
+
+export function splitTextIntoArray(text: string, charsPerLine: number = 15) {
     const textArray = []
     const words = text.split(' ')
     let currentText = ''
     let currentCharCount = 0
 
-    for (const word of words) {
-        if (currentCharCount + word.length + 1 > maxChars) {
-            textArray.push(currentText)
+    for (const w of words) {
+        const word = w.trim()
+        if (charsPerLine <= currentCharCount + word.length) {
+            textArray.push(currentText.trim())
             currentText = word
             currentCharCount = word.length
         } else {
@@ -196,7 +221,7 @@ export function splitTextIntoArray(text: string, maxChars: number = 15) {
     }
 
     if (currentText) {
-        textArray.push(currentText)
+        textArray.push(currentText.trim())
     }
 
     return textArray

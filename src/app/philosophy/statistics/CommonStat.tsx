@@ -43,15 +43,20 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
         animation
             .add({
                 targets: '.' + cls.stat__diagram,
-                duration: 500,
-                opacity: 1,
-                scale: 1
+                duration: 1000,
+                opacity: 1
             })
             .add({
                 targets: '.' + cls.stat__diagram + ' .orbit-path',
                 strokeDashoffset: [anime.setDashoffset, 0],
                 duration: 1000,
                 delay: (_, i) => i * 100
+            })
+            .add({
+                targets: '.' + cls.stat__diagram + ' .ref-text',
+                delay: 500,
+                duration: 800,
+                opacity: 1
             })
     }, [data, inView])
 
@@ -68,10 +73,9 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
             {orbits?.map((orbit, index) => {
                 const orbitOpacity = 1 - index * orbitOpacityStep
                 return (
-                    <g key={`orbit-${index}`} className="orbit">
+                    <g key={`orbit-${index}`} className={cls.orbits}>
                         <path
                             d={orbit}
-                            stroke={'#DDD'}
                             strokeOpacity={orbitOpacity}
                             className="orbit-path"
                         />
@@ -83,26 +87,25 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
                 return (
                     <g
                         key={`satellite-${index}`}
-                        className={classnames(cls, ['satellite__dot'], {}, ['satellite'])}
+                        className={classnames(cls, ['satellite__dot'], {}, ['satellite-dot'])}
                         style={{ opacity: 1 }}
                     >
-                        <circle cx={x} cy={y} r={3} fill="orange" className="satellite-circle" />
+                        <circle cx={x} cy={y} r={4} />
                     </g>
                 )
             })}
 
             {refs?.map(({ text }, index) => {
-                const descArray = splitTextIntoArray(data[index].desc || '', 10)
-                const x = (text.x - text.singX).toFixed(2)
-                const y = (text.y - text.singY * (20 + descArray.length * 6)).toFixed(3)
+                const descArray = splitTextIntoArray(data[index].desc || '', 15)
+                const x = text.x.toFixed(2)
+                const y = (text.y - (text.singY < 0 ? -20 : 16 + descArray.length * 10)).toFixed(3)
                 return (
-                    <g key={`ref-path-${index}`} className={cls.ref__text} style={{ opacity: 1 }}>
+                    <g key={`ref-path-${index}`} className={classnames(cls, ['ref__text'], {}, ['ref-text'])}>
                         <text
                             x={x}
                             y={y}
-                            textAnchor={"middle"}
+                            textAnchor={'middle'}
                             fill="currentColor"
-                            className="ref-text"
                         >
                             <tspan
                                 x={x}
@@ -114,9 +117,9 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
 
                             {descArray.map((word, idx) => (
                                 <tspan
-                                    key={`word-${idx}`}
+                                    key={`desc-word-${idx}`}
                                     x={x}
-                                    dy={12}
+                                    dy={idx === 0 ? 14 : 10}
                                     className={classnames(cls, ['desc'], {}, ['text-desc'])}
                                 >
                                     {word}

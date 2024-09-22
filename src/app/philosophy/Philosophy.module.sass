@@ -22,6 +22,16 @@
 .stat__diagram
 	opacity: 0
 
+	.orbits
+		stroke: var(--grey-color)
+		stroke-width: 0.5
+
+	.ref__text
+		opacity: 0
+
+	.satellite__dot
+		fill: var(--secondary-color)
+
 	.title
 		color: var(--secondary-color)
 		font-size: 0.7rem
@@ -30,10 +40,6 @@
 	.desc
 		color: var(--white-color)
 		font-size: 0.5em
-
-	.satellite__dot, .ref__text
-		opacity: 0
-		transition: opacity 500ms ease-out
 
 .chart
 	opacity: 0

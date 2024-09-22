@@ -9,6 +9,7 @@
     --white-color: #fefefe;
     --black-color: #22201e;
     --grey-color: #737681;
+    --light-grey-color: #DFDFDFFF;
     --primary-color: #478631;
     --secondary-color: #a3c626;
     --grey-color-alpha: 70, 74, 84;
@@ -183,7 +184,7 @@ p {
 }
 
 .grey__style {
-    background-color: rgba(var(--grey-color-alpha), 0.2);
+    background-color: var(--light-grey-color);
 }
 
 .darkgrey__style {
