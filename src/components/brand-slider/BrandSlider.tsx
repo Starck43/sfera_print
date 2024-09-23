@@ -27,10 +27,10 @@ const BrandSlider = <T,>({ items }: { items: Partial<T>[] }) => {
                 enabled: true,
                 forceToAxis: true
             }}
-            // autoplay={{
-            //     delay: 2000,
-            //     pauseOnMouseEnter: true
-            // }}
+            autoplay={{
+                delay: 2000,
+                pauseOnMouseEnter: true
+            }}
             lazyPreloadPrevNext={1}
             slidesPerView={3}
             spaceBetween={10}

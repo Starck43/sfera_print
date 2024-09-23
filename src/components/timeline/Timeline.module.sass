@@ -18,18 +18,24 @@ $border-thick: 3px
 	display: flex
 	align-items: center
 	justify-content: center
-	border: solid 1px var(--primary-color)
-	box-shadow: none !important
-	&::after
+	//border: solid 1px var(--primary-color)
+	//box-shadow: none !important
+	&::after,  &::before
 		content: ''
 		position: absolute
+		border-radius: calc(var(--border-radius-index) * 4rem)
+	&::before
+		top: 12.5%
+		left: 12.5%
+		bottom: 12.5%
+		right: 12.5%
+		border: 1px solid var(--primary-color)
+	&::after
 		top: 25%
 		left: 25%
 		width: 50%
 		height: 50%
 		background-color: var(--primary-color)
-		border-radius: calc(var(--border-radius-index) * 4rem)
-
 	svg
 		width: 30%
 		color: #fff

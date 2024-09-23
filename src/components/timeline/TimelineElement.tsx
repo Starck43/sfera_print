@@ -32,7 +32,7 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
             visible={visible}
             contentArrowStyle={{
                 borderRightColor: 'inherit',
-                borderWidth: '0.7rem'
+                borderWidth: '0.2rem'
             }}
             icon={icon}
             className={classnames(cls, ['element'])}
@@ -42,7 +42,7 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
         >
             <div
                 ref={ref}
-                onMouseEnter={desc || cover ? onMouseEnter : undefined}
+                onMouseEnter={desc || cover ? (isHover ? onMouseLeave : onMouseEnter) : undefined}
                 onMouseLeave={onMouseLeave}
                 className={classnames(cls, ['content__wrapper'])}
             >
