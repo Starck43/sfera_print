@@ -30,21 +30,17 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
     return (
         <VerticalTimelineElement
             visible={visible}
-            contentArrowStyle={{
-                borderRightColor: 'inherit',
-                borderWidth: '0.2rem'
-            }}
             icon={icon}
             className={classnames(cls, ['element'])}
             dateClassName={cls.element__date}
             textClassName={cls.element__content}
-            iconClassName={classnames(cls, ['element__icon'], {}, ['grey__style'])}
+            iconClassName={cls.element__icon}
         >
             <div
                 ref={ref}
                 onMouseEnter={desc || cover ? (isHover ? onMouseLeave : onMouseEnter) : undefined}
                 onMouseLeave={onMouseLeave}
-                className={classnames(cls, ['content__wrapper'])}
+                className={classnames(cls, ['content__wrapper'], { hovered: isHover })}
             >
                 {/*<div className={cls.element__content__inner}>*/}
                 {/*    {event_date && (*/}
@@ -70,7 +66,7 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
                         height={600}
                         onLoad={(e) => (e.currentTarget.style.opacity = '1')}
                         unoptimized
-                        className={classnames(cls, ['cover'], { hovered: isHover })}
+                        className={classnames(cls, ['cover'])}
                     />
                 )}
                 {/*{desc && (*/}

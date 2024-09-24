@@ -32,7 +32,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
         const percentElements = document.querySelectorAll('.text-percent')
 
         const animation = anime.timeline({
-            easing: 'easeInOutSine',
+            easing: 'linear',
             duration: totalDuration,
             direction: 'normal',
             loop: false
@@ -41,7 +41,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
         animation
             .add({
                 targets: '.' + cls.chart,
-                duration: 300,
+                duration: 500,
                 opacity: 1,
                 translateY: '-3ren',
                 easing: 'easeInOutExpo'
@@ -49,9 +49,10 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
             .add({
                 targets: '.' + cls.chart + ' .arc-path',
                 strokeDashoffset: [anime.setDashoffset, 0],
-                duration: (_, i) => {
-                    return (totalDuration / 100) * data[i].percent
-                }
+                duration: 1200,
+                // duration: (_, i) => {
+                //     return (totalDuration / 100) * data[i].percent
+                // }
             })
             .add({
                 targets: '.' + cls.chart + ' .ref-path',

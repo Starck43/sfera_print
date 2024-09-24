@@ -167,7 +167,7 @@ export function generateSvgDiagram(
     const orbitPaths: ReturnType<typeof generateCirclePath>[] = []
     const satellitePaths: ReturnType<typeof polarToCartesian>[] = []
     const refPaths: ReturnType<typeof describeReference>[] = []
-    const startAngle = Math.random() * 360
+    const startAngle = 45 //Math.random() * 360
 
     data?.forEach((_, index) => {
         const orbitRadius = startRadius + (index + 1) * orbitRadiusStep

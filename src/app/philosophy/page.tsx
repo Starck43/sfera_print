@@ -18,7 +18,10 @@ import { Partners } from './partners/Partners'
 
 import cls from './Philosophy.module.sass'
 
-export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
+export const generateMetadata = async (
+    _: any,
+    parent: ResolvingMetadata
+): Promise<Metadata> => {
     const data = await getPage<Page<any>>('philosophy')
     return constructMetadata(data, await parent)
 }
@@ -53,7 +56,10 @@ const PhilosophyPage = async () => {
                 transform="lowerCase"
                 className={classnames(cls, ['section'], {}, ['darkgrey__style'])}
             >
-                <CommonStat data={stat as Stat[]} />
+                <div className={cls.diagram__container}>
+                    <Image src={"/images/target_image.png"} alt="Причины выбрать нас" fill />
+                    <CommonStat data={stat as Stat[]} />
+                </div>
             </Section>
 
             <Section

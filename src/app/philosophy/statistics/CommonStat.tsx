@@ -34,7 +34,7 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
         if (!inView) return
 
         const animation = anime.timeline({
-            easing: 'easeInOutSine',
+            easing: 'easeInOutQuad',
             duration: totalDuration,
             direction: 'normal',
             loop: false
@@ -42,20 +42,21 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
 
         animation
             .add({
-                targets: '.' + cls.stat__diagram,
-                duration: 1000,
-                opacity: 1
+                targets: '.' + cls.stat__diagram + ' .satellite-dot',
+                duration: 800,
+                scale: [0, 1],
+                opacity: 1,
             })
             .add({
                 targets: '.' + cls.stat__diagram + ' .orbit-path',
                 strokeDashoffset: [anime.setDashoffset, 0],
-                duration: 1000,
+                duration: 1500,
                 delay: (_, i) => i * 100
             })
             .add({
                 targets: '.' + cls.stat__diagram + ' .ref-text',
-                delay: 500,
-                duration: 800,
+                delay: 300,
+                duration: 600,
                 opacity: 1
             })
     }, [data, inView])
@@ -90,7 +91,8 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
                         className={classnames(cls, ['satellite__dot'], {}, ['satellite-dot'])}
                         style={{ opacity: 1 }}
                     >
-                        <circle cx={x} cy={y} r={4} />
+                        <circle cx={x} cy={y} r={3} />
+                        <circle cx={x} cy={y} r={6} fill='none'/>
                     </g>
                 )
             })}

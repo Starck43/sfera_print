@@ -34,7 +34,7 @@ const BrandSlider = <T,>({ items }: { items: Partial<T>[] }) => {
             lazyPreloadPrevNext={1}
             slidesPerView={3}
             spaceBetween={10}
-            speed={3500}
+            speed={3000}
             loop={items.length > 3}
             breakpoints={{
                 576: {

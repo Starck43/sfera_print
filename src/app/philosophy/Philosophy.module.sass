@@ -4,10 +4,17 @@
 		background-color: #fff
 
 	.diagram__container
-		position: absolute
 		display: flex
-		justify-content: center
 		align-items: center
+		justify-content: center
+		position: relative
+		width: 100%
+		img
+			left: -3% !important
+			max-width: 30%
+			max-height: 30%
+			object-fit: contain
+			margin: auto
 
 .desc
 	position: relative
@@ -20,17 +27,23 @@
 	overflow: visible
 
 .stat__diagram
-	opacity: 0
+	margin-bottom: var(--gap)
 
 	.orbits
 		stroke: var(--grey-color)
-		stroke-width: 0.5
+		stroke-width: 0.7
 
 	.ref__text
 		opacity: 0
 
 	.satellite__dot
+		stroke-dashoffset: 100%
+		stroke-dasharray: 100% 0
+		transform-origin: center
+		opacity: 0
 		fill: var(--secondary-color)
+		stroke: var(--secondary-color)
+		stroke-width: 0.5
 
 	.title
 		color: var(--secondary-color)
