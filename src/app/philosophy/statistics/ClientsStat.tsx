@@ -4,7 +4,7 @@ import React, { useLayoutEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import anime from 'animejs/lib/anime.es'
 
-import { calcHexColor, generateSvgChart, splitTextIntoArray } from './helper'
+import { calcWheelColor, generateSvgChart, splitTextIntoArray } from './helper'
 import { classnames } from '@/shared/lib/helpers/classnames'
 
 import cls from '../Philosophy.module.sass'
@@ -18,7 +18,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
     const viewBoxWidth = 300
     const chartRadius = viewBoxWidth / 6
     const totalDuration = 3000
-    const arcColor = calcHexColor('#737681', '#22201e', data.length)
+    const generateArcColors = calcWheelColor('#478631', 70, data.length - 1)
     const { arcs, refs } = generateSvgChart(data, viewBoxWidth, chartRadius)
     const { ref, inView } = useInView({
         //rootMargin: '10px 0px 0px 0px',
@@ -49,7 +49,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
             .add({
                 targets: '.' + cls.chart + ' .arc-path',
                 strokeDashoffset: [anime.setDashoffset, 0],
-                duration: 1200,
+                duration: 1200
                 // duration: (_, i) => {
                 //     return (totalDuration / 100) * data[i].percent
                 // }
@@ -116,7 +116,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
                     <use xlinkHref={`#arc${index + 1}`} filter="url(#dropshadow)" />
                     <path
                         d={path}
-                        stroke={arcColor(index)}
+                        stroke={generateArcColors(index)}
                         strokeWidth={(index + 1) * 3}
                         id={`arc${index + 1}`}
                         className={classnames(cls, ['arc__path'], {}, ['arc-path'])}

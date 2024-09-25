@@ -1,3 +1,5 @@
+import type { Media } from '@/components/post'
+
 export const createSrcSet = (srcset: Array<string> | undefined) => {
     if (!srcset) return undefined
 
@@ -9,3 +11,10 @@ export const createSrcSet = (srcset: Array<string> | undefined) => {
         }`
     }, '')
 }
+
+export function getDeviceSrc(image?: Media['image'] | null): string | null {
+    if (!image) return null
+
+    return typeof image === 'object' && 'src' in image ? image.src : image
+}
+

@@ -5,11 +5,62 @@ interface RefSvgProps {
     text: { x: number; y: number; singX: number; singY: number }
 }
 
-const hexToRgb = (h: string): number[] => {
-    // Convert hex to RGB
-    const match = h.replace('#', '').match(/.{1,2}/g)
-    if (!match) return [0, 0, 0]
-    return match.map((e) => parseInt(e, 16))
+/*
+ * Convert hex to RGB
+ */
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+    const match = hex.replace('#', '').match(/.{1,2}/g)
+    return match && match.length === 3
+        ? {
+              r: parseInt(match[0], 16),
+              g: parseInt(match[1], 16),
+              b: parseInt(match[2], 16)
+          }
+        : { r: 0, g: 0, b: 0 }
+}
+
+/*
+ * Convert RGB to HSV
+ */
+function rgbToHsl(rgb: { r: number; g: number; b: number }): { h: number; s: number; l: number } {
+    const r = rgb.r / 255
+    const g = rgb.g / 255
+    const b = rgb.b / 255
+    const max = Math.max(r, g, b)
+    const min = Math.min(r, g, b)
+    const delta = max - min
+    let h, s, l
+
+    // Calculate hue
+    switch (true) {
+        case max === r:
+            h = ((g - b) / delta) % 6
+            break
+        case max === g:
+            h = (b - r) / delta + 2
+            break
+        case max === b:
+            h = (r - g) / delta + 4
+            break
+        default:
+            h = 0
+    }
+
+    h = Math.round(h * 60)
+    if (h < 0) {
+        h += 360
+    }
+    // Calculate lightness
+    l = (max + min) / 2
+
+    // Calculate saturation
+    s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1))
+
+    // Multiply l and s by 100
+    s = +(s * 100).toFixed(1)
+    l = +(l * 100).toFixed(1)
+
+    return { h, s, l }
 }
 
 export function calculatePercentByGroup(partners: Partner[]): { group: string; percent: number }[] {
@@ -184,21 +235,6 @@ export function generateSvgDiagram(
     return { orbits: orbitPaths, satellites: satellitePaths, refs: refPaths }
 }
 
-export function calcHexColor(startColor: string, endColor: string, stepsCount: number) {
-    const [r1, g1, b1] = hexToRgb(startColor)
-    const [r2, g2, b2] = hexToRgb(endColor)
-    const rStep = (r2 - r1) / stepsCount
-    const gStep = (g2 - g1) / stepsCount
-    const bStep = (b2 - b1) / stepsCount
-
-    return function (index: number) {
-        const r = Math.abs(Math.round(r1 + rStep * index))
-        const g = Math.abs(Math.round(g1 + gStep * index))
-        const b = Math.abs(Math.round(b1 + bStep * index))
-        return `rgb(${r},${g},${b})`
-    }
-}
-
 export function splitTextIntoArray(text: string, charsPerLine: number = 15) {
     const textArray = []
     const words = text.split(' ')
@@ -225,4 +261,39 @@ export function splitTextIntoArray(text: string, charsPerLine: number = 15) {
     }
 
     return textArray
+}
+
+/**
+ * Calculates the color of the wheel based on the current position.
+ *
+ * @param startColor - The starting color of the wheel.
+ * @param endColor - The ending color of the wheel.
+ * @param colorLength - The total amount of colors in the wheel.
+ * @return {function(index: number): string} A function that takes the current position and returns the HSV color of the wheel at that position.
+ */
+export function calcWheelColor(
+    startColor: string,
+    endColor: string | number | null,
+    colorLength: number
+): (index: number) => string {
+    const startHsl = rgbToHsl(hexToRgb(startColor))
+
+    console.log(startHsl)
+    if (!endColor || endColor === startColor || typeof endColor === 'number') {
+        const MAX_LIGHTNESS = typeof endColor === 'number' ? endColor : 80
+
+        return (index: number): string => {
+            const lightness = Math.round(
+                MAX_LIGHTNESS - ((MAX_LIGHTNESS - startHsl.l) * index) / colorLength
+            )
+            return `hsl(${Math.round(startHsl.h)}, ${startHsl.s}%, ${lightness}%)`
+        }
+    } else {
+        const endHsl = rgbToHsl(hexToRgb(endColor))
+        const hueStep = (endHsl.h - startHsl.h) / colorLength
+        return (index: number): string => {
+            const currentHue = startHsl.h + hueStep * index
+            return `hsl(${currentHue}, ${startHsl.s}%, ${startHsl.l}%)`
+        }
+    }
 }

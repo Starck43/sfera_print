@@ -8,6 +8,7 @@ import { TimelineElement } from './TimelineElement'
 
 import 'react-vertical-timeline-component/style.min.css'
 import cls from './Timeline.module.sass'
+import { calcWheelColor } from '@/app/philosophy/statistics/helper'
 
 interface TimelineProps<T> {
     items: T[]
@@ -16,6 +17,7 @@ interface TimelineProps<T> {
 }
 
 const Timeline = <T,>({ items, icon, topIcon }: TimelineProps<T>) => {
+    const generateColor = calcWheelColor('#ff620d', '#8702ff', items.length - 1)
     return (
         <VerticalTimeline className={cls.timeline} layout="2-columns">
             {topIcon && (
@@ -25,6 +27,7 @@ const Timeline = <T,>({ items, icon, topIcon }: TimelineProps<T>) => {
                 <TimelineElement
                     key={`timeline-${idx}`}
                     icon={icon}
+                    color={generateColor(idx)}
                     {...(item as PostType)}
                 />
             ))}

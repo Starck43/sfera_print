@@ -18,10 +18,7 @@ import { Partners } from './partners/Partners'
 
 import cls from './Philosophy.module.sass'
 
-export const generateMetadata = async (
-    _: any,
-    parent: ResolvingMetadata
-): Promise<Metadata> => {
+export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<any>>('philosophy')
     return constructMetadata(data, await parent)
 }
@@ -42,7 +39,7 @@ const PhilosophyPage = async () => {
             <Section
                 title={'Наши достижения'}
                 titleTag="h2"
-                align="end"
+                align="start"
                 transform="lowerCase"
                 className={classnames(cls, ['section'], {}, ['grey__style'])}
             >
@@ -57,7 +54,12 @@ const PhilosophyPage = async () => {
                 className={classnames(cls, ['section'], {}, ['darkgrey__style'])}
             >
                 <div className={cls.diagram__container}>
-                    <Image src={"/images/target_image.png"} alt="Причины выбрать нас" fill />
+                    <Image
+                        src={'/images/target_image.png'}
+                        alt="Причины выбрать нас"
+                        fill
+                        style={{ left: '-3%' }}
+                    />
                     <CommonStat data={stat as Stat[]} />
                 </div>
             </Section>
@@ -66,18 +68,21 @@ const PhilosophyPage = async () => {
                 title={'Наши заказчики'}
                 titleTag="h2"
                 align="center"
-                transform="upperCase"
+                transform="lowerCase"
                 gap={'none'}
-                className={classnames(cls, ['section'], {}, [])}
+                className={classnames(cls, ['section'])}
             >
-                <ClientsStat data={calculatePercentByGroup(partners)} />
+                <div className={cls.diagram__container}>
+                    <Image src={'/images/logo3d.png'} alt="Наши заказчики" fill />
+                    <ClientsStat data={calculatePercentByGroup(partners)} />
+                </div>
             </Section>
 
             <Section
                 align="center"
                 gap={'none'}
-                className={classnames(cls, ['section'], {}, [])}
-                style={{ paddingTop: 0, marginBottom: '1rem' }}
+                className={classnames(cls, ['section'])}
+                style={{ paddingTop: 0 }}
             >
                 <Partners data={partners as Partner[]} />
             </Section>

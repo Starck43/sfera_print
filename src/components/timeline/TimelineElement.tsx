@@ -7,19 +7,23 @@ import { VerticalTimelineElement } from 'react-vertical-timeline-component'
 import type { PostType } from '@/components/post'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { useHover } from '@/shared/lib/hooks/useHover'
+import { getDeviceSrc } from '@/shared/lib/helpers/image'
 
 import cls from './Timeline.module.sass'
 
 export interface TimelineElementProps extends PostType {
     icon?: ReactElement<ReactSVGElement>
+    color?: string
 }
 
 // eslint-disable-next-line react/display-name
 export const TimelineElement = memo((props: TimelineElementProps) => {
-    const { title, excerpt, desc, event_date, cover, icon } = props
+    const { title, excerpt, desc, event_date, cover, icon, color } = props
     const [visible, setVisible] = useState(false)
     const [isHover, { onMouseLeave, onMouseEnter }] = useHover()
     const { ref, inView } = useInView({ threshold: 0.5 })
+
+    const imageSrc = getDeviceSrc(cover)
 
     useEffect(() => {
         if (inView) {
@@ -35,10 +39,13 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
             dateClassName={cls.element__date}
             textClassName={cls.element__content}
             iconClassName={cls.element__icon}
+            iconStyle={{ color: color }}
+            contentStyle={{ color: color }}
         >
             <div
                 ref={ref}
                 onMouseEnter={desc || cover ? (isHover ? onMouseLeave : onMouseEnter) : undefined}
+                onClick={desc || cover ? (isHover ? onMouseLeave : onMouseEnter) : undefined}
                 onMouseLeave={onMouseLeave}
                 className={classnames(cls, ['content__wrapper'], { hovered: isHover })}
             >
@@ -57,9 +64,9 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
                 {/*    {excerpt && <p className={cls.excerpt}>{excerpt}</p>}*/}
                 {/*</div>*/}
 
-                {cover && (
+                {imageSrc && (
                     <Image
-                        src={typeof cover === 'object' && 'src' in cover ? cover.src : cover}
+                        src={imageSrc}
                         alt={title}
                         sizes="(max-width: 1169px) 100vw, 50vw"
                         width={600}
