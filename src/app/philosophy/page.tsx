@@ -17,6 +17,7 @@ import ClientsStat from './statistics/ClientsStat'
 import { Partners } from './partners/Partners'
 
 import cls from './Philosophy.module.sass'
+import { parseHtml } from '@/components/parse-html'
 
 export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<any>>('philosophy')
@@ -29,11 +30,14 @@ const PhilosophyPage = async () => {
         title,
         sections: { achievements, stat, partners }
     } = await getPage<Page<any>>('philosophy')
+
+    const parsedContent = await parseHtml(content)
+
     return (
         <PageLayout title={title} gap="none" sectionMode className="philosophy-page">
-            {content && (
+            {parsedContent && (
                 <Section className={cls.section} style={{ paddingTop: 0 }}>
-                    <div dangerouslySetInnerHTML={{ __html: content }} className={cls.desc} />
+                    <div className={classnames(cls,['desc'], {}, ['page__description'])}>{parsedContent}</div>
                 </Section>
             )}
             <Section

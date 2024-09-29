@@ -278,7 +278,6 @@ export function calcWheelColor(
 ): (index: number) => string {
     const startHsl = rgbToHsl(hexToRgb(startColor))
 
-    console.log(startHsl)
     if (!endColor || endColor === startColor || typeof endColor === 'number') {
         const MAX_LIGHTNESS = typeof endColor === 'number' ? endColor : 80
 

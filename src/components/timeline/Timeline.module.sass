@@ -1,7 +1,7 @@
 @import "@/app/styles/mixins"
 $border-thick: 0.1rem
 $icon-size: 2rem
-$element-offset-x: $icon-size * 3
+$element-offset-x: $icon-size * 2
 $element-offset-y: 2rem
 $element-w: 44%
 
@@ -34,6 +34,7 @@ $element-w: 44%
 	//border: solid 1px var(--primary-color)
 	width: $icon-size !important
 	height: $icon-size !important
+	top: calc(50% - $icon-size * 0.5) !important
 	box-shadow: none !important
 
 	svg
@@ -64,15 +65,15 @@ $element-w: 44%
 		margin-left: -$icon-size / 2 !important
 
 .element__content
-	top: -$element-offset-y
+	top: calc(50% - $element-offset-y)
 	margin-left: $element-offset-x !important
 	padding: 0 !important
-	border-radius: calc(var(--border-radius-index) * 4rem) !important
-	background-color: var(--grey-color) !important
-	box-shadow: 0 0.6rem 0.9rem -0.3rem var(--box-shadow) !important
+	//border-radius: calc(var(--border-radius-index) * 4rem) !important
+	background-color: transparent !important
+	//box-shadow: 0 0.6rem 0.9rem -0.3rem var(--box-shadow) !important
 	//overflow: hidden
 	> div:first-child
-		top: $icon-size * 0.5 + $element-offset-y !important
+		top: 50% !important
 		width: calc($element-offset-x - $icon-size)
 		height: 1px
 		background-color: currentColor
@@ -100,10 +101,10 @@ $element-w: 44%
 	display: flex
 	flex-direction: column
 	gap: var(--gap)
-	padding: var(--gap)
+	// padding: var(--gap)
 	color: inherit
-	background-color: var(--white-color) !important
-	border: solid $border-thick currentColor
+	// background-color: var(--white-color) !important
+	//border: solid $border-thick currentColor
 	border-radius: calc(var(--border-radius-index) * 4rem) !important
 	transition: transform 300ms ease-out
 	transform-origin: calc(50% + $element-offset-x * 1.4) 50%
