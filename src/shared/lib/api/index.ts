@@ -6,13 +6,11 @@ import { normalizeUrlPath } from '@/shared/lib/helpers/url'
 export async function getPosts(endpoint: string) {
     // get post by endpoint ('<page>/<id | slug>')
     const res = await fetch(
-        normalizeUrlPath(
-            `${process.env.NEXT_PUBLIC_API_SERVER}/api/${endpoint}/`
-        )
+        normalizeUrlPath(`${process.env.NEXT_PUBLIC_API_SERVER}/api/${endpoint}/`)
     )
     if (!res.ok) {
-        console.log(res.statusText)
-        //throw new Error('Failed to fetch data')
+        console.error(res.statusText, `(${res.status})`)
+        //throw new Error('Failed to load data \n'+res.url)
     }
     return await res.json()
 }

@@ -10,6 +10,11 @@ import parse, {
 } from 'html-react-parser'
 import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
 
+type ExtendedDOMNode = DOMNode & {
+  firstChild?: { name: string };
+  lastChild?: { name: string };
+}
+
 export const parseHtml = async (html: string | null): Promise<React.ReactNode | null> => {
     if (!html) return null
 
@@ -22,7 +27,7 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
         ext: string,
         quote2: string,
         imageSrc: string
-    ) => `<video poster="${imageSrc}" src="${linkSrc}"/>`
+    ) => `<video poster="${imageSrc}" src="${linkSrc}" />`
 
     const content = html
         .replace(/<(\/?)(table|tbody)([^>]*)>/g, '')
@@ -33,7 +38,9 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
         .trim()
 
     const options: HTMLReactParserOptions = {
-        replace: (domNode) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        replace: (domNode: ExtendedDOMNode) => {
             if (
                 domNode instanceof Element &&
                 domNode.tagName === 'div' &&
@@ -44,12 +51,10 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
             } else if (
                 domNode instanceof Element &&
                 domNode.tagName === 'div' &&
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                domNode.firstChild?.name === 'img'
+                (domNode.firstChild?.name === 'img' || domNode.firstChild?.name === 'video' || domNode.lastChild?.name === 'video' )
             ) {
                 return (
-                    <div className="media-grid">
+                    <div className={domNode.firstChild?.name === 'img' ? "media-grid": "video-wrapper"}>
                         {domToReact(domNode.children as DOMNode[], options)}
                     </div>
                 )
@@ -80,12 +85,15 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
                         muted
                         style={{
                             width: '100%',
-                            height: '100%'
+                            height: 'auto'
                         }}
+                        blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
                     >
                         <style>{`
-                            :root {--media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}
-                            ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;}
+                            :root {--media-range-track-height: 2px; --media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}
+                            ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;padding: 0.8rem; border-radius: 50%; width: 3rem; height: 3rem;}
+                            ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
+                            ::part(play):hover {--media-icon-color: inherit !important; background-color: var(--secondary-color) !important;} 
                             ::part(seek-backward), ::part(seek-forward) {display: none;}
                             [slot=poster] {object-fit: cover;}
 						`}</style>

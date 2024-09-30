@@ -10,7 +10,7 @@ import { BurgerButton, Navbar } from '@/components/navbar'
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
 
-import './globals.css'
+import './globals.scss'
 
 export const metadata: Metadata = {
     title: {
