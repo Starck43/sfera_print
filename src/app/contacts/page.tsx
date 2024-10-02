@@ -12,35 +12,26 @@ import { Col } from '@/shared/ui/stack'
 
 import type { Page } from '../types'
 import cls from './ContactsPage.module.sass'
+import { parseHtml } from '@/components/parse-html'
 
-export const generateMetadata = async (
-    _: any,
-    parent: ResolvingMetadata
-): Promise<Metadata> => {
+export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<Contact>>('contacts')
     return constructMetadata(data, await parent)
 }
 
 const ContactsPage = async () => {
-    const {
-        title,
-        content = null,
-        sections
-    } = await getPage<Page<Contact>>('contacts')
+    const { title, content = null, sections } = await getPage<Page<Contact>>('contacts')
+    const parsedContent = await parseHtml(content)
+
     return (
-        <PageLayout
-            title={title}
-            gap="none"
-            sectionMode
-            className="contacts-page"
-        >
+        <PageLayout title={title} gap="none" sectionMode className="contacts-page">
             <Section gap={'none'} align="center" style={{ paddingTop: 0 }}>
-                {content && (
-                    <div dangerouslySetInnerHTML={{ __html: content }} />
-                )}
+
                 <Col gap="xs" className={cls.contacts__block}>
                     <Contacts data={sections as Contact[]} />
                 </Col>
+
+                {parsedContent && <Section className="page-content">{parsedContent}</Section>}
                 Форма Битрикс
             </Section>
         </PageLayout>

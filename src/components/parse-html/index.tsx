@@ -11,8 +11,8 @@ import parse, {
 import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
 
 type ExtendedDOMNode = DOMNode & {
-  firstChild?: { name: string };
-  lastChild?: { name: string };
+    firstChild?: { name: string }
+    lastChild?: { name: string }
 }
 
 export const parseHtml = async (html: string | null): Promise<React.ReactNode | null> => {
@@ -51,10 +51,16 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
             } else if (
                 domNode instanceof Element &&
                 domNode.tagName === 'div' &&
-                (domNode.firstChild?.name === 'img' || domNode.firstChild?.name === 'video' || domNode.lastChild?.name === 'video' )
+                (domNode.firstChild?.name === 'img' ||
+                    domNode.firstChild?.name === 'video' ||
+                    domNode.lastChild?.name === 'video')
             ) {
                 return (
-                    <div className={domNode.firstChild?.name === 'img' ? "media-grid": "video-wrapper"}>
+                    <div
+                        className={
+                            domNode.firstChild?.name === 'img' ? 'media-grid' : 'video-wrapper'
+                        }
+                    >
                         {domToReact(domNode.children as DOMNode[], options)}
                     </div>
                 )
@@ -87,7 +93,7 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
                             width: '100%',
                             height: 'auto'
                         }}
-                        blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
+                        blurDataURL="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
                     >
                         <style>{`
                             :root {--media-range-track-height: 2px; --media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}

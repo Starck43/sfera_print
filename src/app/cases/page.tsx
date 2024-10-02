@@ -1,6 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next'
 
 import PageLayout from '@/components/layout/page-layout'
+import { parseHtml } from '@/components/parse-html'
 import { Map } from '@/components/map'
 import type { City } from '@/components/map'
 
@@ -12,23 +13,18 @@ import type { Page } from '../types'
 
 import cls from './CasesPage.module.sass'
 
-export const generateMetadata = async (
-    _: any,
-    parent: ResolvingMetadata
-): Promise<Metadata> => {
+export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<City>>('cases')
     return constructMetadata(data, await parent)
 }
 
 const CasesPage = async () => {
     const { title, content = null, posts } = await getPage<Page<City>>('cases')
+    const parsedContent = await parseHtml(content)
+
     return (
         <PageLayout title={title} gap="none" sectionMode className="cases-map">
-            {content && (
-                <Section>
-                    <div dangerouslySetInnerHTML={{ __html: content }} />
-                </Section>
-            )}
+            {parsedContent && <Section className="page-content">{parsedContent}</Section>}
 
             <Section gap={'none'} className={cls.section}>
                 <Map pageTitle={title} cities={posts || []} />

@@ -2,6 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next'
 import Image from 'next/image'
 
 import PageLayout from '@/components/layout/page-layout'
+import { parseHtml } from '@/components/parse-html'
 
 import getPage from '@/shared/lib/api/getPage'
 import { classnames } from '@/shared/lib/helpers/classnames'
@@ -17,7 +18,6 @@ import ClientsStat from './statistics/ClientsStat'
 import { Partners } from './partners/Partners'
 
 import cls from './Philosophy.module.sass'
-import { parseHtml } from '@/components/parse-html'
 
 export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<any>>('philosophy')
@@ -36,8 +36,11 @@ const PhilosophyPage = async () => {
     return (
         <PageLayout title={title} gap="none" sectionMode className="philosophy-page">
             {parsedContent && (
-                <Section className={cls.section} style={{ paddingTop: 0 }}>
-                    <div className={classnames(cls,['desc'], {}, ['page__description'])}>{parsedContent}</div>
+                <Section
+                    className={classnames(cls, ['section'], {}, ['page-content'])}
+                    style={{ paddingTop: 0 }}
+                >
+                    {parsedContent}
                 </Section>
             )}
             <Section

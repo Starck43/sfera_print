@@ -1,6 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next'
 
 import PageLayout from '@/components/layout/page-layout'
+import { parseHtml } from '@/components/parse-html'
 import type { PostType } from '@/components/post'
 
 import constructMetadata from '@/shared/lib/helpers/metadata'
@@ -10,10 +11,7 @@ import { Section } from '@/shared/ui/section'
 import type { Page } from '../types'
 import TechnologyList from './list/TechnologyList'
 
-export const generateMetadata = async (
-    _: any,
-    parent: ResolvingMetadata
-): Promise<Metadata> => {
+export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<PostType>>('technologies')
     return constructMetadata(data, await parent)
 }
@@ -24,18 +22,11 @@ const TechnologiesPage = async () => {
         content = null,
         posts: technologiesData
     } = await getPage<Page<PostType>>('technologies')
+    const parsedContent = await parseHtml(content)
+
     return (
-        <PageLayout
-            title={title}
-            gap={'none'}
-            sectionMode
-            className="technologies-page"
-        >
-            {content && (
-                <Section>
-                    <div dangerouslySetInnerHTML={{ __html: content }} />
-                </Section>
-            )}
+        <PageLayout title={title} gap={'none'} sectionMode className="technologies-page">
+            {parsedContent && <Section className="page-content">{parsedContent}</Section>}
             <TechnologyList items={technologiesData || []} />
         </PageLayout>
     )
