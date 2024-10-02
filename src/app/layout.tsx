@@ -55,8 +55,8 @@ export const metadata: Metadata = {
 }
 
 const brandFont = localFont({
-    src: './fonts/PFBeauSansPro-Light.woff2',
-    weight: '300',
+    src: './fonts/PFBeauSansPro-Regular.woff2',
+    weight: '400',
     style: 'normal',
     display: 'swap'
 })
