@@ -27,11 +27,11 @@ const PageHeader = () => (
 
         <HeaderAnimation/>
 
-        {/*<CircleCarousel*/}
-        {/*    infinite={false}*/}
-        {/*    duration={300}*/}
-        {/*    loopDuration={carouselLoopDuration}*/}
-        {/*/>*/}
+        <CircleCarousel
+            infinite={false}
+            duration={300}
+            loopDuration={carouselLoopDuration}
+        />
     </div>
 )
 
