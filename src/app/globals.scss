@@ -32,7 +32,7 @@
 	--icon-size-md: 2.4rem;
 	--icon-size-lg: 3.2rem;
 	--border-radius-index: 0.5;
-	--border-radius: clamp(1.5rem, 15%, 2.5rem);
+	--border-radius: clamp(1.5rem, 3vw, 2.5rem);
 	--border-radius-button: 1.2rem;
 	--border-radius-default: 0px;
 	--border-thickness: 3px;
@@ -204,6 +204,7 @@ p {
 
 ul {
 	margin-left: 30px;
+	padding-bottom: 0.75em;
 }
 
 ul > li {
@@ -211,13 +212,33 @@ ul > li {
 	padding-left: 10px;
 }
 
+blockquote {
+	margin: var(--gap) 0;
+	text-align: center;
+	text-transform: uppercase;
+	width: auto;
+	font-size: clamp(1rem, 0.8rem + 0.5vw, 1.2rem);
+	overflow: hidden;
+
+	> * {
+		display: inline-block;
+		padding: 0.6rem 1.2rem;
+		border-radius: 0.8rem;
+		border: var(--border-thickness) solid var(--secondary-color);
+	}
+}
+
+.page-content {
+	> * {
+		width: 100%;
+	}
+}
+
 .page-content, .table {
 	display: flex;
 	flex-direction: column;
 	gap: calc(var(--gap) * 3);
-	div {
-		@extend p;
-	}
+
 	@media (min-width: 1200px) {
 		gap: calc(var(--gap) * 4);
 	}
@@ -235,12 +256,6 @@ ul > li {
 		flex-direction: unset;
 		.media-grid, .video-wrapper {
 			flex: 0 1 40% !important
-		}
-	}
-
-	@media (min-width: 1200px) {
-		.media-grid, .video-wrapper {
-			flex: 1 !important
 		}
 	}
 
@@ -264,6 +279,10 @@ ul > li {
 	@media (min-width: 768px) {
 		order: unset;
 		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	}
+
+	@media (min-width: 1200px) {
+		grid-template-columns: repeat(2, 1fr);
 	}
 }
 

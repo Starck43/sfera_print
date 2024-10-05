@@ -31,7 +31,6 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
 
     const content = html
         .replace(/<(\/?)(table|tbody)([^>]*)>/g, '')
-        .replace(/<(\/?)(tr|td)([^>]*)>/g, '<$1div>')
         .replace(/<[^/>][^>]?>(?:[\s+|&nbsp;]+)?<\/[^>]+>/g, '')
         .replace(linkImgRegex, videoContentReplacement)
         .replace(/\n+\s*/g, '\n')
@@ -43,14 +42,14 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
         replace: (domNode: ExtendedDOMNode) => {
             if (
                 domNode instanceof Element &&
-                domNode.tagName === 'div' &&
+                domNode.tagName === 'td' &&
                 domNode.children?.length === 1 &&
                 domNode.children[0] instanceof Text
             ) {
                 return <p>{domNode.children[0].data}</p>
             } else if (
                 domNode instanceof Element &&
-                domNode.tagName === 'div' &&
+                domNode.tagName === 'td' &&
                 (domNode.firstChild?.name === 'img' ||
                     domNode.firstChild?.name === 'video' ||
                     domNode.lastChild?.name === 'video')

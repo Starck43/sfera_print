@@ -39,8 +39,8 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
             dateClassName={cls.element__date}
             textClassName={cls.element__content}
             iconClassName={cls.element__icon}
-            iconStyle={{ color: color }}
-            contentStyle={{ color: color }}
+            // iconStyle={{ color: color }}
+            // contentStyle={{ color: color }}
         >
             <div
                 ref={ref}
