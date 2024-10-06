@@ -11,8 +11,9 @@ import parse, {
 import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
 
 type ExtendedDOMNode = DOMNode & {
-    firstChild?: { name: string }
-    lastChild?: { name: string }
+    parent?: DOMNode
+    firstChild?: { name: string; tagName: string }
+    lastChild?: { name: string; tagName: string }
 }
 
 export const parseHtml = async (html: string | null): Promise<React.ReactNode | null> => {
@@ -50,18 +51,22 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
             } else if (
                 domNode instanceof Element &&
                 domNode.tagName === 'td' &&
-                (domNode.firstChild?.name === 'img' ||
+                (domNode.firstChild?.tagName === 'figure' ||
+                    domNode.firstChild?.name === 'img' ||
                     domNode.firstChild?.name === 'video' ||
                     domNode.lastChild?.name === 'video')
             ) {
                 return (
-                    <div
+                    <td
                         className={
-                            domNode.firstChild?.name === 'img' ? 'media-grid' : 'video-wrapper'
+                            domNode.firstChild?.name === 'video' ||
+                            domNode.lastChild?.name === 'video'
+                                ? 'video-wrapper'
+                                : 'media-grid'
                         }
                     >
                         {domToReact(domNode.children as DOMNode[], options)}
-                    </div>
+                    </td>
                 )
             }
 
@@ -71,6 +76,8 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, domNode.attribs.src)
 
+                if (domNode.parent?.tagName === 'figure')
+                    return <Image src={src} alt={domNode.attribs.alt} fill />
                 return (
                     <div className="image-wrapper">
                         <Image src={src} alt={domNode.attribs.alt} fill />
