@@ -3,7 +3,7 @@
 	'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
 	'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
-	--font-family-secondary: 'Montserrat', sans-serif;
+	--font-family-secondary: 'Montserrat';
 
 	--page-background-color: 254, 254, 254;
 	--white-color: #fefefe;
@@ -111,7 +111,7 @@ body {
 	min-height: 100vh;
 	margin: 0;
 	padding: 0;
-	color: rgba(var(--grey-color-alpha), 1);
+	color: rgba(var(--grey-color-alpha), 0.85);
 	background: var(--white-color);
 }
 
@@ -155,7 +155,7 @@ h1 {
 	margin: 0;
 	/*background: linear-gradient(to bottom, rgb(var(--page-background-color), 1), rgb(var(--page-background-color), 0));*/
 	color: var(--secondary-color);
-	font-family: var(--font-family-secondary);
+	font-family: var(--font-family-secondary), sans-serif;
 	line-height: var(--line-height-title);
 	font-size: clamp(1.8rem, 0.9rem + 2vw, 3rem);
 	text-transform: uppercase;
@@ -166,7 +166,7 @@ h1 {
 h2 {
 	margin-top: 6px;
 	color: var(--secondary-color);
-	font-family: var(--font-family-secondary);
+	font-family: var(--font-family-secondary), sans-serif;
 	font-size: clamp(1.6rem, 0.9rem + 1.8vw, 2.4rem);
 	line-height: var(--line-height-title);
 	word-break: break-word;
@@ -208,8 +208,9 @@ ul {
 }
 
 ul > li {
-	@extend p;
+	padding-bottom: 0.5em;
 	padding-left: 10px;
+	line-height: var(--line-height-paragraph);
 }
 
 blockquote {
@@ -240,7 +241,7 @@ blockquote {
 }
 
 .page-content {
-	gap: calc(var(--gap) + 4vw);
+	margin-bottom: calc(var(--gap) * 4);
 }
 
 .table tbody {
