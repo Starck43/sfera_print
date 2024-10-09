@@ -27,6 +27,7 @@
 	--modal-padding: clamp(1.6rem, 0.5rem + 2vw, 2rem);
 	--gap: 1rem;
 	--controls-height: 2.4rem;
+	--slider-controls-width: clamp(3.2rem, 2.8rem + 0.8vw, 4rem);
 	--icon-size-xs: 1.2rem;
 	--icon-size-sm: 1.8rem;
 	--icon-size-md: 2.4rem;
@@ -273,7 +274,8 @@ blockquote {
 		flex-wrap: wrap;
 		flex-direction: unset;
 		.media-grid, .video-wrapper {
-			flex: 0 1 40% !important
+			flex: 1 0 50% !important;
+            max-width: 50%;
 		}
 	}
 

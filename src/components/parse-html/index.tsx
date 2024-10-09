@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Player from 'next-video/player'
 import parse, {
     Element,
-    Text,
     domToReact,
     type DOMNode,
     type HTMLReactParserOptions
@@ -44,13 +43,13 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
         // @ts-expect-error
         replace: (domNode: ExtendedDOMNode) => {
             if (
-                (domNode instanceof Element &&
-                    domNode.tagName === 'td' &&
-                    domNode.children?.length > 1 &&
+                domNode instanceof Element &&
+                domNode.tagName === 'td' &&
+                ((domNode.children?.length > 1 &&
                     (domNode.firstChild?.tagName === 'figure' ||
                         domNode.firstChild?.name === 'img')) ||
-                domNode.firstChild?.name === 'video' ||
-                domNode.lastChild?.name === 'video'
+                    domNode.firstChild?.name === 'video' ||
+                    domNode.lastChild?.name === 'video')
             ) {
                 return (
                     <td

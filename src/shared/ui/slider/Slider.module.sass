@@ -1,7 +1,6 @@
 @import "@/app/styles/mixins"
 
 .section
-	--slider-controls-width: calc(var(--icon-size-lg) + 3vw)
 	height: auto
 	margin: auto
 //+media-min(md)
@@ -86,10 +85,10 @@
 	+media-min(sm)
 		width: 100%
 		//max-width: var(--paragraph-container-max-width)
-		margin-bottom: calc(var(--icon-size-xs) * -1)
+		margin-bottom: calc(var(--gap) * -1)
 		display: grid
 		grid-template-columns: repeat(auto-fill, minmax(40px, auto))
-		grid-gap: var(--icon-size-xs)
+		grid-gap: var(--gap)
 
 	+media-min(md)
 		padding: 0 var(--slider-controls-width)
