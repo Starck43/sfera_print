@@ -31,7 +31,7 @@ const ContactsPage = async () => {
                     <Contacts data={sections as Contact[]} />
                 </Col>
 
-                {parsedContent && <Section className="page-content">{parsedContent}</Section>}
+                {parsedContent && <Section className="html-container">{parsedContent}</Section>}
                 Форма Битрикс
             </Section>
         </PageLayout>

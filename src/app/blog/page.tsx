@@ -22,7 +22,7 @@ const BlogPage = async () => {
 
     return (
         <PageLayout title={title} gap={'none'} sectionMode>
-            {parsedContent && <Section className="page-content">{parsedContent}</Section>}
+            {parsedContent && <Section className="html-container">{parsedContent}</Section>}
             <BlogList posts={posts || []} />
         </PageLayout>
     )

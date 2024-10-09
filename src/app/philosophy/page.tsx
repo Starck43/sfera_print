@@ -37,8 +37,9 @@ const PhilosophyPage = async () => {
         <PageLayout title={title} gap="none" sectionMode className="philosophy-page">
             {parsedContent && (
                 <Section
-                    className={classnames(cls, ['section'], {}, ['page-content'])}
-                    style={{ paddingTop: 0 }}
+                    gap="none"
+                    className={classnames(cls, ['section'], {}, ['html-container'])}
+                    //style={{ paddingTop: 0 }}
                 >
                     {parsedContent}
                 </Section>

@@ -26,7 +26,7 @@ const TechnologiesPage = async () => {
 
     return (
         <PageLayout title={title} gap={'none'} sectionMode className="technologies-page">
-            {parsedContent && <Section className="page-content">{parsedContent}</Section>}
+            {parsedContent && <Section className="html-container">{parsedContent}</Section>}
             <TechnologyList items={technologiesData || []} />
         </PageLayout>
     )

@@ -9,14 +9,7 @@ import { classnames } from '@/shared/lib/helpers/classnames'
 import useDynamicSVG from '@/shared/lib/hooks/useDynamicSVG'
 import { changeSvgText } from '@/shared/lib/helpers/svg'
 
-import type {
-    City,
-    CityCases,
-    GeoJson,
-    Region,
-    RegionCitiesProps,
-    ZoomedRegion
-} from './types'
+import type { City, CityCases, GeoJson, Region, RegionCitiesProps, ZoomedRegion } from './types'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 
 import { Portfolio } from '../portfolio'
@@ -34,21 +27,15 @@ interface MapProps {
 
 const Map = ({ pageTitle, cities }: MapProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null)
-    const { width = 0, height = 0 } = useWindowDimensions(
-        containerRef?.current || null
-    )
+    const { width = 0, height = 0 } = useWindowDimensions(containerRef?.current || null)
     const [regionsData, setRegionsData] = useState<Region[]>([])
-    const [citiesData, setCitiesData] = useState<
-        Record<number, RegionCitiesProps>
-    >({})
+    const [citiesData, setCitiesData] = useState<Record<number, RegionCitiesProps>>({})
     // const [selectedRegion, setSelectedRegion] = useState<number | null>(null)
-    const {
-        zoomedRegion,
-        showZoomedRegion,
-        setZoomedRegion,
-        activeCity,
-        setActiveCity
-    } = useZoomRegion()
+    const { zoomedRegion, showZoomedRegion, setZoomedRegion, activeCity, setActiveCity } =
+        useZoomRegion()
+
+    const isPortrait = window.innerWidth / window.innerHeight < 1
+
     const { data: city } = useFetch<CityCases>(
         activeCity?.id ? `/city_cases/${activeCity.id}` : null,
         null,
@@ -56,22 +43,22 @@ const Map = ({ pageTitle, cities }: MapProps) => {
         [activeCity?.id]
     )
 
-    const { svgContent: locationSvg, attributes: locationSvgAttr } =
-        useDynamicSVG({
-            svgPath: '/svg/location.svg',
-            textAttributes: {
-                x: 254,
-                y: 235.25,
-                stroke: '#000',
-                fontSize: 140,
-                fontFamily: 'Helvetica, Arial, sans-serif',
-                fontWeight: 700,
-                textAnchor: 'middle'
-            }
-        })
+    const { svgContent: locationSvg, attributes: locationSvgAttr } = useDynamicSVG({
+        svgPath: '/svg/location.svg',
+        textAttributes: {
+            x: 254,
+            y: 235.25,
+            stroke: '#000',
+            fontSize: 140,
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 700,
+            textAnchor: 'middle'
+        }
+    })
 
+    console.log(cities)
     useEffect(() => {
-        if (!width || width / height < 1) return
+        if (!width || isPortrait) return
 
         const { regionsData: regions, citiesData } = generateRegionsMap(
             geoJson as GeoJson,
@@ -81,7 +68,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
 
         setRegionsData(regions)
         setCitiesData(citiesData)
-    }, [cities, width, height])
+    }, [cities, width, height, isPortrait])
 
     // const selectRegionClick = useCallback((id: number) => {
     // 	if (selectedRegion === id) {
@@ -95,14 +82,9 @@ const Map = ({ pageTitle, cities }: MapProps) => {
 
     const zoomRegionClick = useCallback(
         (e: React.MouseEvent<SVGGElement>, regionId?: number | null) => {
-            if (!width || width / height < 1) return
+            if (!width || isPortrait) return
 
-            if (
-                !regionId &&
-                (e.target as SVGGElement)?.parentElement?.id?.startsWith(
-                    'city-'
-                )
-            ) {
+            if (!regionId && (e.target as SVGGElement)?.parentElement?.id?.startsWith('city-')) {
                 e.preventDefault()
                 return
             }
@@ -136,10 +118,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
                     featureTop[1] + featureHeight / 2
                 ]
 
-                const scale = Math.min(
-                    width / featureWidth,
-                    height / featureHeight
-                )
+                const scale = Math.min(width / featureWidth, height / featureHeight)
                 const translateX = width / 2 - featureCenter[0] * scale
                 const translateY = height / 2 - featureCenter[1] * scale
 
@@ -157,7 +136,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
                 setZoomedRegion(zoomedRegionsProps)
             }
         },
-        [citiesData, regionsData, width, height, setZoomedRegion]
+        [width, isPortrait, regionsData, setZoomedRegion, height, citiesData]
     )
 
     const regionsMap = useMemo(
@@ -182,10 +161,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
         () =>
             Object.entries(citiesData)?.map(([key, value]) => {
                 const coord = value.regionSvg.center
-                const iconSize = Math.min(
-                    40,
-                    Math.max(20, Math.min(width, height) * 0.1)
-                )
+                const iconSize = Math.min(40, Math.max(20, Math.min(width, height) * 0.1))
                 const changedLocationSvg = changeSvgText({
                     svgContent: locationSvg,
                     newAttributes: locationSvgAttr,
@@ -211,14 +187,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
                     </foreignObject>
                 )
             }),
-        [
-            citiesData,
-            width,
-            height,
-            locationSvg,
-            locationSvgAttr,
-            zoomRegionClick
-        ]
+        [citiesData, width, height, locationSvg, locationSvgAttr, zoomRegionClick]
     )
 
     // Если ширина окна меньше высоты, то отобразим кейсы в виде плитки
@@ -246,7 +215,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
                 <PageLayout
                     title={pageTitle + ' – ' + activeCity.name}
                     titleTag="h1"
-                    gap="md"
+                    gap="none"
                     sectionMode={false}
                     handleOnClose={() => setActiveCity(null)}
                     className="portfolio"

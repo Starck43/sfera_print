@@ -59,9 +59,7 @@ const CasesList = () => {
                         {cover && (
                             <Image
                                 src={
-                                    typeof cover === 'object' && 'src' in cover
-                                        ? cover.src
-                                        : cover
+                                    typeof cover === 'object' && 'src' in cover ? cover.src : cover
                                 }
                                 //srcSet={createSrcSet(cover?.srcset) || undefined}
                                 alt={title}
@@ -106,10 +104,7 @@ const CasesList = () => {
                 {data?.next !== null && (
                     <div
                         ref={inViewRef}
-                        className={classnames(cls, [
-                            'cover__wrapper',
-                            'skeleton'
-                        ])}
+                        className={classnames(cls, ['cover__wrapper', 'skeleton'])}
                     />
                 )}
             </div>

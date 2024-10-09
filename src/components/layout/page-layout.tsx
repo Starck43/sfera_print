@@ -3,6 +3,8 @@
 import React, { ElementType, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 
+import ScrollToTop from '@/components/scroll-to-top/ScrollToTop'
+
 import { classnames } from '@/shared/lib/helpers/classnames'
 import usePageAnimation from '@/shared/lib/hooks/usePageAnimation'
 
@@ -13,7 +15,6 @@ import { Col } from '@/shared/ui/stack'
 import { BackButton } from '@/shared/ui/button'
 
 import cls from './Layout.module.sass'
-import ScrollToTop from '@/components/scroll-to-top/ScrollToTop'
 
 interface PageLayoutProps {
     title?: string | ReactNode

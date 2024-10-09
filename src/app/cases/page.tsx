@@ -24,7 +24,7 @@ const CasesPage = async () => {
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="cases-map">
-            {parsedContent && <Section className="page-content">{parsedContent}</Section>}
+            {parsedContent && <Section className="html-container">{parsedContent}</Section>}
 
             <Section gap={'none'} className={cls.section}>
                 <Map pageTitle={title} cities={posts || []} />

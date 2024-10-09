@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react'
 
+import { parseHtml } from '@/components/parse-html'
+
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { formatDate } from '@/shared/lib/helpers/datetime'
 import { Slider } from '@/shared/ui/slider'
@@ -10,7 +12,6 @@ import { Loader } from '@/shared/ui/loader'
 import type { Media, PostType } from './types'
 
 import cls from './Post.module.sass'
-import { parseHtml } from '@/components/parse-html'
 
 interface ContentProps {
     data?: PostType | undefined
@@ -26,13 +27,7 @@ const Post = ({ data, style, className }: ContentProps) => {
 
     return (
         <Slider
-            media={
-                [
-                    ...(!media?.length && image
-                        ? [{ id, image, title }]
-                        : media || [])
-                ] as Media[]
-            }
+            media={[...(!media?.length && image ? [{ id, image, title }] : media || [])] as Media[]}
             className={classnames(cls, ['container'], {}, [className])}
             style={style}
         >
@@ -41,17 +36,13 @@ const Post = ({ data, style, className }: ContentProps) => {
                     <Header
                         title={title}
                         subTitle={
-                            event_date && (
-                                <div className={cls.date}>
-                                    {formatDate(event_date)}
-                                </div>
-                            )
+                            event_date && <div className={cls.date}>{formatDate(event_date)}</div>
                         }
                         tag="h2"
                         transform="upperCase"
                     />
                 )}
-                <div className="page-content">{parsedContent}</div>
+                {parsedContent && <div className="html-container">{parsedContent}</div>}
             </Col>
         </Slider>
     )

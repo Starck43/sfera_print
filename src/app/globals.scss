@@ -207,9 +207,9 @@ ul {
 	padding-bottom: 0.75em;
 }
 
-ul > li {
+li {
 	padding-bottom: 0.5em;
-	padding-left: 10px;
+	padding-left: 5px;
 	line-height: var(--line-height-paragraph);
 }
 
@@ -229,23 +229,37 @@ blockquote {
 	}
 }
 
-.page-content {
+.html-container {
 	> * {
 		width: 100%;
 	}
+	// margin-bottom: calc(var(--gap) * 4);
+	.table {
+		margin: calc(var(--gap) + 4vw) 0;
+		&:first-child {
+			margin-top: 0;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
 }
 
-.page-content, .table tbody {
+.html-container, .table tbody {
 	display: flex;
 	flex-direction: column;
 }
 
-.page-content {
-	margin-bottom: calc(var(--gap) * 4);
-}
+.table {
+	table {
+		display: block;
+	}
 
-.table tbody {
-	gap: calc(var(--gap) + 2vw);
+	tbody {
+		gap: calc(var(--gap) + 2vw);
+	}
 }
 
 .table tr {

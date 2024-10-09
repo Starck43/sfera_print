@@ -15,9 +15,7 @@ import TechnologyDetails from '../details/TechnologyDetails'
 import cls from './TechnologyList.module.sass'
 
 const TechnologyList = ({ items }: { items: PostType[] }) => {
-    const [activeTechnology, setActiveTechnology] = useState<number | null>(
-        null
-    )
+    const [activeTechnology, setActiveTechnology] = useState<number | null>(null)
     const { data: post, isError } = useFetch<PostType>(
         activeTechnology !== null ? items[activeTechnology].path : null,
         {},
@@ -81,10 +79,7 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                     className="technology-detail"
                 >
                     {isError ? (
-                        <Header
-                            title="Ошибка загрузки статьи!"
-                            style={{ flex: '0 1 50%' }}
-                        />
+                        <Header title="Ошибка загрузки статьи!" style={{ flex: '0 1 50%' }} />
                     ) : (
                         <TechnologyDetails data={post} />
                     )}
