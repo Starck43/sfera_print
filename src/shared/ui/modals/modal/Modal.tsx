@@ -82,44 +82,25 @@ export const Modal = (props: ModalProps) => {
                     zIndex
                 }}
             >
-                <Row
-                    gap="sm"
-                    fullWidth
-                    justify="between"
-                    align="center"
-                    className={styles.header}
-                >
+                <Row gap="sm" fullWidth justify="between" align="center" className={styles.header}>
                     {typeof header === 'string' ? (
                         <Header tag="h4" title={header} align="start" />
                     ) : (
                         header
                     )}
                     {showClose && (
-                        <CloseButton
-                            className={styles.close__button}
-                            handleOnClick={handleClose}
-                        />
+                        <CloseButton className={styles.close__button} handleOnClick={handleClose} />
                     )}
                 </Row>
 
                 <div className={styles.body}>
-                    <Row
-                        className={styles.content}
-                        justify="between"
-                        wrap
-                        fullWidth
-                    >
+                    <Row className={styles.content} justify="between" wrap fullWidth>
                         {children}
                     </Row>
                 </div>
 
                 {closeBtnLabel || submitBtnLabel || footer ? (
-                    <Flex
-                        justify="center"
-                        wrap
-                        fullWidth
-                        className={styles.footer}
-                    >
+                    <Flex justify="center" wrap fullWidth className={styles.footer}>
                         {footer}
                         {onSubmit && submitBtnLabel && (
                             <Button

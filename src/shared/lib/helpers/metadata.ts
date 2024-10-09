@@ -28,8 +28,7 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
     } = props
 
     const url =
-        new URL(normalizeUrlPath(`${process.env.URL}/${path}`)) ||
-        parentMetadata.metadataBase
+        new URL(normalizeUrlPath(`${process.env.URL}/${path}`)) || parentMetadata.metadataBase
     return {
         title: title || parentMetadata.title,
         description: excerpt || parentMetadata.description,
@@ -45,9 +44,7 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
                           // it means that there is a list of posts with the own covers
                           ...((images as any[]) || [])
                               .filter((el) => el.cover?.src ?? el.cover)
-                              .map(({ cover }) =>
-                                  typeof cover === 'object' ? cover.src : cover
-                              )
+                              .map(({ cover }) => (typeof cover === 'object' ? cover.src : cover))
                       ]
                     : cover
                     ? [typeof cover === 'object' ? cover.src : cover]
@@ -55,9 +52,7 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
                           // it means that there is a list of images
                           ...((images as any[]) || [])
                               .filter((el) => el.image)
-                              .map(({ image }) =>
-                                  typeof image === 'object' ? image.src : image
-                              )
+                              .map(({ image }) => (typeof image === 'object' ? image.src : image))
                       ],
             url: url,
             publishedTime: new Date(event_date || Date.now()).toISOString(),

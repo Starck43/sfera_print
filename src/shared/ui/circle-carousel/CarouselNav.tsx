@@ -17,13 +17,7 @@ interface CarouselNavProps {
 }
 
 const CarouselNav = (props: CarouselNavProps) => {
-    const {
-        steps,
-        loopDuration,
-        infinite = false,
-        onDotClick,
-        handleOnStepChange
-    } = props
+    const { steps, loopDuration, infinite = false, onDotClick, handleOnStepChange } = props
     const { playHeaderAnimation } = useNavigation()
     const [strokeWidth, setStrokeWidth] = useState(0)
 

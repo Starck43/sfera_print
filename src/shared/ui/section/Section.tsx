@@ -1,13 +1,6 @@
 'use client'
 
-import {
-    CSSProperties,
-    HTMLAttributes,
-    memo,
-    ReactNode,
-    useCallback,
-    useRef
-} from 'react'
+import { CSSProperties, HTMLAttributes, memo, ReactNode, useCallback, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 import type { SizeType } from '@/shared/types/ui'
@@ -77,11 +70,7 @@ const Section = (props: InfoProps) => {
             }}
             {...others}
         >
-            {title && (
-                <Title className={classnames(cls, ['title', transform])}>
-                    {title}
-                </Title>
-            )}
+            {title && <Title className={classnames(cls, ['title', transform])}>{title}</Title>}
             {children}
         </Col>
     )

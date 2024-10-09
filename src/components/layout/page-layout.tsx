@@ -34,7 +34,7 @@ export default function PageLayout(props: PageLayoutProps) {
         sectionMode = false,
         handleOnClose,
         children,
-        className = 'page__layout',
+        className = 'page__layout'
     } = props
     const router = useRouter()
     const { handleClick } = usePageAnimation(className)
@@ -47,9 +47,7 @@ export default function PageLayout(props: PageLayoutProps) {
         <Col
             gap={gap}
             justify="between"
-            className={classnames(cls, ['container'], { sectionMode }, [
-                className
-            ])}
+            className={classnames(cls, ['container'], { sectionMode }, [className])}
         >
             <Header
                 tag={titleTag as ElementType}
@@ -60,7 +58,7 @@ export default function PageLayout(props: PageLayoutProps) {
                 className={cls.title}
             />
             {children}
-            <ScrollToTop/>
+            <ScrollToTop />
         </Col>
     )
 

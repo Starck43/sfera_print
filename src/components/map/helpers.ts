@@ -1,14 +1,7 @@
 import { geoContains, geoMercator, geoPath } from 'd3-geo'
 import anime from 'animejs/lib/anime.es'
 
-import type {
-    City,
-    CityProps,
-    GeoJson,
-    Region,
-    RegionCitiesProps,
-    ZoomedRegion
-} from './types'
+import type { City, CityProps, GeoJson, Region, RegionCitiesProps, ZoomedRegion } from './types'
 
 import cls from './Map.module.sass'
 
@@ -21,57 +14,55 @@ export function generateRegionsMap(
     const geoPathGenerator = geoPath().projection(projection)
     const citiesData: Record<number, RegionCitiesProps> = {}
 
-    const regionsData: Region[] = regionsJson.features.map(
-        (feature: any, regionId) => {
-            const regionCenter = geoPathGenerator.centroid(feature)
-            const citiesInRegion: CityProps[] = []
+    const regionsData: Region[] = regionsJson.features.map((feature: any, regionId) => {
+        const regionCenter = geoPathGenerator.centroid(feature)
+        const citiesInRegion: CityProps[] = []
 
-            citiesJson?.forEach((city) => {
-                // Если город внутри региона, добавляем его в объект городов
-                const coords: [number, number] = [city.longitude, city.latitude]
-                if (geoContains(feature, coords)) {
-                    const coord = projection(coords)
-                    if (!coord) return
+        citiesJson?.forEach((city) => {
+            // Если город внутри региона, добавляем его в объект городов
+            const coords: [number, number] = [city.longitude, city.latitude]
+            if (geoContains(feature, coords)) {
+                const coord = projection(coords)
+                if (!coord) return
 
-                    const citySvg: CityProps = {
-                        id: city.id,
-                        name: city.name,
-                        path: {
-                            cx: coord[0] as number,
-                            cy: coord[1] as number
-                        }
-                    }
-
-                    citiesInRegion.push(citySvg)
-                }
-            })
-
-            let occupied = false
-            if (citiesInRegion.length) {
-                occupied = true
-                citiesData[regionId] = {
-                    regionId: regionId,
-                    data: citiesInRegion,
-                    regionSvg: {
-                        center: regionCenter
+                const citySvg: CityProps = {
+                    id: city.id,
+                    name: city.name,
+                    path: {
+                        cx: coord[0] as number,
+                        cy: coord[1] as number
                     }
                 }
+
+                citiesInRegion.push(citySvg)
             }
+        })
 
-            return {
-                id: regionId, //feature?.id,
-                properties: {
-                    id: feature?.properties?.id,
-                    name: feature?.properties?.name
-                },
-                svg: {
-                    bounds: geoPathGenerator.bounds(feature),
-                    path: geoPathGenerator(feature) || ''
-                },
-                occupied: occupied
+        let occupied = false
+        if (citiesInRegion.length) {
+            occupied = true
+            citiesData[regionId] = {
+                regionId: regionId,
+                data: citiesInRegion,
+                regionSvg: {
+                    center: regionCenter
+                }
             }
         }
-    )
+
+        return {
+            id: regionId, //feature?.id,
+            properties: {
+                id: feature?.properties?.id,
+                name: feature?.properties?.name
+            },
+            svg: {
+                bounds: geoPathGenerator.bounds(feature),
+                path: geoPathGenerator(feature) || ''
+            },
+            occupied: occupied
+        }
+    })
 
     return { regionsData, citiesData, mapPath: geoPathGenerator }
 }

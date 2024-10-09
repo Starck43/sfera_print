@@ -11,8 +11,7 @@ interface NavigationContextProps {
 
 const NavigationContext = createContext<NavigationContextProps>({})
 
-export const useNavigation = () =>
-    useContext(NavigationContext) as Required<NavigationContextProps>
+export const useNavigation = () => useContext(NavigationContext) as Required<NavigationContextProps>
 
 export const NavigationProvider = ({ children }: { children: ReactNode }) => {
     const [showMenu, setShowMenu] = useState(false)

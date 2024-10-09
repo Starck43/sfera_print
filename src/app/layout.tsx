@@ -65,11 +65,7 @@ export default async function RootLayout({
     children = null
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html
-            lang="ru"
-            className={brandFont.className}
-            suppressHydrationWarning
-        >
+        <html lang="ru" className={brandFont.className} suppressHydrationWarning>
             <body>
                 <header>
                     <div className="logo">

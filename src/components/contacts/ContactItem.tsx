@@ -15,11 +15,7 @@ const ContactItem = ({ item, className }: ContactItemProps) => {
             href={item.link}
             alt={item.value}
             Icon={`/svg/${item.type}.svg`}
-            target={
-                item.type === 'email' || item.type === 'tel'
-                    ? undefined
-                    : '_blank'
-            }
+            target={item.type === 'email' || item.type === 'tel' ? undefined : '_blank'}
             className={className}
         />
     ) : (

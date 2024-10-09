@@ -18,9 +18,7 @@ export const detectDeviceOrientation = (): 'portrait' | 'landscape' | null => {
 
     const device = isMobile('(pointer:coarse)')
     if (device.matches) {
-        return window.matchMedia('(orientation: portrait)').matches
-            ? 'portrait'
-            : 'landscape'
+        return window.matchMedia('(orientation: portrait)').matches ? 'portrait' : 'landscape'
     }
     return null
 }
@@ -32,10 +30,7 @@ export const getWindowDimensions = (container?: Element | null) => {
     if (container) {
         width = container.clientWidth
         height = container.clientHeight
-    } else if (
-        typeof container === 'undefined' &&
-        typeof window !== 'undefined'
-    ) {
+    } else if (typeof container === 'undefined' && typeof window !== 'undefined') {
         width = window.innerWidth
         height = window.innerHeight
     }
@@ -44,14 +39,11 @@ export const getWindowDimensions = (container?: Element | null) => {
         width: width,
         height: height,
         ratio: height > 0 ? width / height : 0,
-        orientation:
-            typeof window === 'undefined' ? null : detectDeviceOrientation()
+        orientation: typeof window === 'undefined' ? null : detectDeviceOrientation()
     }
 }
 
-export const getScrollElement = (
-    node: HTMLElement | undefined
-): HTMLElement | null => {
+export const getScrollElement = (node: HTMLElement | undefined): HTMLElement | null => {
     if (!node) return null
     if (node.scrollHeight > node.clientHeight) {
         return node

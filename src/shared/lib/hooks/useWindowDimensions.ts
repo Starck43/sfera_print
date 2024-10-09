@@ -2,9 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { getWindowDimensions } from '../helpers/dom'
 
 export const useWindowDimensions = (container?: Element | null) => {
-    const [windowDimensions, setWindowDimensions] = useState(
-        getWindowDimensions(container)
-    )
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions(container))
 
     const handleResize = useCallback(
         () => setWindowDimensions(getWindowDimensions(container)),

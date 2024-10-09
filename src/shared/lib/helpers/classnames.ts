@@ -13,9 +13,7 @@ export function classnames(
 ): string {
     if (!cls) return [...additional.filter(Boolean)].join(' ')
     return [
-        ...classes
-            .filter(Boolean)
-            .map((classname) => (classname ? cls[classname] : null)),
+        ...classes.filter(Boolean).map((classname) => (classname ? cls[classname] : null)),
         ...Object.entries(dict)
             .filter(([_, value]) => Boolean(value))
             .map(([classname, _]) => (classname ? cls[classname] : classname)),

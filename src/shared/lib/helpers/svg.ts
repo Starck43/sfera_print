@@ -6,11 +6,7 @@ export interface SvgContentProps {
     newAttributes?: SVGProps<SVGTextElement>
 }
 
-export const changeSvgText = ({
-    svgContent,
-    newText,
-    newAttributes
-}: SvgContentProps) => {
+export const changeSvgText = ({ svgContent, newText, newAttributes }: SvgContentProps) => {
     if (!newText) return svgContent
 
     const parser = new DOMParser()

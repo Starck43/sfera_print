@@ -21,8 +21,7 @@ export const generateMetadata = async (
             title: data?.title || 'Реализованные кейсы в городе ' + data.name,
             excerpt:
                 data?.excerpt ||
-                'Примеры реализованных проектов изготовления рекламы в городе ' +
-                    data.name,
+                'Примеры реализованных проектов изготовления рекламы в городе ' + data.name,
             keywords: data?.keywords || [
                 'портфолио рекламных проектов в ' + data.name,
                 'рекламные кейсы в ' + data.name,

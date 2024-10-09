@@ -27,11 +27,7 @@ const Loader = ({ className, duration }: LoaderProps) => {
 
     return (
         <div className={cls.loader__container}>
-            <div
-                className={classnames(cls, ['spinner'], { isOpening, isOpen }, [
-                    className
-                ])}
-            >
+            <div className={classnames(cls, ['spinner'], { isOpening, isOpen }, [className])}>
                 {new Array(5).fill(0).map((_, index) => (
                     <div key={index} />
                 ))}

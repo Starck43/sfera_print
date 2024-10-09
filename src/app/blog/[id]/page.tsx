@@ -15,10 +15,7 @@ export const generateMetadata = async (
     parent: ResolvingMetadata
 ): Promise<Metadata> => {
     const { media, ...data } = await getBlog<PostType>(id)
-    return constructMetadata(
-        { ...data, posts: media || [], type: 'article' },
-        await parent
-    )
+    return constructMetadata({ ...data, posts: media || [], type: 'article' }, await parent)
 }
 
 export async function generateStaticParams() {

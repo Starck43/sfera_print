@@ -6,9 +6,7 @@ export const createSrcSet = (srcset: Array<string> | undefined) => {
     return srcset.reduce((acc, value, index) => {
         const arr = value.match(/(?!_)\d+w/g)
         if (!arr) return acc
-        return `${acc + value} ${arr.pop()}${
-            index < srcset.length - 1 ? ', ' : ''
-        }`
+        return `${acc + value} ${arr.pop()}${index < srcset.length - 1 ? ', ' : ''}`
     }, '')
 }
 
@@ -17,4 +15,3 @@ export function getDeviceSrc(image?: Media['image'] | null): string | null {
 
     return typeof image === 'object' && 'src' in image ? image.src : image
 }
-

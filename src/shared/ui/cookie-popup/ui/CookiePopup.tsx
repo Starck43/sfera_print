@@ -54,18 +54,10 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
             className={classnames(cls, ['cookie__popup'], { visible })}
         >
             <p>
-                Этот сайт использует файлы cookie для улучшения
-                пользовательского опыта. Продолжая пользоваться сайтом, Вы{' '}
-                {!approved_policy ? 'соглашаетесь' : 'согласились'} с
-                использованием файлов cookie. Рекомендуем ознакомиться с
-                политикой &nbsp;
-                <NavLink
-                    href={file}
-                    title="здесь"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                />
-                .
+                Этот сайт использует файлы cookie для улучшения пользовательского опыта. Продолжая
+                пользоваться сайтом, Вы {!approved_policy ? 'соглашаетесь' : 'согласились'} с
+                использованием файлов cookie. Рекомендуем ознакомиться с политикой &nbsp;
+                <NavLink href={file} title="здесь" target="_blank" rel="noopener noreferrer" />.
             </p>
             <Button rounded onClick={handleClose}>
                 {!approved_policy ? 'Принять' : 'ОК'}

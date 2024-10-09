@@ -34,7 +34,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
     const { zoomedRegion, showZoomedRegion, setZoomedRegion, activeCity, setActiveCity } =
         useZoomRegion()
 
-    const isPortrait = window.innerWidth / window.innerHeight < 1
+    const isPortrait = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < 1
 
     const { data: city } = useFetch<CityCases>(
         activeCity?.id ? `/city_cases/${activeCity.id}` : null,

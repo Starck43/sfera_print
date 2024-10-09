@@ -8,14 +8,7 @@ const Col = <E extends ElementType = keyof HTMLElementTagNameMap>(
     ref: ForwardedRef<HTMLDivElement>
 ) => {
     const { align = 'start' } = props
-    return (
-        <Flex
-            ref={ref}
-            direction="column"
-            align={align as FlexProps<E>['align']}
-            {...props}
-        />
-    )
+    return <Flex ref={ref} direction="column" align={align as FlexProps<E>['align']} {...props} />
 }
 
 const ForwardedCol = forwardRef(Col)

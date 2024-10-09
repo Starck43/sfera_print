@@ -66,9 +66,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
             autoplay: true,
             update: function (anim) {
                 const currentStep = Math.floor((steps / 100) * anim.progress)
-                handleOnStepChange?.(
-                    currentStep === steps ? currentStep - 1 : currentStep
-                )
+                handleOnStepChange?.(currentStep === steps ? currentStep - 1 : currentStep)
                 anim.animatables[0].target.setAttribute(
                     'stroke-dasharray',
                     `${pathLength} ${pathLength}`
@@ -98,9 +96,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
     }, [handleOnStepChange])
 
     useEffect(() => {
-        const elements = document.querySelectorAll(
-            '.' + rootClassName + ' ' + prefixName + 'dot'
-        )
+        const elements = document.querySelectorAll('.' + rootClassName + ' ' + prefixName + 'dot')
         const OnClickHandler = (index: number) => {
             onDotClick?.(index)
         }
@@ -111,9 +107,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
 
         return () => {
             elements.forEach((element, index) => {
-                element.removeEventListener('click', () =>
-                    OnClickHandler(index)
-                )
+                element.removeEventListener('click', () => OnClickHandler(index))
             })
         }
 

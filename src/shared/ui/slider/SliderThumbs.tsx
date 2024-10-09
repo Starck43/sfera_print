@@ -30,8 +30,7 @@ const SliderThumbs = ({ media, activeIndex, swiperRef }: ThumbsProps) => {
                 >
                     <Image
                         src={
-                            typeof item.image === 'object' &&
-                            'src' in item.image
+                            typeof item.image === 'object' && 'src' in item.image
                                 ? item.image.src
                                 : item.image
                         }

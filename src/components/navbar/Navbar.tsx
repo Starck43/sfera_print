@@ -36,18 +36,8 @@ const Navbar = ({ className }: NavbarProps) => {
         () => (
             <div role="navigation" className={className || ''}>
                 <NavMenu>
-                    <Col
-                        gap="sm"
-                        align="baseline"
-                        justify="start"
-                        className={cls.navmenu}
-                    >
-                        <Flex
-                            gap="xs"
-                            justify="between"
-                            fullWidth
-                            style={{ marginBottom: 'auto' }}
-                        >
+                    <Col gap="sm" align="baseline" justify="start" className={cls.navmenu}>
+                        <Flex gap="xs" justify="between" fullWidth style={{ marginBottom: 'auto' }}>
                             <Col gap="sm" className={cls.navitems}>
                                 {data?.pages?.map((item) => (
                                     <NavItem key={item.path} {...item} />
@@ -55,11 +45,7 @@ const Navbar = ({ className }: NavbarProps) => {
                             </Col>
 
                             {data?.socials && (
-                                <Col
-                                    gap="xs"
-                                    align="end"
-                                    className={cls.socials}
-                                >
+                                <Col gap="xs" align="end" className={cls.socials}>
                                     <style>
                                         {data.socials.map((_, idx) => (
                                             <Fragment key={idx}>{`
@@ -72,70 +58,47 @@ const Navbar = ({ className }: NavbarProps) => {
 								       `}</Fragment>
                                         ))}
                                     </style>
-                                    {data.socials.map(
-                                        ({ name, title, link, image }, idx) => (
-                                            <a
-                                                key={'social-' + name}
-                                                href={link}
-                                                target="_blank"
-                                                className={
-                                                    image
-                                                        ? cls.social__image__link
-                                                        : cls.social__link
-                                                }
-                                                style={{
-                                                    animationDelay: `${
-                                                        1000 + idx * 200
-                                                    }ms`
-                                                }}
-                                            >
-                                                <Image
-                                                    src={
-                                                        image ||
-                                                        `/svg/socials/${name}.svg`
-                                                    }
-                                                    alt={title}
-                                                    sizes="100%"
-                                                    fill
-                                                />
-                                            </a>
-                                        )
-                                    )}
+                                    {data.socials.map(({ name, title, link, image }, idx) => (
+                                        <a
+                                            key={'social-' + name}
+                                            href={link}
+                                            target="_blank"
+                                            className={
+                                                image ? cls.social__image__link : cls.social__link
+                                            }
+                                            style={{
+                                                animationDelay: `${1000 + idx * 200}ms`
+                                            }}
+                                        >
+                                            <Image
+                                                src={image || `/svg/socials/${name}.svg`}
+                                                alt={title}
+                                                sizes="100%"
+                                                fill
+                                            />
+                                        </a>
+                                    ))}
                                 </Col>
                             )}
                         </Flex>
 
                         <Col gap="xs" className={cls.navbar__links}>
                             {data?.contact && (
-                                <ContactItem
-                                    item={data.contact}
-                                    className={cls.contact}
-                                />
+                                <ContactItem item={data.contact} className={cls.contact} />
                             )}
 
                             {data?.policy && (
-                                <a
-                                    href={data.policy}
-                                    target="_blank"
-                                    className={cls.policy}
-                                >
+                                <a href={data.policy} target="_blank" className={cls.policy}>
                                     Политика конфиденциальности
                                 </a>
                             )}
 
                             {data?.agreement && (
-                                <a
-                                    href={data.agreement}
-                                    target="_blank"
-                                    className={cls.policy}
-                                >
+                                <a href={data.agreement} target="_blank" className={cls.policy}>
                                     Соглашение на использование материалов
                                 </a>
                             )}
-                            <div
-                                onClick={() => setIsCookieOpen(true)}
-                                className={cls.policy}
-                            >
+                            <div onClick={() => setIsCookieOpen(true)} className={cls.policy}>
                                 Соглашение на обработку персональных данных
                             </div>
                         </Col>
@@ -152,10 +115,7 @@ const Navbar = ({ className }: NavbarProps) => {
         <>
             {navbarContent}
             {data?.cookie && isCookieOpen && (
-                <CookiePopup
-                    file={data.cookie}
-                    onClose={() => setIsCookieOpen(false)}
-                />
+                <CookiePopup file={data.cookie} onClose={() => setIsCookieOpen(false)} />
             )}
         </>
     )

@@ -1,12 +1,7 @@
 import { useCallback, useLayoutEffect, useState } from 'react'
 import { normalizeUrlPath } from '@/shared/lib/helpers/url'
 
-type UrlParams =
-    | string[][]
-    | Record<string, string>
-    | string
-    | URLSearchParams
-    | null
+type UrlParams = string[][] | Record<string, string> | string | URLSearchParams | null
 
 export const useFetch = <T>(
     endpoint: string | null,
@@ -29,9 +24,7 @@ export const useFetch = <T>(
         if (!endpoint.startsWith('http')) {
             const url = `${process.env.NEXT_PUBLIC_API_SERVER}/api/${endpoint}/`
             finalUrl = normalizeUrlPath(
-                params
-                    ? `${url}?${new URLSearchParams(params).toString()}`
-                    : url
+                params ? `${url}?${new URLSearchParams(params).toString()}` : url
             )
         }
 
@@ -48,8 +41,7 @@ export const useFetch = <T>(
     }, [endpoint, params, cache])
 
     useLayoutEffect(() => {
-        if (deps.length && deps.every((val) => !val && typeof val !== 'number'))
-            return
+        if (deps.length && deps.every((val) => !val && typeof val !== 'number')) return
         fetchFn()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, deps)

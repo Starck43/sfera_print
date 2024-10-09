@@ -8,9 +8,7 @@ interface UseDynamicSVGProps {
 
 const useDynamicSVG = ({ svgPath, textAttributes }: UseDynamicSVGProps) => {
     const [svgContent, setSvgContent] = useState<string>('')
-    const [attributes, setAttributes] = useState<SVGProps<SVGTextElement>>(
-        textAttributes || {}
-    )
+    const [attributes, setAttributes] = useState<SVGProps<SVGTextElement>>(textAttributes || {})
 
     useEffect(() => {
         const fetchSVG = async () => {

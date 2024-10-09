@@ -49,11 +49,7 @@ export const Header = memo((props: HeaderProps) => {
     } = props
 
     const subtitle =
-        typeof subTitle === 'string' ? (
-            <span className={cls.subtitle}>{subTitle}</span>
-        ) : (
-            subTitle
-        )
+        typeof subTitle === 'string' ? <span className={cls.subtitle}>{subTitle}</span> : subTitle
 
     const Title = tag
     const content = (
@@ -78,12 +74,9 @@ export const Header = memo((props: HeaderProps) => {
                 wrap={!inlined && !fullWidth}
                 fullWidth={inlined}
                 direction={inlined ? 'row' : 'column'}
-                className={classnames(
-                    cls,
-                    ['header', status, size, align],
-                    { inlined },
-                    [className]
-                )}
+                className={classnames(cls, ['header', status, size, align], { inlined }, [
+                    className
+                ])}
             >
                 {content}
                 {subtitle}
@@ -95,9 +88,7 @@ export const Header = memo((props: HeaderProps) => {
     return href ? (
         <Link
             href={href}
-            className={classnames(cls, ['header', 'link', status, size], {}, [
-                className
-            ])}
+            className={classnames(cls, ['header', 'link', status, size], {}, [className])}
         >
             {content}
         </Link>

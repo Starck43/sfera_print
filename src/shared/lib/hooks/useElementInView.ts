@@ -9,13 +9,7 @@ export interface ElementInViewProps {
 }
 
 export const useElementInView = (props: ElementInViewProps) => {
-    const {
-        containerRef,
-        triggerRef,
-        steps = 1,
-        threshold = 1,
-        callback
-    } = props
+    const { containerRef, triggerRef, steps = 1, threshold = 1, callback } = props
 
     const getThresholds = useCallback(() => {
         if (steps <= 1) return threshold

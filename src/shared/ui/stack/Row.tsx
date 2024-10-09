@@ -1,10 +1,4 @@
-import {
-    memo,
-    ComponentProps,
-    ElementType,
-    forwardRef,
-    ForwardedRef
-} from 'react'
+import { memo, ComponentProps, ElementType, forwardRef, ForwardedRef } from 'react'
 import { Flex, FlexProps } from './Flex'
 
 type RowProps<E extends ElementType> = Omit<FlexProps<E>, 'direction'> &

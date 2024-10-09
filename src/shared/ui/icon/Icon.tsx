@@ -21,9 +21,7 @@ export const Icon = (props: IconProps) => {
     return (
         <Suspense fallback={null}>
             <LazyIcon
-                className={classnames(cls, ['icon', 'svg-icon'], {}, [
-                    className
-                ])}
+                className={classnames(cls, ['icon', 'svg-icon'], {}, [className])}
                 {...other}
             />
         </Suspense>

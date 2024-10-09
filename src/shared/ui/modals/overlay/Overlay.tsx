@@ -22,9 +22,7 @@ export const Overlay = memo((props: OverlayProps) => {
     return (
         <Tag
             aria-modal
-            className={classnames(cls, ['overlay'], { open, show }, [
-                className
-            ])}
+            className={classnames(cls, ['overlay'], { open, show }, [className])}
             onClick={onClick}
             style={style}
         />

@@ -15,8 +15,7 @@ export default function NotFound() {
 			`}
             </style>
             <h2>
-                404<b style={{ color: '#FFF' }}>&nbsp;|&nbsp;</b>Страница не
-                найдена
+                404<b style={{ color: '#FFF' }}>&nbsp;|&nbsp;</b>Страница не найдена
             </h2>
         </div>
     )

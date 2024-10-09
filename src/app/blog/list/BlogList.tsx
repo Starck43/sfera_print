@@ -30,16 +30,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
         () => (
             <div className={cls.blog__container}>
                 {posts?.map(
-                    (
-                        {
-                            id,
-                            title,
-                            excerpt = null,
-                            cover = null,
-                            event_date = null
-                        },
-                        idx
-                    ) => (
+                    ({ id, title, excerpt = null, cover = null, event_date = null }, idx) => (
                         <Section
                             key={'blog-' + id}
                             as="article"
@@ -51,8 +42,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                                 <div className={cls.cover__wrapper}>
                                     <Image
                                         src={
-                                            typeof cover === 'object' &&
-                                            'src' in cover
+                                            typeof cover === 'object' && 'src' in cover
                                                 ? cover.src
                                                 : cover
                                         }
@@ -66,24 +56,14 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                                     />
                                 </div>
                             )}
-                            <Header
-                                tag="h3"
-                                title={title}
-                                transform="upperFirst"
-                            />
+                            <Header tag="h3" title={title} transform="upperFirst" />
                             {event_date && (
                                 <span style={{ marginTop: '-0.5rem' }}>
                                     {formatDate(event_date)}
                                 </span>
                             )}
-                            {excerpt && (
-                                <p className={cls.excerpt}>{excerpt}</p>
-                            )}
-                            <Button
-                                title="Подробнее"
-                                rounded
-                                onClick={() => setActiveBlog(idx)}
-                            />
+                            {excerpt && <p className={cls.excerpt}>{excerpt}</p>}
+                            <Button title="Подробнее" rounded onClick={() => setActiveBlog(idx)} />
                         </Section>
                     )
                 )}
@@ -103,10 +83,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                     className="blog-detail"
                 >
                     {isError ? (
-                        <Header
-                            title="Ошибка загрузки статьи!"
-                            style={{ flex: '0 1 50%' }}
-                        />
+                        <Header title="Ошибка загрузки статьи!" style={{ flex: '0 1 50%' }} />
                     ) : (
                         <BlogDetails data={post} />
                     )}

@@ -1,12 +1,6 @@
 'use client'
 
-import {
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-    MutableRefObject
-} from 'react'
+import { useCallback, useEffect, useRef, useState, MutableRefObject } from 'react'
 
 interface HookModalProps {
     onSubmit?: () => void
@@ -23,12 +17,7 @@ interface HookModalProps {
  * @param animationTime
  */
 
-export const useModal = ({
-    onSubmit,
-    onClose,
-    isOpen,
-    animationTime
-}: HookModalProps) => {
+export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModalProps) => {
     const [isShown, setIsShown] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
     const timerRef = useRef() as MutableRefObject<ReturnType<typeof setTimeout>>

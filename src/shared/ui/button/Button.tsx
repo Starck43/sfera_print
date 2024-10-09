@@ -35,78 +35,70 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // eslint-disable-next-line react/display-name
-export const Button = forwardRef(
-    (props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
-        const {
-            Icon,
-            title,
-            href,
-            target = '_self',
-            feature = 'blank',
-            size = 'normal',
-            align = 'center',
-            fullWidth = false,
-            rounded = false,
-            bordered = false,
-            squared = false,
-            shadowed = false,
-            disabled = false,
-            className,
-            children,
-            ...other
-        } = props
+export const Button = forwardRef((props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
+    const {
+        Icon,
+        title,
+        href,
+        target = '_self',
+        feature = 'blank',
+        size = 'normal',
+        align = 'center',
+        fullWidth = false,
+        rounded = false,
+        bordered = false,
+        squared = false,
+        shadowed = false,
+        disabled = false,
+        className,
+        children,
+        ...other
+    } = props
 
-        let content = (
-            <>
-                {Icon}
-                {children || title || null}
-            </>
-        )
+    let content = (
+        <>
+            {Icon}
+            {children || title || null}
+        </>
+    )
 
-        if (href) {
-            content = (
-                <Link
-                    className={classnames(cls, ['link'])}
-                    target={target}
-                    href={href}
-                >
-                    {content}
-                </Link>
-            )
-        }
-
-        return (
-            <button
-                ref={ref}
-                type="button"
-                disabled={disabled}
-                {...other}
-                className={classnames(
-                    cls,
-                    [
-                        'button',
-                        feature,
-                        size,
-                        align,
-                        Icon && (children || title)
-                            ? 'icon__with__title'
-                            : undefined,
-                        children || title ? 'has__title' : 'only__icon',
-                        href ? 'is__link' : undefined
-                    ],
-                    {
-                        fullWidth,
-                        bordered,
-                        rounded,
-                        squared,
-                        shadowed,
-                        disabled
-                    },
-                    [className]
-                )}
-            >
+    if (href) {
+        content = (
+            <Link className={classnames(cls, ['link'])} target={target} href={href}>
                 {content}
-            </button>
+            </Link>
         )
     }
-)
+
+    return (
+        <button
+            ref={ref}
+            type="button"
+            disabled={disabled}
+            {...other}
+            className={classnames(
+                cls,
+                [
+                    'button',
+                    feature,
+                    size,
+                    align,
+                    Icon && (children || title) ? 'icon__with__title' : undefined,
+                    children || title ? 'has__title' : 'only__icon',
+                    href ? 'is__link' : undefined
+                ],
+                {
+                    fullWidth,
+                    bordered,
+                    rounded,
+                    squared,
+                    shadowed,
+                    disabled
+                },
+                [className]
+            )}
+        >
+            {content}
+        </button>
+    )
+})

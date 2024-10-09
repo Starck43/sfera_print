@@ -12,8 +12,7 @@ export function RouteEvents() {
 
     useEffect(() => {
         // const prevPath = ref.current
-        const isDetailPage =
-            currentPath?.split('/').filter(Boolean).length === 2
+        const isDetailPage = currentPath?.split('/').filter(Boolean).length === 2
         setPlayHeaderAnimation(!showMenu && !isDetailPage)
 
         ref.current = currentPath

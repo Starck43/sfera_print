@@ -2,10 +2,7 @@
 
 import { useCallback, useEffect, useRef } from 'react'
 
-import {
-    AnimationProvider,
-    useAnimationModules
-} from '@/shared/lib/providers/AnimationProvider'
+import { AnimationProvider, useAnimationModules } from '@/shared/lib/providers/AnimationProvider'
 import { useWindowDimensions } from '@/shared/lib/hooks/useWindowDimensions'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { getScrollElement } from '@/shared/lib/helpers/dom'
@@ -47,9 +44,7 @@ const DrawerContent = (props: DrawerProps) => {
     const checkScrollBody = useCallback(() => {
         if (!bodyRef?.current) return
 
-        const scrollParent = getScrollElement(
-            bodyRef?.current?.firstChild as HTMLElement
-        )
+        const scrollParent = getScrollElement(bodyRef?.current?.firstChild as HTMLElement)
         if (scrollParent) {
             bodyRef?.current?.classList?.add('scrollable')
         } else {
@@ -90,25 +85,11 @@ const DrawerContent = (props: DrawerProps) => {
             })
             document.body.style.overflow = ''
         },
-        [
-            api,
-            width,
-            height,
-            Spring.config.stiff,
-            animationTime,
-            footer,
-            onClose
-        ]
+        [api, width, height, Spring.config.stiff, animationTime, footer, onClose]
     )
 
     const bind = Gesture.useDrag(
-        ({
-            last,
-            velocity: [vx, vy],
-            direction: [dx, dy],
-            movement: [mx, my],
-            cancel
-        }) => {
+        ({ last, velocity: [vx, vy], direction: [dx, dy], movement: [mx, my], cancel }) => {
             if (position === 'top' || position === 'bottom') {
                 if (my < -60) cancel()
 
@@ -176,11 +157,7 @@ const DrawerContent = (props: DrawerProps) => {
                 {...bind()}
                 className={cls.drawer}
                 style={drawerStyle as any}
-                onClick={
-                    closeOnOverlayClick
-                        ? () => closeDrawer(0)
-                        : (undefined as any)
-                }
+                onClick={closeOnOverlayClick ? () => closeDrawer(0) : (undefined as any)}
             >
                 <Col
                     role="link"
@@ -221,19 +198,12 @@ const DrawerContent = (props: DrawerProps) => {
                         )}
                     </Row>
 
-                    <div
-                        ref={bodyRef}
-                        className={classnames(cls, ['body'], {}, [styles.body])}
-                    >
+                    <div ref={bodyRef} className={classnames(cls, ['body'], {}, [styles.body])}>
                         {children}
                     </div>
 
                     {footer && (
-                        <div
-                            className={classnames(cls, ['footer'], {}, [
-                                styles.footer
-                            ])}
-                        >
+                        <div className={classnames(cls, ['footer'], {}, [styles.footer])}>
                             {footer}
                         </div>
                     )}

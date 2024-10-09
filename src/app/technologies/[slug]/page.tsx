@@ -32,11 +32,7 @@ export async function generateStaticParams() {
 const TechnologyDetailsPage = async ({ params: { slug } }: PageProps) => {
     const technologyData: PostType = await getTechnologies(slug)
     return (
-        <PageLayout
-            gap={'none'}
-            sectionMode={false}
-            className="technology__details-page"
-        >
+        <PageLayout gap={'none'} sectionMode={false} className="technology__details-page">
             <TechnologyDetails data={technologyData} />
         </PageLayout>
     )

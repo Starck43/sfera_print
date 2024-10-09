@@ -71,11 +71,18 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
 
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, domNode.attribs.src)
-                const img = <Image src={src} alt={domNode.attribs.alt || ''} sizes="50vw" fill style={{'objectFit': 'cover'}}/>
+                const img = (
+                    <Image
+                        src={src}
+                        alt={domNode.attribs.alt || ''}
+                        sizes="50vw"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                    />
+                )
 
                 if (domNode.parent?.tagName === 'figure') return img
                 return <div className="image">{img}</div>
-
             } else if (domNode instanceof Element && domNode.tagName === 'video') {
                 if (!domNode.attribs?.src || !domNode.attribs?.poster) return null
 

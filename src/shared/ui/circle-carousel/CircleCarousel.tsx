@@ -1,12 +1,6 @@
 'use client'
 
-import React, {
-    memo,
-    SyntheticEvent,
-    useCallback,
-    useRef,
-    useState
-} from 'react'
+import React, { memo, SyntheticEvent, useCallback, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import NextImage from 'next/image'
 
@@ -26,11 +20,7 @@ interface CarouselProps {
     infinite?: boolean
 }
 
-const CircleCarousel = ({
-    duration,
-    loopDuration,
-    infinite = false
-}: CarouselProps) => {
+const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselProps) => {
     const { data: items } = useFetch<PostType[]>('features')
 
     const router = useRouter()
@@ -65,18 +55,14 @@ const CircleCarousel = ({
             currentSlide.current = index
             const slides = slidesRef.current
             const activeSlide = slides?.children[index]
-            const prevSlide =
-                slides?.children[(index - 1 + items.length) % items.length]
+            const prevSlide = slides?.children[(index - 1 + items.length) % items.length]
             prevSlide?.classList.remove(cls.active)
             activeSlide?.classList.add(cls.active)
         },
         [items]
     )
 
-    const onLoadImage = (
-        e: SyntheticEvent<HTMLImageElement>,
-        index: number
-    ) => {
+    const onLoadImage = (e: SyntheticEvent<HTMLImageElement>, index: number) => {
         if (!items) return
 
         e.currentTarget.style.opacity = '1'
@@ -88,10 +74,7 @@ const CircleCarousel = ({
     if (!items) return null
 
     return (
-        <div
-            className={cls.carousel}
-            onClick={(e) => onCarouselContentClick(e)}
-        >
+        <div className={cls.carousel} onClick={(e) => onCarouselContentClick(e)}>
             <div className={cls.slides} ref={slidesRef}>
                 {items?.map((item, idx) => (
                     <Col

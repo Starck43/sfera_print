@@ -18,7 +18,9 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ modelUrl, play = true, loop =
     useLayoutEffect(() => {
         if (!play) return
 
-        animations.forEach( clip => { mixer.clipAction( clip ).loop = loop ? LoopRepeat : LoopOnce } )
+        animations.forEach((clip) => {
+            mixer.clipAction(clip).loop = loop ? LoopRepeat : LoopOnce
+        })
         names.forEach((animation) => {
             actions?.[animation]?.play()
         })

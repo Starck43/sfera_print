@@ -45,7 +45,7 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
                 targets: '.' + cls.stat__diagram + ' .satellite-dot',
                 duration: 800,
                 scale: [0, 1],
-                opacity: 1,
+                opacity: 1
             })
             .add({
                 targets: '.' + cls.stat__diagram + ' .orbit-path',
@@ -75,11 +75,7 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
                 const orbitOpacity = 1 - index * orbitOpacityStep
                 return (
                     <g key={`orbit-${index}`} className={cls.orbits}>
-                        <path
-                            d={orbit}
-                            strokeOpacity={orbitOpacity}
-                            className="orbit-path"
-                        />
+                        <path d={orbit} strokeOpacity={orbitOpacity} className="orbit-path" />
                     </g>
                 )
             })}
@@ -92,7 +88,7 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
                         style={{ opacity: 1 }}
                     >
                         <circle cx={x} cy={y} r={3} />
-                        <circle cx={x} cy={y} r={6} fill='none'/>
+                        <circle cx={x} cy={y} r={6} fill="none" />
                     </g>
                 )
             })}
@@ -102,13 +98,11 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
                 const x = text.x.toFixed(2)
                 const y = (text.y - (text.singY < 0 ? -20 : 16 + descArray.length * 10)).toFixed(3)
                 return (
-                    <g key={`ref-path-${index}`} className={classnames(cls, ['ref__text'], {}, ['ref-text'])}>
-                        <text
-                            x={x}
-                            y={y}
-                            textAnchor={'middle'}
-                            fill="currentColor"
-                        >
+                    <g
+                        key={`ref-path-${index}`}
+                        className={classnames(cls, ['ref__text'], {}, ['ref-text'])}
+                    >
+                        <text x={x} y={y} textAnchor={'middle'} fill="currentColor">
                             <tspan
                                 x={x}
                                 dy={0}
