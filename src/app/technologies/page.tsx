@@ -22,7 +22,7 @@ const TechnologiesPage = async () => {
         content = null,
         posts: technologiesData
     } = await getPage<Page<PostType>>('technologies')
-    const parsedContent = await parseHtml(content)
+    const parsedContent = parseHtml(content)
 
     return (
         <PageLayout title={title} gap={'none'} sectionMode className="technologies-page">

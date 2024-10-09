@@ -22,7 +22,7 @@ const DocumentsPage = async () => {
         content = null,
         posts: documentsData
     } = await getPage<Page<PostType>>('documents')
-    const parsedContent = await parseHtml(content)
+    const parsedContent = parseHtml(content)
 
     return (
         <PageLayout title={title} gap={'none'} sectionMode className="documents-page">

@@ -10,6 +10,7 @@ import { Loader } from '@/shared/ui/loader'
 import type { Media, PostType } from './types'
 
 import cls from './Post.module.sass'
+import { parseHtml } from '@/components/parse-html'
 
 interface ContentProps {
     data?: PostType | undefined
@@ -21,6 +22,7 @@ const Post = ({ data, style, className }: ContentProps) => {
     if (!data) return <Loader />
 
     const { id, title, cover: image, media, event_date, desc } = data
+    const parsedContent = parseHtml(desc)
 
     return (
         <Slider
@@ -34,7 +36,7 @@ const Post = ({ data, style, className }: ContentProps) => {
             className={classnames(cls, ['container'], {}, [className])}
             style={style}
         >
-            <Col gap="sm" align="start" fullWidth className={cls.details}>
+            <Col gap="md" align="start" fullWidth className={cls.details}>
                 {title && (
                     <Header
                         title={title}
@@ -49,12 +51,7 @@ const Post = ({ data, style, className }: ContentProps) => {
                         transform="upperCase"
                     />
                 )}
-                {desc && (
-                    <div
-                        dangerouslySetInnerHTML={{ __html: desc }}
-                        className={cls.desc}
-                    />
-                )}
+                <div className="page-content">{parsedContent}</div>
             </Col>
         </Slider>
     )

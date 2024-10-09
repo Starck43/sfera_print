@@ -21,7 +21,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 
 const ContactsPage = async () => {
     const { title, content = null, sections } = await getPage<Page<Contact>>('contacts')
-    const parsedContent = await parseHtml(content)
+    const parsedContent = parseHtml(content)
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="contacts-page">

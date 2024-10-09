@@ -31,7 +31,7 @@ const PhilosophyPage = async () => {
         sections: { achievements, stat, partners }
     } = await getPage<Page<any>>('philosophy')
 
-    const parsedContent = await parseHtml(content)
+    const parsedContent = parseHtml(content)
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="philosophy-page">

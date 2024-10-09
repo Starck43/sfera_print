@@ -12,7 +12,7 @@ export interface DrawerProps {
     fullSize?: boolean
     rounded?: boolean
     bordered?: boolean
-    header?: ReactElement | null
+    header?: ReactElement | string | null
     footer?: ReactElement | null
     children: ReactNode
     portalRoot?: HTMLElement

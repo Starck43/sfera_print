@@ -85,7 +85,7 @@ const DrawerContent = (props: DrawerProps) => {
                     velocity,
                     duration: animationTime
                 },
-                onStart: footer?.props?.onClick?.(),
+                onStart: footer instanceof Object && footer.props?.onClick?.(),
                 onResolve: onClose
             })
             document.body.style.overflow = ''
@@ -96,7 +96,7 @@ const DrawerContent = (props: DrawerProps) => {
             height,
             Spring.config.stiff,
             animationTime,
-            footer?.props,
+            footer,
             onClose
         ]
     )

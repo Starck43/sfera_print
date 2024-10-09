@@ -12,11 +12,12 @@ import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
 
 type ExtendedDOMNode = DOMNode & {
     parent?: DOMNode
+    children: DOMNode[]
     firstChild?: { name: string; tagName: string }
     lastChild?: { name: string; tagName: string }
 }
 
-export const parseHtml = async (html: string | null): Promise<React.ReactNode | null> => {
+export const parseHtml = (html: string | null): React.ReactNode | null => {
     if (!html) return null
 
     const linkImgRegex =
@@ -31,7 +32,8 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
     ) => `<video poster="${imageSrc}" src="${linkSrc}" />`
 
     const content = html
-        .replace(/<(\/?)(table|tbody)([^>]*)>/g, '')
+        //.replace(/<(\/?)(tbody)([^>]*)>/g, '')
+        //.replace(/<\/?table>/g, '')
         .replace(/<[^/>][^>]?>(?:[\s+|&nbsp;]+)?<\/[^>]+>/g, '')
         .replace(linkImgRegex, videoContentReplacement)
         .replace(/\n+\s*/g, '\n')
@@ -42,19 +44,13 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
         // @ts-expect-error
         replace: (domNode: ExtendedDOMNode) => {
             if (
-                domNode instanceof Element &&
-                domNode.tagName === 'td' &&
-                domNode.children?.length === 1 &&
-                domNode.children[0] instanceof Text
-            ) {
-                return <p>{domNode.children[0].data}</p>
-            } else if (
-                domNode instanceof Element &&
-                domNode.tagName === 'td' &&
-                (domNode.firstChild?.tagName === 'figure' ||
-                    domNode.firstChild?.name === 'img' ||
-                    domNode.firstChild?.name === 'video' ||
-                    domNode.lastChild?.name === 'video')
+                (domNode instanceof Element &&
+                    domNode.tagName === 'td' &&
+                    domNode.children?.length > 1 &&
+                    (domNode.firstChild?.tagName === 'figure' ||
+                        domNode.firstChild?.name === 'img')) ||
+                domNode.firstChild?.name === 'video' ||
+                domNode.lastChild?.name === 'video'
             ) {
                 return (
                     <td
@@ -65,7 +61,7 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
                                 : 'media-grid'
                         }
                     >
-                        {domToReact(domNode.children as DOMNode[], options)}
+                        {domToReact(domNode.children, options)}
                     </td>
                 )
             }
@@ -75,14 +71,11 @@ export const parseHtml = async (html: string | null): Promise<React.ReactNode | 
 
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, domNode.attribs.src)
+                const img = <Image src={src} alt={domNode.attribs.alt || ''} sizes="50vw" fill style={{'objectFit': 'cover'}}/>
 
-                if (domNode.parent?.tagName === 'figure')
-                    return <Image src={src} alt={domNode.attribs.alt} fill />
-                return (
-                    <div className="image-wrapper">
-                        <Image src={src} alt={domNode.attribs.alt} fill />
-                    </div>
-                )
+                if (domNode.parent?.tagName === 'figure') return img
+                return <div className="image">{img}</div>
+
             } else if (domNode instanceof Element && domNode.tagName === 'video') {
                 if (!domNode.attribs?.src || !domNode.attribs?.poster) return null
 
