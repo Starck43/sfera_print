@@ -45,27 +45,17 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
             if (
                 domNode instanceof Element &&
                 domNode.tagName === 'td' &&
-                ((domNode.children?.length > 1 &&
-                    (domNode.firstChild?.tagName === 'figure' ||
-                        domNode.firstChild?.name === 'img')) ||
-                    domNode.firstChild?.name === 'video' ||
-                    domNode.lastChild?.name === 'video')
+                domNode.children?.length > 1 &&
+                (domNode.firstChild?.tagName === 'figure' || domNode.firstChild?.name === 'img')
             ) {
-                return (
-                    <td
-                        className={
-                            domNode.firstChild?.name === 'video' ||
-                            domNode.lastChild?.name === 'video'
-                                ? 'video-wrapper'
-                                : 'media-grid'
-                        }
-                    >
-                        {domToReact(domNode.children, options)}
-                    </td>
-                )
-            }
-
-            if (domNode instanceof Element && domNode.tagName === 'img') {
+                return <td className="media-grid">{domToReact(domNode.children, options)}</td>
+            } else if (
+                domNode instanceof Element &&
+                domNode.tagName === 'td' &&
+                (domNode.firstChild?.name === 'video' || domNode.lastChild?.name === 'video')
+            ) {
+                return <td className="video-wrapper">{domToReact(domNode.children, options)}</td>
+            } else if (domNode instanceof Element && domNode.tagName === 'img') {
                 if (!domNode.attribs?.src) return null
 
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
