@@ -90,7 +90,7 @@ export const Slider = (props: SliderProps) => {
                                             >
                                                 <style>{`
                                                     :root {--media-range-track-height: 2px; --media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}
-                                                    ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;padding: 0.8rem; border-radius: 50%; width: 3rem; height: 3rem;}
+                                                    ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;padding: 0.8rem; border-radius: 50%; width: var(--slider-controls-width); height: var(--slider-controls-width);}
                                                     ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
                                                     ::part(play):hover {--media-icon-color: inherit !important; background-color: var(--secondary-color) !important;} 
                                                     ::part(seek-backward), ::part(seek-forward) {display: none;}

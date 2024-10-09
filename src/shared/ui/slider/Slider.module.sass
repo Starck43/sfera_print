@@ -4,9 +4,9 @@
 	--slider-controls-width: calc(var(--icon-size-lg) + 3vw)
 	height: auto
 	margin: auto
-	//+media-min(md)
-	//	padding-left: 0
-	//	padding-right: 0
+//+media-min(md)
+//	padding-left: 0
+//	padding-right: 0
 
 .slider__container
 	position: relative
@@ -18,7 +18,7 @@
 		padding-left: var(--slider-controls-width)
 		padding-right: var(--slider-controls-width)
 
-	// @media (orientation: portrait)
+// @media (orientation: portrait)
 
 
 .slider__wrapper
@@ -51,6 +51,7 @@
 	+media-max(md)
 		left: 1rem
 		right: 1rem
+	pointer-events: none
 
 .image
 	transition: opacity 300ms ease-out
@@ -62,6 +63,7 @@
 	//height: 100%
 	background-color: transparentize(white, 0.4)
 	border-radius: 50%
+	transition: all 300ms ease-out
 	overflow: hidden
 	z-index: 1
 	pointer-events: visibleStroke
@@ -69,6 +71,15 @@
 	+media-max(sm)
 		height: auto
 		filter: invert(1)
+
+	&:hover
+		color: var(--link-color)
+
+		&.left
+			transform: translateX(-0.5em)
+
+		&.right
+			transform: translateX(0.5em)
 
 .thumbs__container
 	display: none
@@ -94,6 +105,7 @@
 	transition: all 300ms ease-out
 	background-color: lightgrey
 	cursor: pointer
+
 	img
 		object-fit: cover
 
