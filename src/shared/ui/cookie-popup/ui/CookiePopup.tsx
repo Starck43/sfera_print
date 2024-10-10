@@ -4,7 +4,7 @@ import { checkCookie, setCookie } from '@/shared/lib/helpers/cookie'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { Button } from '@/shared/ui/button'
 import { NavLink } from '@/shared/ui/link'
-import { Row } from '@/shared/ui/stack'
+import { Col, Row } from '@/shared/ui/stack'
 
 import cls from './CookiePopup.module.sass'
 
@@ -48,21 +48,19 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
     }
 
     return (
-        <Row
-            align="center"
-            justify="between"
-            className={classnames(cls, ['cookie__popup'], { visible })}
-        >
-            <p>
-                Этот сайт использует файлы cookie для улучшения пользовательского опыта. Продолжая
-                пользоваться сайтом, Вы {!approved_policy ? 'соглашаетесь' : 'согласились'} с
-                использованием файлов cookie. Рекомендуем ознакомиться с политикой &nbsp;
-                <NavLink href={file} title="здесь" target="_blank" rel="noopener noreferrer" />.
-            </p>
-            <Button rounded onClick={handleClose}>
-                {!approved_policy ? 'Принять' : 'ОК'}
-            </Button>
-        </Row>
+        <div className={classnames(cls, ['cookie__popup'], { visible })}>
+            <Col gap="xs" align='end'>
+                <p>
+                    Продолжая пользоваться сайтом, Вы{' '}
+                    {!approved_policy ? 'соглашаетесь' : 'согласились'} с использованием файлов cookie.
+                    Ознакомиться с политикой можно &nbsp;
+                    <NavLink href={file} title="здесь" target="_blank" rel="noopener noreferrer" />.
+                </p>
+                <Button feature="inverted" bordered rounded onClick={handleClose}>
+                    {!approved_policy ? 'Принять' : 'ОК'}
+                </Button>
+            </Col>
+        </div>
     )
 }
 

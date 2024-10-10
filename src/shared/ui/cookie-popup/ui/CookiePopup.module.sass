@@ -2,25 +2,33 @@
 
 .cookie__popup
 	position: fixed
-	left: 0
+	right: 0
 	bottom: 0
 	height: auto
 	width: 100%
-	padding: 1rem
-	background-color: rgba(var(--page-background-color), 0.9)
-	border: var(--border-thickness) var(--border-color-default) solid
+	padding: 1.5rem
 	transition: all 600ms ease
 	transform: translateY(100%)
 	opacity: 0
 	z-index: calc(var(--overlay-z-index) + 3)
+
+	> div
+		padding: 1rem
+		background-color: var(--primary-color)
+		border: var(--border-thickness) var(--primary-color) solid
+		border-radius: var(--border-radius)
+		overflow: hidden
+		width: 100%
+		+media-min(sm)
+			margin-left: auto
+			max-width: 500px
+			flex-direction: unset
 
 	&.visible
 		transform: none
 		opacity: 1
 
 	p
-		color: var(--grey-color)
+		font-size: 0.8rem
+		color: var(--white-color)
 		padding: 0
-
-	+media-max(sm)
-		flex-direction: column
