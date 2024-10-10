@@ -27,7 +27,8 @@
 	--modal-padding: clamp(1.6rem, 0.5rem + 2vw, 2rem);
 	--gap: 1rem;
 	--controls-height: 2.4rem;
-	--slider-controls-width: clamp(3.2rem, 2.8rem + 0.8vw, 4rem);
+	--controls-width: clamp(3.2rem, 2.8rem + 0.8vw, 4rem);
+	--slider-controls-width: 3.2rem;
 	--icon-size-xs: 1.2rem;
 	--icon-size-sm: 1.8rem;
 	--icon-size-md: 2.4rem;
@@ -41,6 +42,10 @@
 	--overlay-bg-color: rgb(0 0 0 / 20%);
 	--overlay-z-index: 100;
 	--translate-y-in-view: 3rem;
+}
+
+@media (min-width: 768px) {
+	--slider-controls-width: 3.8rem
 }
 
 html * /* override x.xhtml.ru style */
@@ -308,7 +313,7 @@ blockquote {
 	}
 
 	@media (min-width: 1200px) {
-		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
