@@ -1,10 +1,4 @@
 :root {
-	--font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-	'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-	'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-
-	--font-family-secondary: 'Montserrat';
-
 	--page-background-color: 254, 254, 254;
 	--white-color: #fefefe;
 	--black-color: #22201e;
@@ -12,6 +6,8 @@
 	--light-grey-color: #DFDFDFFF;
 	--primary-color: #478631;
 	--secondary-color: #a3c626;
+	--primary-color-alpha: 71, 134, 49;
+	--secondary-color-alpha: 163, 198, 38;
 	--grey-color-alpha: 70, 74, 84;
 
 	--text-color: rgba(var(--grey-color-alpha), 0.7);
@@ -23,12 +19,12 @@
 	--container-max-width: 1400px;
 	--line-height-title: 1.25;
 	--line-height-paragraph: 1.5;
-	--page-padding: clamp(2.6rem, 2.2rem + 2vw, 4rem);
-	--modal-padding: clamp(1.6rem, 0.5rem + 2vw, 2rem);
+	--page-padding: clamp(1rem, 0.2rem + 4vw, 4rem);
+	--modal-padding: clamp(1.4rem, 0.5rem + 2vw, 2rem);
 	--gap: 1rem;
 	--controls-height: 2.4rem;
 	--controls-width: clamp(3.2rem, 2.8rem + 0.8vw, 4rem);
-	--slider-controls-width: 3.8rem;
+	--slider-controls-width: 3.2rem;
 	--icon-size-xs: 1.2rem;
 	--icon-size-sm: 1.8rem;
 	--icon-size-md: 2.4rem;
@@ -44,7 +40,7 @@
 	--translate-y-in-view: 3rem;
 
 	@media (min-width: 768px) {
-		--slider-controls-width: 4.8rem;
+		--slider-controls-width: 4.2rem;
 	}
 }
 
@@ -164,7 +160,7 @@ h1 {
 	color: var(--secondary-color);
 	font-family: var(--font-family-secondary), sans-serif;
 	line-height: var(--line-height-title);
-	font-size: clamp(1.8rem, 0.9rem + 2vw, 3rem);
+	font-size: clamp(1.7rem, 0.8rem + 2vw, 3rem);
 	text-transform: uppercase;
 	word-break: break-word;
 	z-index: 20;
@@ -174,19 +170,17 @@ h2 {
 	margin-top: 6px;
 	color: var(--secondary-color);
 	font-family: var(--font-family-secondary), sans-serif;
-	font-size: clamp(1.6rem, 0.9rem + 1.8vw, 2.4rem);
+	font-size: clamp(1.5rem, 0.8rem + 1.8vw, 2.4rem);
 	line-height: var(--line-height-title);
 	word-break: break-word;
-	font-weight: bold;
 }
 
 h3 {
 	color: var(--secondary-color);
 	font-family: var(--font-family-secondary), serif;
-	font-size: clamp(1.4rem, 0.9rem + 0.8vw, 1.6rem);
+	font-size: clamp(1.3rem, 0.8rem + 0.8vw, 1.6rem);
 	line-height: var(--line-height-title);
 	text-transform: uppercase;
-	font-weight: 500;
 }
 
 h4 {
@@ -195,7 +189,12 @@ h4 {
 	font-family: var(--font-family-secondary), serif;
 	font-size: 1.2rem;
 	line-height: var(--line-height-paragraph);
-	font-weight: 500;
+}
+
+h5 {
+	color: var(--secondary-color);
+	font-family: var(--font-family-secondary), serif;
+	line-height: var(--line-height-paragraph);
 }
 
 a {
@@ -276,7 +275,7 @@ blockquote {
 	flex-direction: column;
 	gap: var(--page-padding);
 
-	@media (min-width: 768px) {
+	@media (min-width: 992px) {
 		flex-wrap: wrap;
 		flex-direction: unset;
 		.media-grid, .video-wrapper {

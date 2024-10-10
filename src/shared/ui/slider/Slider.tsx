@@ -41,7 +41,12 @@ export const Slider = (props: SliderProps) => {
     const sliderContent = useMemo(
         () => (
             <div className={cls.slider__container}>
-                <div className={cls.slider__wrapper}>
+                <div
+                    className={classnames(cls, [
+                        'slider__wrapper',
+                        media.length === 1 && !media[0].image_portrait ? 'landscape' : ''
+                    ])}
+                >
                     <Swiper
                         modules={[EffectFade]}
                         effect="fade"
@@ -59,7 +64,7 @@ export const Slider = (props: SliderProps) => {
                     >
                         {media?.map(
                             (
-                                { id, image, video, video_portrait, image_portrait, title, link },
+                                { id, title, link, image, image_portrait, video, video_portrait },
                                 idx
                             ) => {
                                 const imageSrc = getDeviceSrc(

@@ -56,7 +56,6 @@ const Map = ({ pageTitle, cities }: MapProps) => {
         }
     })
 
-    console.log(cities)
     useEffect(() => {
         if (!width || isPortrait) return
 

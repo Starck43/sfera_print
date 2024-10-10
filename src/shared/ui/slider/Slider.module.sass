@@ -23,10 +23,13 @@
 .slider__wrapper
 	+responsive-ratio(16, 9)
 	top: 50%
+	border-radius: var(--border-radius)
 	transform: translateY(-50%)
-
-	@media (max-width: 575.98px) and (orientation: portrait)
-		+responsive-ratio(9, 16)
+	overflow: hidden
+	&:not(.landscape)
+		border-radius: 0
+		@media (max-width: 575.98px) and (orientation: portrait)
+			+responsive-ratio(9, 16)
 
 .slider
 	position: absolute !important
@@ -43,7 +46,7 @@
 
 	@media (orientation: portrait)
 		img
-			object-fit: contain
+			object-fit: cover
 
 .slider__controls
 	+push--absolute(0, 0, 0, 0)
@@ -58,9 +61,8 @@
 
 .arrow
 	width: var(--slider-controls-width)
-	padding: 1rem
+	padding: 0.6rem
 	//height: 100%
-	background-color: transparentize(white, 0.4)
 	border-radius: 50%
 	transition: all 300ms ease-out
 	overflow: hidden
@@ -69,16 +71,22 @@
 	cursor: pointer
 	+media-max(sm)
 		height: auto
-		filter: invert(1)
+
+	+media-max(md)
+		background-color: rgba(var(--secondary-color-alpha), 0.2)
+		//filter: invert(1)
 
 	&:hover
-		color: var(--link-color)
+		background-color: rgba(var(--secondary-color-alpha), 1)
 
-		&.left
-			transform: translateX(-0.5em)
+		+media-min(md)
+			color: var(--link-color)
+			background-color: transparent
+			&.left
+				transform: translateX(-0.5em)
 
-		&.right
-			transform: translateX(0.5em)
+			&.right
+				transform: translateX(0.5em)
 
 .thumbs__container
 	display: none
@@ -86,16 +94,17 @@
 		width: 100%
 		//max-width: var(--paragraph-container-max-width)
 		margin-bottom: calc(var(--gap) * -1)
-		display: grid
-		grid-template-columns: repeat(auto-fill, minmax(40px, auto))
+		display: inline-grid
+		justify-content: center
+		grid-template-columns: repeat(auto-fit, minmax(50px, auto))
 		grid-gap: var(--gap)
 
 	+media-min(md)
 		padding: 0 var(--slider-controls-width)
-		grid-template-columns: repeat(auto-fill, minmax(50px, auto))
+		grid-template-columns: repeat(auto-fit, minmax(75px, auto))
 
-	+media-min(xl)
-		grid-template-columns: repeat(auto-fill, minmax(75px, auto))
+	+media-min(xxl)
+		grid-template-columns: repeat(auto-fit, minmax(90px, auto))
 
 .thumb
 	+responsive-ratio(1, 1)

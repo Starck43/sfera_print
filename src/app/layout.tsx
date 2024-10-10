@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import Image from 'next/image'
+import { Montserrat } from 'next/font/google'
 
 import { RouteEvents } from '@/components/routes/route-events'
 import PageHeader from '@/components/page-header'
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
         type: 'website',
         siteName: SITE_TITLE,
         url: new URL(process.env.URL || SITE_URL),
-        title: 'Логотип Сфера Принт',
+        title: 'Сфера Принт',
         images: '/sp-logo.svg'
     },
     applicationName: 'sferaprint',
@@ -56,8 +57,17 @@ export const metadata: Metadata = {
 
 const brandFont = localFont({
     src: './fonts/PFBeauSansPro-Regular.woff2',
+    variable: '--font-family-primary',
     weight: '400',
     style: 'normal',
+    display: 'swap'
+})
+
+const titleFont = localFont({
+    src: './fonts/Montserrat-Medium.woff2',
+    //subsets: ['cyrillic'],
+    variable: '--font-family-secondary',
+    weight: '700',
     display: 'swap'
 })
 
@@ -65,13 +75,17 @@ export default async function RootLayout({
     children = null
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="ru" className={brandFont.className} suppressHydrationWarning>
+        <html
+            lang="ru"
+            className={`${brandFont.className} ${titleFont.variable}`}
+            suppressHydrationWarning
+        >
             <body>
                 <header>
                     <div className="logo">
                         <Image
                             src="/sp-logo.svg"
-                            alt="Логотип Сфера Принт"
+                            alt="Рекламно-производственная компания Сфера Принт"
                             sizes={'100%'}
                             fill
                             priority
