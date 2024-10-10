@@ -28,7 +28,7 @@
 	--gap: 1rem;
 	--controls-height: 2.4rem;
 	--controls-width: clamp(3.2rem, 2.8rem + 0.8vw, 4rem);
-	--slider-controls-width: 3.2rem;
+	--slider-controls-width: 3.8rem;
 	--icon-size-xs: 1.2rem;
 	--icon-size-sm: 1.8rem;
 	--icon-size-md: 2.4rem;
@@ -42,11 +42,12 @@
 	--overlay-bg-color: rgb(0 0 0 / 20%);
 	--overlay-z-index: 100;
 	--translate-y-in-view: 3rem;
+
+	@media (min-width: 768px) {
+		--slider-controls-width: 4.8rem;
+	}
 }
 
-@media (min-width: 768px) {
-	--slider-controls-width: 3.8rem
-}
 
 html * /* override x.xhtml.ru style */
 {
