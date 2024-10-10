@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useMemo, useState, Fragment } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 
 import { ContactItem } from '@/components/contacts'
 
-import { checkCookie, removeCookie } from '@/shared/lib/helpers/cookie'
+import { checkCookie } from '@/shared/lib/helpers/cookie'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 
 import { Col, Flex } from '@/shared/ui/stack'
@@ -26,7 +26,7 @@ const Navbar = ({ className }: NavbarProps) => {
     const [isCookieOpen, setIsCookieOpen] = useState(false)
 
     useEffect(() => {
-        removeCookie('cookie_policy')
+        // removeCookie('cookie_policy')
         if (!checkCookie('cookie_policy')) {
             setIsCookieOpen(true)
         }
