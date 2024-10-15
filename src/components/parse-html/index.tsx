@@ -8,6 +8,7 @@ import parse, {
     type HTMLReactParserOptions
 } from 'html-react-parser'
 import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
+import LazyImage from '@/shared/ui/lazy-image/LazyImage'
 
 type ExtendedDOMNode = DOMNode & {
     parent?: DOMNode
@@ -61,7 +62,7 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, domNode.attribs.src)
                 const img = (
-                    <Image
+                    <LazyImage
                         src={src}
                         alt={domNode.attribs.alt || ''}
                         sizes="50vw"

@@ -319,6 +319,7 @@ blockquote {
 
 .image {
 	position: relative;
+	pointer-events: none;
 
 	img {
 		object-fit: contain;

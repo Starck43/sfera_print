@@ -48,7 +48,7 @@ const PhilosophyPage = async () => {
                 title={'Наши достижения'}
                 titleTag="h2"
                 align="start"
-                //transform="lowerCase"
+                transform="upperFirst"
                 className={classnames(cls, ['section'], {}, ['grey__style'])}
             >
                 <Achievements data={achievements as Achievement[]} />
@@ -58,7 +58,7 @@ const PhilosophyPage = async () => {
                 title={'Причины выбрать нас'}
                 titleTag="h2"
                 align="end"
-                //transform="lowerCase"
+                transform="upperFirst"
                 className={classnames(cls, ['section'], {}, ['darkgrey__style'])}
             >
                 <div className={cls.diagram__container}>
@@ -76,7 +76,7 @@ const PhilosophyPage = async () => {
                 title={'Наши заказчики'}
                 titleTag="h2"
                 align="center"
-                //transform="lowerCase"
+                transform="upperFirst"
                 gap={'none'}
                 className={classnames(cls, ['section'])}
             >
