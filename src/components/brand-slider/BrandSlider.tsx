@@ -1,11 +1,11 @@
 'use client'
 
 import React, { memo } from 'react'
-import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules'
 
 import { Col } from '@/shared/ui/stack'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 import 'swiper/css'
 import cls from './BrandSlider.module.sass'
@@ -64,7 +64,7 @@ const BrandSlider = <T,>({ items }: { items: Partial<T>[] }) => {
                 <SwiperSlide key={'slide-' + idx} className={cls.slide}>
                     <Col justify="center" align="center" className={cls.brand}>
                         {logo && (
-                            <Image src={logo} alt={name || 'Логотип партнера'} sizes="100vw" fill />
+                            <LazyImage src={logo} alt={name || 'Логотип партнера'} sizes="100vw" fill />
                         )}
                     </Col>
                 </SwiperSlide>

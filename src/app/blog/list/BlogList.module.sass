@@ -8,16 +8,15 @@
 	width: 100%
 	padding: 0 var(--page-padding) var(--page-padding)
 
+	img
+		margin-bottom: var(--gap)
+
 	+media-min(xxl)
 		grid-template-columns: repeat(2, 1fr)
 
 .article
 	padding: 0 0 var(--page-padding)
 
-.cover__wrapper
-	+responsive-ratio(16, 9)
-
-	margin-bottom: var(--gap)
 
 .excerpt
 	flex: auto

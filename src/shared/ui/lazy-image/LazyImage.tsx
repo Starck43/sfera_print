@@ -7,17 +7,26 @@ import { classnames } from '@/shared/lib/helpers/classnames'
 
 import cls from './LazyImage.module.sass'
 
+const generateThumbnail = (src?: string) => {
+    if (!src) {
+        return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
+
+    }
+
+    return src.replace(/\.(jpg|jpeg|png|webp)$/, '.thumbnail.jpg')
+}
+
 const LazyImage = ({ src, alt, className, ...other }: ImageProps) => {
     return (
         <Image
             src={src}
+            overrideSrc={typeof src === 'string' ? src : undefined}
             //srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
             alt={alt}
-            fill
-            quality={85}
             placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
+            blurDataURL={generateThumbnail(src as string)}
             onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+            onError={(e) => (e.currentTarget.style.visibility = 'hidden')}
             className={classnames(cls, ['image'], {}, [className])}
             {...other}
         />

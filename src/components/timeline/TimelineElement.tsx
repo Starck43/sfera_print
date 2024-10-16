@@ -1,13 +1,16 @@
+'use client'
+
 import { memo, ReactElement, ReactSVGElement, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
-import Image from 'next/image'
 
 import { VerticalTimelineElement } from 'react-vertical-timeline-component'
 
 import type { PostType } from '@/components/post'
 import { classnames } from '@/shared/lib/helpers/classnames'
-import { useHover } from '@/shared/lib/hooks/useHover'
 import { getDeviceSrc } from '@/shared/lib/helpers/image'
+import { detectDeviceOrientation } from '@/shared/lib/helpers/dom'
+import { useHover } from '@/shared/lib/hooks/useHover'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 import cls from './Timeline.module.sass'
 
@@ -23,6 +26,7 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
     const [isHover, { onMouseLeave, onMouseEnter }] = useHover()
     const { ref, inView } = useInView({ threshold: 0.5 })
 
+    const isMobile = detectDeviceOrientation()
     const imageSrc = getDeviceSrc(cover)
 
     useEffect(() => {
@@ -44,9 +48,17 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
         >
             <div
                 ref={ref}
-                onMouseEnter={desc || cover ? (isHover ? onMouseLeave : onMouseEnter) : undefined}
+                onMouseEnter={
+                    isMobile
+                        ? undefined
+                        : desc || cover
+                        ? isHover
+                            ? onMouseLeave
+                            : onMouseEnter
+                        : undefined
+                }
                 onClick={desc || cover ? (isHover ? onMouseLeave : onMouseEnter) : undefined}
-                onMouseLeave={onMouseLeave}
+                onMouseLeave={isMobile ? undefined : onMouseLeave}
                 className={classnames(cls, ['content__wrapper'], { hovered: isHover })}
             >
                 {/*<div className={cls.element__content__inner}>*/}
@@ -65,15 +77,18 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
                 {/*</div>*/}
 
                 {imageSrc && (
-                    <Image
+                    <LazyImage
                         src={imageSrc}
                         alt={title}
                         sizes="(max-width: 1169px) 100vw, 50vw"
-                        width={600}
-                        height={600}
-                        onLoad={(e) => (e.currentTarget.style.opacity = '1')}
-                        unoptimized
+                        //unoptimized
                         className={classnames(cls, ['cover'])}
+                        style={{
+                            width: '100%',
+                            height: 'auto'
+                        }}
+                        width={16}
+                        height={9}
                     />
                 )}
                 {/*{desc && (*/}

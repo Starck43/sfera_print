@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import Image from 'next/image'
 
 import PageLayout from '@/components/layout/page-layout'
 import type { PostType } from '@/components/post'
@@ -12,6 +11,7 @@ import { useFetch } from '@/shared/lib/hooks/useFetch'
 import { Section } from '@/shared/ui/section'
 import { Header } from '@/shared/ui/header'
 import { Button } from '@/shared/ui/button'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 import BlogDetails from '../details/BlogDetails'
 
@@ -39,22 +39,23 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                             style={{ padding: 0 }}
                         >
                             {cover && (
-                                <div className={cls.cover__wrapper}>
-                                    <Image
-                                        src={
-                                            typeof cover === 'object' && 'src' in cover
-                                                ? cover.src
-                                                : cover
-                                        }
-                                        //srcSet={createSrcSet(cover?.srcset) || undefined}
-                                        alt={title}
-                                        sizes="max-width: 684px) 100vw, 50vw"
-                                        fill
-                                        priority
-                                        quality={80}
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                </div>
+                                <LazyImage
+                                    src={
+                                        typeof cover === 'object' && 'src' in cover
+                                            ? cover.src
+                                            : cover
+                                    }
+                                    alt={title}
+                                    sizes="max-width: 684px) 100vw, 50vw"
+                                    //priority
+                                    quality={80}
+                                    style={{
+                                        width: '100%',
+                                        height: 'auto',
+                                    }}
+                                    width={16}
+                                    height={9}
+                                />
                             )}
                             <Header tag="h3" title={title} transform="upperFirst" />
                             {event_date && (

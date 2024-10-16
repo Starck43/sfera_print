@@ -1,4 +1,6 @@
 export function detectMobile() {
+    if (typeof window === 'undefined') return null
+
     const devicesToMatch = [
         /Android/i,
         /webOS/i,
@@ -13,6 +15,8 @@ export function detectMobile() {
 }
 
 export const detectDeviceOrientation = (): 'portrait' | 'landscape' | null => {
+    if (typeof window === 'undefined') return null
+
     const isMobile = window.matchMedia
     if (!isMobile) return null
 

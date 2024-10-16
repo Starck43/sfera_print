@@ -1,9 +1,9 @@
 import React from 'react'
-import Image from 'next/image'
 import type { Swiper as SwiperCore } from 'swiper/types'
 
 import type { Media } from '@/components/post'
 import { classnames } from '@/shared/lib/helpers/classnames'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 import cls from './Slider.module.sass'
 
@@ -28,7 +28,7 @@ const SliderThumbs = ({ media, activeIndex, swiperRef }: ThumbsProps) => {
                     ])}
                     onClick={() => handleThumbClick(idx)}
                 >
-                    <Image
+                    <LazyImage
                         src={
                             typeof item.image === 'object' && 'src' in item.image
                                 ? item.image.src
@@ -38,7 +38,6 @@ const SliderThumbs = ({ media, activeIndex, swiperRef }: ThumbsProps) => {
                         width={150}
                         height={150}
                         quality={75}
-                        onLoad={(e) => (e.currentTarget.style.opacity = '1')}
                         className={cls.image}
                     />
                 </div>

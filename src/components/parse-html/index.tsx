@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import Player from 'next-video/player'
 import parse, {
     Element,
@@ -7,8 +6,9 @@ import parse, {
     type DOMNode,
     type HTMLReactParserOptions
 } from 'html-react-parser'
+
 import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
-import LazyImage from '@/shared/ui/lazy-image/LazyImage'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 type ExtendedDOMNode = DOMNode & {
     parent?: DOMNode

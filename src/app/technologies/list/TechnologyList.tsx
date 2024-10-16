@@ -1,7 +1,6 @@
 'use client'
 
 import React, { memo, useMemo, useState } from 'react'
-import Image from 'next/image'
 
 import PageLayout from '@/components/layout/page-layout'
 import type { PostType } from '@/components/post'
@@ -9,6 +8,7 @@ import type { PostType } from '@/components/post'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 import { Header } from '@/shared/ui/header'
 import { Section } from '@/shared/ui/section'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 import TechnologyDetails from '../details/TechnologyDetails'
 
@@ -35,25 +35,20 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                         onClick={() => setActiveTechnology(idx)}
                         style={{ padding: 0, height: 'max-content' }}
                     >
-                        <div className={cls.cover__wrapper}>
-                            {cover && (
-                                <Image
-                                    src={cover as string}
-                                    alt={title}
-                                    fill
-                                    priority
-                                    sizes="(max-width: 684px) 50vw, 100vw"
-                                    style={{
-                                        objectFit: 'cover',
-                                        transition: 'opacity 0.3s ease-in-out',
-                                        opacity: 0
-                                    }}
-                                    onLoad={(e) => {
-                                        e.currentTarget.style.opacity = '1'
-                                    }}
-                                />
-                            )}
-                        </div>
+                        {cover && (
+                            <LazyImage
+                                src={cover as string}
+                                alt={title}
+                                //priority
+                                sizes="(max-width: 684px) 50vw, 100vw"
+                                style={{
+                                    width: '100%',
+                                    height: 'auto'
+                                }}
+                                width={16}
+                                height={9}
+                            />
+                        )}
                         <Header
                             tag="h3"
                             title={title}

@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState, memo } from 'react'
-import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
 
 import PageLayout from '@/components/layout/page-layout'
@@ -10,9 +9,10 @@ import type { PostType } from '@/components/post'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 import { classnames } from '@/shared/lib/helpers/classnames'
 
-import { Section } from '@/shared/ui/section'
-import { Header } from '@/shared/ui/header'
 import { Loader } from '@/shared/ui/loader'
+import { Header } from '@/shared/ui/header'
+import { Section } from '@/shared/ui/section'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 import cls from './CasesList.module.sass'
 
@@ -57,11 +57,10 @@ const CasesList = () => {
                 >
                     <div className={cls.cover__wrapper}>
                         {cover && (
-                            <Image
+                            <LazyImage
                                 src={
                                     typeof cover === 'object' && 'src' in cover ? cover.src : cover
                                 }
-                                //srcSet={createSrcSet(cover?.srcset) || undefined}
                                 alt={title}
                                 sizes="max-width: 684px) 100vw, 50vw"
                                 fill
