@@ -38,15 +38,12 @@ export const Slider = (props: SliderProps) => {
 
     const innerContent = useMemo(() => children, [children])
 
-    const sliderContent = useMemo(
-        () => (
+    const sliderContent = useMemo(() => {
+        if (!media) return null
+
+        return (
             <div className={cls.slider__container}>
-                <div
-                    className={classnames(cls, [
-                        'slider__wrapper',
-                        media.length === 1 && !media[0].image_portrait ? 'landscape' : ''
-                    ])}
-                >
+                <div className={classnames(cls, ['slider__wrapper'])}>
                     <Swiper
                         modules={[EffectFade]}
                         effect="fade"
@@ -76,15 +73,23 @@ export const Slider = (props: SliderProps) => {
                                 if (!imageSrc) return null
 
                                 return (
-                                    <SwiperSlide key={'slide-' + idx + '_' + id}>
-                                        {link ||
-                                        video ||
-                                        (orientation === 'portrait' && video_portrait) ? (
+                                    <SwiperSlide
+                                        key={'slide-' + idx + '_' + id}
+                                        className={classnames(cls, [
+                                            'slide',
+                                            orientation === 'portrait' && image_portrait
+                                                ? 'portrait'
+                                                : '',
+                                             media.length === 1 && (image || image_portrait) ? 'with_one_image' : ''
+                                        ])}
+                                    >
+                                        {link || video || video_portrait ? (
                                             <Player
                                                 src={
-                                                    link || orientation === 'portrait'
+                                                    link ||
+                                                    (video_portrait && orientation === 'portrait'
                                                         ? video_portrait
-                                                        : video
+                                                        : video)
                                                 }
                                                 poster={imageSrc}
                                                 muted
@@ -105,8 +110,13 @@ export const Slider = (props: SliderProps) => {
                                             <LazyImage
                                                 src={imageSrc}
                                                 alt={title}
-                                                fill
                                                 quality={85}
+                                                style={{
+                                                    width: '100%',
+                                                    height: 'auto'
+                                                }}
+                                                width={orientation === 'portrait' ? 1080 : 1920}
+                                                height={orientation === 'portrait' ? 1920 : 1080}
                                                 className={cls.image}
                                             />
                                         )}
@@ -124,9 +134,8 @@ export const Slider = (props: SliderProps) => {
                     />
                 )}
             </div>
-        ),
-        [media, orientation]
-    )
+        )
+    }, [media, orientation])
 
     return (
         <Section
@@ -139,7 +148,9 @@ export const Slider = (props: SliderProps) => {
             {swiperRef && media?.length > 1 && (
                 <SliderThumbs media={media} activeIndex={thumbsIndex} swiperRef={swiperRef} />
             )}
+
             {media?.length ? sliderContent : null}
+
             {childrenPosition === 'footer' && innerContent}
         </Section>
     )

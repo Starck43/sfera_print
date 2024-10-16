@@ -5,12 +5,17 @@
 	display: flex
 	top: 50%
 	left: 50%
-	width: 80vw
-	height: 80vw
+	width: 90vw
+	height: 90vw
 	//max-width: 600px
 	//max-height: 600px
 	padding: 1rem
+	font-size: 0.8em
 	transform: translate(-50%, -50%)
+	cursor: pointer
+
+	+media-min(sm)
+		font-size: 1em
 
 	@media (orientation: landscape)
 		width: 80vh
@@ -35,7 +40,7 @@
 	border-radius: 50%
 	overflow: hidden
 	backdrop-filter: blur(10px)
-	box-shadow: 0 0 1rem 0.5rem rgb(var(--page-background-color), 0.1), 0 0 0.3rem 0.3rem rgb(var(--page-background-color), 0.2), inset 0 0 0.2rem 0.6rem rgb(var(--page-background-color), 0.2)
+	box-shadow: 0 0 1em 0.5em rgb(var(--page-background-color), 0.1), 0 0 0.3em 0.3em rgb(var(--page-background-color), 0.2), inset 0 0 0.2em 0.6em rgb(var(--page-background-color), 0.2)
 
 .item
 	+push--absolute()
@@ -45,7 +50,8 @@
 
 .title, .excerpt
 	position: relative
-	height: 10%
+	width: 60%
+	height: 15%
 	padding: 0
 	display: flex
 	justify-content: center
@@ -55,13 +61,12 @@
 	color: var(--white-color)
 
 .title
-	width: 70%
-	top: 15%
+	top: 8%
+	align-items: flex-end
 	text-transform: uppercase
 
 .excerpt
-	width: 65%
-	bottom: 10%
+	bottom: 8%
 
 .cover
 	padding: 25%

@@ -25,19 +25,19 @@
 	--controls-height: 2.4rem;
 	--controls-width: clamp(3.2rem, 2.8rem + 0.8vw, 4rem);
 	--slider-controls-width: 3.2rem;
-	--icon-size-xs: 1.2rem;
-	--icon-size-sm: 1.8rem;
-	--icon-size-md: 2.4rem;
-	--icon-size-lg: 3.2rem;
+	--icon-size-xs: 1.2em;
+	--icon-size-sm: 1.6em;
+	--icon-size-md: 2.0em;
+	--icon-size-lg: 2.6em;
 	--border-radius-index: 0.5;
-	--border-radius: clamp(1.5rem, 3vw, 2.5rem);
-	--border-radius-button: 1.2rem;
+	--border-radius: clamp(1.5em, 3vw, 2.5em);
+	--border-radius-button: 1.2em;
 	--border-radius-default: 0px;
 	--border-thickness: 3px;
 	--box-shadow: rgb(0 0 0 / 20%);
 	--overlay-bg-color: rgb(0 0 0 / 20%);
 	--overlay-z-index: 100;
-	--translate-y-in-view: 3rem;
+	--translate-y-in-view: 3em;
 
 	@media (min-width: 768px) {
 		--slider-controls-width: 4.2rem;
@@ -118,8 +118,8 @@ header {
 
 .logo {
 	position: absolute;
-	top: 1.2rem;
-	left: 1rem;
+	top: 1.2em;
+	left: 1em;
 	width: 24%;
 	height: 75px;
 	max-width: 150px;
@@ -128,11 +128,15 @@ header {
 
 .burger {
 	position: absolute;
-	top: 2rem;
-	right: 2rem;
+	top: 2em;
+	right: 2em;
+	font-size: 0.8rem;
 	color: var(--white-color) !important;
 	background-color: var(--grey-color) !important;
 	z-index: 2;
+	@media (min-width: 576px) {
+		font-size: 1rem;
+	}
 }
 
 main {
@@ -338,6 +342,7 @@ blockquote {
 td:not(.media-grid) > .image img {
 	opacity: 0;
 	transition: opacity 300ms ease-out;
+	position: relative !important;
 	height: auto !important;
 }
 

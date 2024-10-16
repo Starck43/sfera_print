@@ -31,7 +31,7 @@ const Post = ({ data, style, className }: ContentProps) => {
             className={classnames(cls, ['container'], {}, [className])}
             style={style}
         >
-            <Col gap="md" align="start" fullWidth className={cls.details}>
+            <Col gap="sm" align="start" fullWidth className={cls.details}>
                 {title && (
                     <Header
                         title={title}
