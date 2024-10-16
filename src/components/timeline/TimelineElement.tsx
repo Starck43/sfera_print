@@ -83,12 +83,7 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
                         sizes="(max-width: 1169px) 100vw, 50vw"
                         //unoptimized
                         className={classnames(cls, ['cover'])}
-                        style={{
-                            width: '100%',
-                            height: 'auto'
-                        }}
-                        width={16}
-                        height={9}
+                        fill
                     />
                 )}
                 {/*{desc && (*/}

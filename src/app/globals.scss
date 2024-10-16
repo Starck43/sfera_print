@@ -129,8 +129,9 @@ header {
 .burger {
 	position: absolute;
 	top: 2rem;
-	right: 1rem;
-	color: var(--secondary-color) !important;
+	right: 2rem;
+	color: var(--white-color) !important;
+	background-color: var(--grey-color) !important;
 	z-index: 2;
 }
 
@@ -161,6 +162,7 @@ h2 {
 	font-family: var(--font-family-secondary), sans-serif;
 	font-size: clamp(1.5rem, 0.8rem + 1.8vw, 2.4rem);
 	line-height: var(--line-height-title);
+	margin-bottom: 0.9rem;
 	word-break: break-word;
 }
 
@@ -169,6 +171,7 @@ h3 {
 	font-family: var(--font-family-secondary), serif;
 	font-size: clamp(1.3rem, 0.8rem + 0.8vw, 1.6rem);
 	line-height: var(--line-height-title);
+	margin-bottom: 0.75rem;
 	text-transform: uppercase;
 }
 
@@ -178,12 +181,14 @@ h4 {
 	font-family: var(--font-family-secondary), serif;
 	font-size: 1.2rem;
 	line-height: var(--line-height-paragraph);
+	margin-bottom: 0.65rem;
 }
 
 h5 {
 	color: var(--secondary-color);
 	font-family: var(--font-family-secondary), serif;
 	line-height: var(--line-height-paragraph);
+	margin-bottom: 0.5rem;
 }
 
 a {
