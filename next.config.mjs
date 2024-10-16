@@ -8,11 +8,11 @@ const nextConfig = {
         dangerouslyAllowSVG: true,
         contentDispositionType: 'attachment',
         contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-        deviceSizes: [50, 320, 576, 768, 992, 1200, 1400, 1920],
+        deviceSizes: [50, 320, 576, 768, 992, 1200, 1400],
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'sferaprint.istarck.ru',
+                hostname: '*.istarck.ru',
                 port: ''
             },
             {
@@ -25,8 +25,8 @@ const nextConfig = {
                 hostname: 'localhost',
                 port: '8000'
             }
-        ]
-        //minimumCacheTTL: 60 * 60 * 24 * 365,
+        ],
+        // minimumCacheTTL: 60 * 60 * 24,
     },
     logging:
         process.env.NODE_ENV === 'development'
