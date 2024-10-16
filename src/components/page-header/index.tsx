@@ -4,11 +4,10 @@ import Image from 'next/image'
 import { CircleCarousel } from '@/shared/ui/circle-carousel'
 import { SITE_TITLE } from '@/shared/const/page'
 
-import HeaderAnimation from './header-animation'
 import background from '@/images/header-bg.jpg'
 import cls from './PageHeader.module.sass'
 
-const carouselLoopDuration = 10000
+const carouselLoopDuration = 12000
 
 const PageHeader = () => (
     <div className={cls.container}>
@@ -27,7 +26,7 @@ const PageHeader = () => (
 
         {/*<HeaderAnimation/>*/}
 
-        <CircleCarousel infinite={false} duration={300} loopDuration={carouselLoopDuration} />
+        <CircleCarousel infinite={process.env.NODE_ENV !== 'development'} duration={300} loopDuration={carouselLoopDuration} />
     </div>
 )
 
