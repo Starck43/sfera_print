@@ -55,7 +55,7 @@ export default function PageLayout(props: PageLayoutProps) {
                 subTitle={<BackButton handleOnClick={onClose} />}
                 inlined
                 align="start"
-                className={cls.title}
+                className={cls.header}
             />
             {children}
             <ScrollToTop />

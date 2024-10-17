@@ -19,6 +19,7 @@ import SliderControls from './SliderControls'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import cls from './Slider.module.sass'
+import { VideoPlayer } from '@/shared/ui/video-player'
 
 export type ContentPosition = 'header' | 'footer'
 
@@ -70,6 +71,11 @@ export const Slider = (props: SliderProps) => {
                                         : image
                                 )
 
+                                let videoSrc = link || video || video_portrait
+                                if (video_portrait && orientation === 'portrait') {
+                                    videoSrc = video_portrait
+                                }
+
                                 if (!imageSrc) return null
 
                                 return (
@@ -80,32 +86,13 @@ export const Slider = (props: SliderProps) => {
                                             orientation === 'portrait' && image_portrait
                                                 ? 'portrait'
                                                 : '',
-                                             media.length === 1 && (image || image_portrait) ? 'with_one_image' : ''
+                                            media.length === 1 && (image || image_portrait)
+                                                ? 'with_one_image'
+                                                : ''
                                         ])}
                                     >
-                                        {link || video || video_portrait ? (
-                                            <Player
-                                                src={
-                                                    link ||
-                                                    (video_portrait && orientation === 'portrait'
-                                                        ? video_portrait
-                                                        : video)
-                                                }
-                                                poster={imageSrc}
-                                                muted
-                                                style={{
-                                                    width: '100%',
-                                                    height: '100%'
-                                                }}
-                                            >
-                                                <style>{`
-                                                    :root {--media-range-track-height: 2px; --media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}
-                                                    ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;padding: 0.8rem; border-radius: 50%; width: var(--controls-width); height: var(--controls-width);}
-                                                    ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
-                                                    ::part(play):hover {--media-icon-color: inherit !important; background-color: var(--secondary-color) !important;} 
-                                                    ::part(seek-backward), ::part(seek-forward) {display: none;}
-            									`}</style>
-                                            </Player>
+                                        {videoSrc ? (
+                                            <VideoPlayer src={videoSrc} poster={imageSrc} />
                                         ) : (
                                             <LazyImage
                                                 src={imageSrc}

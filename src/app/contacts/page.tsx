@@ -12,7 +12,7 @@ import { Col } from '@/shared/ui/stack'
 
 import type { Page } from '../types'
 import cls from './ContactsPage.module.sass'
-import { parseHtml } from '@/components/parse-html'
+import { htmlParser } from '@/components/html-parser'
 
 export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<Contact>>('contacts')
@@ -21,7 +21,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 
 const ContactsPage = async () => {
     const { title, content = null, sections } = await getPage<Page<Contact>>('contacts')
-    const parsedContent = parseHtml(content)
+    const parsedContent = htmlParser(content)
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="contacts-page">

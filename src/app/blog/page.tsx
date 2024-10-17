@@ -1,7 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next'
 
 import PageLayout from '@/components/layout/page-layout'
-import { parseHtml } from '@/components/parse-html'
+import { htmlParser } from '@/components/html-parser'
 import type { PostType } from '@/components/post'
 
 import constructMetadata from '@/shared/lib/helpers/metadata'
@@ -18,7 +18,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 
 const BlogPage = async () => {
     const { title, content = null, posts } = await getPage<Page<PostType>>('blog')
-    const parsedContent = parseHtml(content)
+    const parsedContent = htmlParser(content)
 
     return (
         <PageLayout title={title} gap={'none'} sectionMode>

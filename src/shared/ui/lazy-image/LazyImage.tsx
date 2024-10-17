@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { memo } from 'react'
 import Image, { type ImageProps } from 'next/image'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
@@ -17,20 +17,25 @@ const generateThumbnail = (src?: string) => {
 }
 
 const LazyImage = ({ src, alt, className, ...other }: ImageProps) => {
+    const onLoadHandler = (e: React.SyntheticEvent<HTMLImageElement>) => {
+        e.currentTarget.style.opacity = '1'
+        e.currentTarget.classList.add(cls.loaded)
+    }
+
     return (
         <Image
+            {...other}
             src={src}
             overrideSrc={typeof src === 'string' ? src : undefined}
             //srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
             alt={alt}
             placeholder="blur"
             blurDataURL={generateThumbnail(src as string)}
-            onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+            onLoad={onLoadHandler as any}
             onError={(e) => (e.currentTarget.style.visibility = 'hidden')}
             className={classnames(cls, ['image'], {}, [className])}
-            {...other}
         />
     )
 }
 
-export default LazyImage
+export default memo(LazyImage)

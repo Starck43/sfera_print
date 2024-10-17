@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import Image from 'next/image'
-import { Montserrat } from 'next/font/google'
+// import { Montserrat } from 'next/font/google'
 
 import { RouteEvents } from '@/components/routes/route-events'
 import PageHeader from '@/components/page-header'

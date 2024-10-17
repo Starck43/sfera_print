@@ -11,6 +11,7 @@ import parse, {
 
 import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
 import { LazyImage } from '@/shared/ui/lazy-image'
+import { VideoPlayer } from '@/shared/ui/video-player'
 
 type ExtendedDOMNode = DOMNode & {
     parent?: DOMNode
@@ -19,19 +20,21 @@ type ExtendedDOMNode = DOMNode & {
     lastChild?: { name: string; tagName: string }
 }
 
-export const parseHtml = (html: string | null): React.ReactNode | null => {
+export const htmlParser = (html: string | null): React.ReactNode | null => {
     if (!html) return null
 
     const linkImgRegex =
-        /<a[^>]*?href=(["'])?((?:.(?!\1|>))*.(mp4|ogg|webm|avi|mov))[^>]*><img [^>]*?src=(["'])?((?:.(?!\1|>))*.)/gi
+        /<a[^>]*?href=["']?((?:.)*.(mp4|ogg|webm|avi|mov))[^>]*><img [^>]*?src=["']?((?:.)*.\.\w+)(?:[^>]*?width=["']?(\d+)["'])?(?:[^>]*?height=["']?(\d+)["'])?(?:[^>]*?alt=["']?([^>]+)["'])?[^>]*?><\/a>/gi
     const videoContentReplacement = (
         match: string,
-        quote: string,
         linkSrc: string,
         ext: string,
-        quote2: string,
-        imageSrc: string
-    ) => `<video poster="${imageSrc}" src="${linkSrc}" />`
+        imageSrc: string,
+        width: string,
+        height: string,
+        alt: string
+    ) =>
+        `<video poster="${imageSrc}" src="${linkSrc}" width="${width}" height="${height}" title="${alt}" />`
 
     const content = html
         //.replace(/<(\/?)(tbody)([^>]*)>/g, '')
@@ -41,6 +44,7 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
         .replace(/\n+\s*/g, '\n')
         .trim()
 
+    console.log(content)
     const options: HTMLReactParserOptions = {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
@@ -97,6 +101,7 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
 
                 if (domNode.parent?.tagName === 'figure') return img
                 return <div className="image">{img}</div>
+
             } else if (domNode instanceof Element && domNode.tagName === 'video') {
                 if (!domNode.attribs?.src || !domNode.attribs?.poster) return null
 
@@ -105,35 +110,13 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
                 const poster = buildAbsoluteUrl(host, domNode.attribs.poster)
 
                 return (
-                    <>
-                        <LazyImage
-                            src={poster}
-                            alt={''}
-                            sizes="(min-width:992px) 50vw, 100vw"
-                            fill
-                            style={{ objectFit: 'cover' }}
-                        />
-                        <Player
-                            src={src}
-                            poster={poster}
-                            muted
-                            style={{
-                                width: '100%',
-                                height: 'auto'
-                            }}
-                            className="poster"
-                            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
-                        >
-                            <style>{`
-                            :root {--media-range-track-height: 2px; --media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}
-                            ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;padding: 0.8rem; border-radius: 50%; width: var(--controls-width); height: var(--controls-width);}
-                            ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
-                            ::part(play):hover {--media-icon-color: inherit !important; background-color: var(--secondary-color) !important;} 
-                            ::part(seek-backward), ::part(seek-forward) {display: none;}
-                            [slot=poster] {object-fit: cover;opacity: 1;}
-						`}</style>
-                        </Player>
-                    </>
+                    <VideoPlayer
+                        src={src}
+                        poster={poster}
+                        width={parseInt(domNode.attribs.width)}
+                        height={parseInt(domNode.attribs.height)}
+                        alt={domNode.attribs.title}
+                    />
                 )
             }
         }

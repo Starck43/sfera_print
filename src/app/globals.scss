@@ -304,7 +304,10 @@ blockquote {
 	position: relative;
 	display: flex;
 	height: 100%;
-	--media-object-fit: cover;
+	img + * {
+		position: absolute;
+		visibility: hidden;
+	}
 }
 
 .image {
@@ -317,15 +320,7 @@ blockquote {
 		object-fit: contain;
 		border-radius: var(--border-radius);
 		overflow: hidden;
-		animation: loaded 300ms ease-out;
-		@keyframes loaded {
-			0% {
-				opacity: 0;
-			}
-			100% {
-				opacity: 1;
-			}
-		}
+
 	}
 }
 
@@ -354,16 +349,8 @@ blockquote {
 }
 
 td:not(.media-grid) > .image img {
-	opacity: 0;
-	transition: opacity 300ms ease-out;
 	position: relative !important;
 	height: auto !important;
-
-}
-
-[poster] {
-	display: inline-flex;
-	cursor: pointer;
 }
 
 .grey__style {

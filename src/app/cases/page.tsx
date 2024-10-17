@@ -1,7 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next'
 
 import PageLayout from '@/components/layout/page-layout'
-import { parseHtml } from '@/components/parse-html'
+import { htmlParser } from '@/components/html-parser'
 import { Map } from '@/components/map'
 import type { City } from '@/components/map'
 
@@ -20,7 +20,7 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 
 const CasesPage = async () => {
     const { title, content = null, posts } = await getPage<Page<City>>('cases')
-    const parsedContent = parseHtml(content)
+    const parsedContent = htmlParser(content)
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="cases-map">

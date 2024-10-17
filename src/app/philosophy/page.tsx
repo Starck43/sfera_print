@@ -2,7 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next'
 import Image from 'next/image'
 
 import PageLayout from '@/components/layout/page-layout'
-import { parseHtml } from '@/components/parse-html'
+import { htmlParser } from '@/components/html-parser'
 
 import getPage from '@/shared/lib/api/getPage'
 import { classnames } from '@/shared/lib/helpers/classnames'
@@ -31,7 +31,7 @@ const PhilosophyPage = async () => {
         sections: { achievements, stat, partners }
     } = await getPage<Page<any>>('philosophy')
 
-    const parsedContent = parseHtml(content)
+    const parsedContent = htmlParser(content)
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="philosophy-page">

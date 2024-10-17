@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 
 import type { Media, PostType } from '@/components/post'
-import { parseHtml } from '@/components/parse-html'
+import { htmlParser } from '../html-parser'
 
 import { Col } from '@/shared/ui/stack'
 import { Slider } from '@/shared/ui/slider'
@@ -20,7 +20,7 @@ const Portfolio = ({ items }: { items: PostType[] }) => {
         >
             <Col gap="sm" align="start" fullWidth className={cls.details}>
                 <h2>{title}</h2>
-                {desc && <div className="html-container">{parseHtml(desc)}</div>}
+                {desc && <div className="html-container">{htmlParser(desc)}</div>}
             </Col>
         </Slider>
     ))

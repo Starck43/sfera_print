@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react'
 
-import { parseHtml } from '@/components/parse-html'
+import { htmlParser } from '../html-parser'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { formatDate } from '@/shared/lib/helpers/datetime'
@@ -23,7 +23,7 @@ const Post = ({ data, style, className }: ContentProps) => {
     if (!data) return <Loader />
 
     const { id, title, cover: image, media, event_date, desc } = data
-    const parsedContent = parseHtml(desc)
+    const parsedContent = htmlParser(desc)
 
     return (
         <Slider

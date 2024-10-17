@@ -1,7 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next'
 
 import PageLayout from '@/components/layout/page-layout'
-import { parseHtml } from '@/components/parse-html'
+import { htmlParser } from '@/components/html-parser'
 import type { PostType } from '@/components/post'
 
 import constructMetadata from '@/shared/lib/helpers/metadata'
@@ -22,7 +22,7 @@ const TechnologiesPage = async () => {
         content = null,
         posts: technologiesData
     } = await getPage<Page<PostType>>('technologies')
-    const parsedContent = parseHtml(content)
+    const parsedContent = htmlParser(content)
 
     return (
         <PageLayout title={title} gap={'none'} sectionMode className="technologies-page">
