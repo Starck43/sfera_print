@@ -7,7 +7,7 @@ import { SITE_TITLE } from '@/shared/const/page'
 import background from '@/images/header-bg.jpg'
 import cls from './PageHeader.module.sass'
 
-const carouselLoopDuration = 12000
+const carouselLoopDuration = 15000
 
 const PageHeader = () => (
     <div className={cls.container}>
@@ -26,7 +26,7 @@ const PageHeader = () => (
 
         {/*<HeaderAnimation/>*/}
 
-        <CircleCarousel infinite={process.env.NODE_ENV !== 'development'} duration={300} loopDuration={carouselLoopDuration} />
+        <CircleCarousel duration={300} loopDuration={carouselLoopDuration} infinite={process.env.NODE_ENV !== 'development'} />
     </div>
 )
 

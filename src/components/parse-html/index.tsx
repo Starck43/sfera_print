@@ -2,7 +2,9 @@ import React from 'react'
 import Player from 'next-video/player'
 import parse, {
     Element,
+    Text,
     domToReact,
+    htmlToDOM,
     type DOMNode,
     type HTMLReactParserOptions
 } from 'html-react-parser'
@@ -43,6 +45,11 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         replace: (domNode: ExtendedDOMNode) => {
+            if (domNode instanceof Element && domNode.tagName === 'pre' && (domNode.firstChild as Element).attribs.class === 'language-html') {
+                console.log((domNode.firstChild as Element).firstChild)
+                const textElement = ((domNode.firstChild as Element).firstChild as Text)
+                return <>{domToReact(htmlToDOM(textElement.data))}</>
+            }
             if (
                 domNode instanceof Element &&
                 domNode.tagName === 'td' &&

@@ -1,6 +1,15 @@
 'use client'
 
-import { CSSProperties, HTMLAttributes, memo, ReactNode, useCallback, useRef } from 'react'
+import {
+    CSSProperties,
+    HTMLAttributes,
+    memo,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from 'react'
 import { useInView } from 'react-intersection-observer'
 
 import type { SizeType } from '@/shared/types/ui'
@@ -53,6 +62,18 @@ const Section = (props: InfoProps) => {
         },
         [inViewRef]
     )
+    const [isLoaded, setIsLoaded] = useState(false)
+
+    useEffect(() => {
+        const iframe = ref.current?.querySelector('iframe')
+        if (!iframe) {
+            setIsLoaded(true)
+        } else {
+            iframe?.addEventListener('load', () => {
+                setIsLoaded(true)
+            })
+        }
+    }, [])
 
     return (
         <Col
@@ -71,7 +92,7 @@ const Section = (props: InfoProps) => {
             {...others}
         >
             {title && <Title className={classnames(cls, ['title', transform])}>{title}</Title>}
-            {children}
+            <div className={classnames(cls, ['content'], { isLoaded })}>{children}</div>
         </Col>
     )
 }

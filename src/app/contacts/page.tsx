@@ -26,11 +26,10 @@ const ContactsPage = async () => {
     return (
         <PageLayout title={title} gap="none" sectionMode className="contacts-page">
             <Section gap={'none'} align="center" style={{ paddingTop: 0 }}>
-                <Col gap="xs" className={cls.contacts__block}>
+                <Col gap="xs" align="center" className={cls.contacts__block}>
                     <Contacts data={sections as Contact[]} />
                 </Col>
                 {parsedContent && <Section className="html-container">{parsedContent}</Section>}
-                Форма Битрикс
             </Section>
         </PageLayout>
     )

@@ -15,7 +15,6 @@ const BurgerButton = () => {
             feature="blank"
             rounded
             size="medium"
-            shadowed
             className="burger"
             onClick={() => setShowMenu(!showMenu)}
         />

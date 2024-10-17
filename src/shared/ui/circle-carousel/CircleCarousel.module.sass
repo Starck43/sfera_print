@@ -24,12 +24,14 @@
 .circle__nav
 	opacity: 0
 	+push--absolute()
+
 	> path
 		opacity: 0.5
 		stroke: var(--white-color)
 
 	circle
 		fill: var(--grey-color)
+
 		&:last-child
 			fill: var(--secondary-color)
 
@@ -39,12 +41,13 @@
 	height: 100%
 	border-radius: 50%
 	overflow: hidden
-	backdrop-filter: blur(10px)
-	box-shadow: 0 0 1em 0.5em rgb(var(--page-background-color), 0.1), 0 0 0.3em 0.3em rgb(var(--page-background-color), 0.2), inset 0 0 0.2em 0.6em rgb(var(--page-background-color), 0.2)
+	backdrop-filter: blur(8px)
+	box-shadow: 0 0 0.1em 0.1em rgb(var(--page-background-color), 0.1), 0 0 0.6em 0.3em rgb(var(--page-background-color), 0.2), inset 0 0 0.1em 0.5em rgb(var(--page-background-color), 0.2)
 
 .item
 	+push--absolute()
 	opacity: 0
+
 	&.active
 		opacity: 1
 
@@ -69,12 +72,12 @@
 	bottom: 8%
 
 .cover
-	padding: 25%
+	padding: 28%
 	border-radius: 50%
 	overflow: hidden
 	object-fit: contain
 	opacity: 0
 
-	//img
-	//	box-shadow: 0 0 1rem 1.8rem rgb(var(--black-color), 0.2)
+//img
+//	box-shadow: 0 0 1rem 1.8rem rgb(var(--black-color), 0.2)
 
