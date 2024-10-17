@@ -46,7 +46,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                                             : cover
                                     }
                                     alt={title}
-                                    sizes="max-width: 684px) 100vw, 50vw"
+                                    sizes="(max-width: 684px) 100vw, 50vw"
                                     //priority
                                     quality={80}
                                     style={{

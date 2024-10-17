@@ -300,6 +300,13 @@ blockquote {
 	}
 }
 
+.video-wrapper {
+	position: relative;
+	display: flex;
+	height: 100%;
+	--media-object-fit: cover;
+}
+
 .image {
 	position: relative;
 	width: 100%;

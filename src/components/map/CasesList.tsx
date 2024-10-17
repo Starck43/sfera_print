@@ -62,7 +62,7 @@ const CasesList = () => {
                                     typeof cover === 'object' && 'src' in cover ? cover.src : cover
                                 }
                                 alt={title}
-                                sizes="max-width: 684px) 100vw, 50vw"
+                                sizes="(max-width: 684px) 100vw, 50vw"
                                 fill
                                 priority
                                 quality={80}

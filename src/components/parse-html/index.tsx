@@ -45,9 +45,13 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         replace: (domNode: ExtendedDOMNode) => {
-            if (domNode instanceof Element && domNode.tagName === 'pre' && (domNode.firstChild as Element).attribs.class === 'language-html') {
+            if (
+                domNode instanceof Element &&
+                domNode.tagName === 'pre' &&
+                (domNode.firstChild as Element).attribs.class === 'language-html'
+            ) {
                 console.log((domNode.firstChild as Element).firstChild)
-                const textElement = ((domNode.firstChild as Element).firstChild as Text)
+                const textElement = (domNode.firstChild as Element).firstChild as Text
                 return <>{domToReact(htmlToDOM(textElement.data))}</>
             }
             if (
@@ -63,6 +67,17 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
                 (domNode.firstChild?.name === 'video' || domNode.lastChild?.name === 'video')
             ) {
                 return <td className="video-wrapper">{domToReact(domNode.children, options)}</td>
+            } else if (
+                domNode instanceof Element &&
+                domNode.tagName === 'td' &&
+                domNode.firstChild.tagName === 'figure' &&
+                ((domNode.firstChild as Element).firstChild as Element).name === 'video'
+            ) {
+                return (
+                    <td className="video-wrapper">
+                        {domToReact((domNode.firstChild as ExtendedDOMNode).children, options)}
+                    </td>
+                )
             }
 
             if (domNode instanceof Element && domNode.tagName === 'img') {
@@ -74,7 +89,7 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
                     <LazyImage
                         src={src}
                         alt={domNode.attribs.alt || ''}
-                        sizes="50vw"
+                        sizes="(min-width:992px) 50vw, 100vw"
                         fill
                         style={{ objectFit: 'cover' }}
                     />
@@ -90,17 +105,26 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
                 const poster = buildAbsoluteUrl(host, domNode.attribs.poster)
 
                 return (
-                    <Player
-                        src={src}
-                        poster={poster}
-                        muted
-                        style={{
-                            width: '100%',
-                            height: 'auto'
-                        }}
-                        blurDataURL="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-                    >
-                        <style>{`
+                    <>
+                        <LazyImage
+                            src={poster}
+                            alt={''}
+                            sizes="(min-width:992px) 50vw, 100vw"
+                            fill
+                            style={{ objectFit: 'cover' }}
+                        />
+                        <Player
+                            src={src}
+                            poster={poster}
+                            muted
+                            style={{
+                                width: '100%',
+                                height: 'auto'
+                            }}
+                            className="poster"
+                            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
+                        >
+                            <style>{`
                             :root {--media-range-track-height: 2px; --media-primary-color: var(--white-color);--media-accent-color: var(--secondary-color);}
                             ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;padding: 0.8rem; border-radius: 50%; width: var(--controls-width); height: var(--controls-width);}
                             ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
@@ -108,7 +132,8 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
                             ::part(seek-backward), ::part(seek-forward) {display: none;}
                             [slot=poster] {object-fit: cover;opacity: 1;}
 						`}</style>
-                    </Player>
+                        </Player>
+                    </>
                 )
             }
         }
