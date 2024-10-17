@@ -63,7 +63,9 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
                 (domNode.firstChild?.name === 'video' || domNode.lastChild?.name === 'video')
             ) {
                 return <td className="video-wrapper">{domToReact(domNode.children, options)}</td>
-            } else if (domNode instanceof Element && domNode.tagName === 'img') {
+            }
+
+            if (domNode instanceof Element && domNode.tagName === 'img') {
                 if (!domNode.attribs?.src) return null
 
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
