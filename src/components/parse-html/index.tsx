@@ -104,7 +104,7 @@ export const parseHtml = (html: string | null): React.ReactNode | null => {
                             ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
                             ::part(play):hover {--media-icon-color: inherit !important; background-color: var(--secondary-color) !important;} 
                             ::part(seek-backward), ::part(seek-forward) {display: none;}
-                            [slot=poster] {object-fit: cover;}
+                            [slot=poster] {object-fit: cover;opacity: 1;}
 						`}</style>
                     </Player>
                 )
