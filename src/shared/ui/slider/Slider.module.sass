@@ -109,17 +109,19 @@
 	+media-min(sm)
 		width: 100%
 		//max-width: var(--paragraph-container-max-width)
-		margin-bottom: calc(var(--gap) * -1)
 		display: inline-grid
 		justify-content: center
 		grid-template-columns: repeat(auto-fit, minmax(50px, auto))
-		grid-gap: var(--gap)
+		grid-gap: 0.6rem
+		margin-bottom: 0.6rem
 
 	+media-min(md)
 		padding: 0 var(--slider-controls-width)
 		grid-template-columns: repeat(auto-fit, minmax(75px, auto))
 
 	+media-min(xxl)
+		margin-bottom: var(--gap)
+		grid-gap: var(--gap)
 		grid-template-columns: repeat(auto-fit, minmax(90px, auto))
 
 .thumb

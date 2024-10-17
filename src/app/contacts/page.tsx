@@ -25,11 +25,15 @@ const ContactsPage = async () => {
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="contacts-page">
-            <Section gap={'none'} align="center" style={{ paddingTop: 0 }}>
+            <Section gap={'md'} align="center" style={{ paddingTop: 0 }}>
+                {parsedContent && (
+                    <Section as="div" className="html-container">
+                        {parsedContent}
+                    </Section>
+                )}
                 <Col gap="xs" align="center" className={cls.contacts__block}>
                     <Contacts data={sections as Contact[]} />
                 </Col>
-                {parsedContent && <Section className="html-container">{parsedContent}</Section>}
             </Section>
         </PageLayout>
     )
