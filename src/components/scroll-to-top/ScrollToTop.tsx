@@ -35,7 +35,7 @@ const ScrollToTop = () => {
                 feature="inverted"
                 bordered
                 rounded
-                size="small"
+                size="normal"
                 onClick={scrollToTop}
                 className={classnames(cls, [
                     'scroll_to_top',

@@ -14,7 +14,7 @@ const BurgerButton = () => {
             Icon={<BurgerIcon />}
             feature="blank"
             rounded
-            size="large"
+            size="medium"
             shadowed
             className="burger"
             onClick={() => setShowMenu(!showMenu)}

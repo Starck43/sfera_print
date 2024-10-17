@@ -1,3 +1,5 @@
+@import "/src/app/styles/mixins"
+
 .container
 	width: 100%
 	height: 100%
@@ -7,20 +9,25 @@
 		width: 100%
 		height: auto
 		stroke-width: 1
-		>*
+
+		> *
 			opacity: 1
 			transition: opacity 0.3s
 
 		@media (orientation: portrait)
 			height: 100%
 
-	.zoomed >*:not(.zoomed__region)
+	.zoomed > *:not(.zoomed__region)
 		opacity: 0.5
 
 .region
 	fill: var(--grey-color)
 	stroke: var(--white-color)
 	stroke-width: 0.5
+	cursor: pointer
+
+.marker
+	cursor: pointer
 
 .city
 	fill: var(--secondary-color)
@@ -38,12 +45,27 @@
 	//stroke: deepskyblue
 	fill: var(--secondary-color)
 	stroke-width: 2
+	cursor: pointer
 
 	text
 		font-weight: bold
 		color: black
 
+	> g
+		cursor: pointer
+
+.ripples
+	+ripple('rp', 0.5, 3, 1s, 0.5, 1, 0.3, 0)
+	> circle
+		fill: var(--primary-color)
+		opacity: 0.3
+
+		&:last-child
+			fill: var(--primary-color)
+			opacity: 1
+
 .next
 	opacity: 1
+
 .prev
 	opacity: 1

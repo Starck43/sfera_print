@@ -37,6 +37,7 @@ export const useZoomRegion = () => {
     // Создаем города в выбранном регионе
     // eslint-disable-next-line react/display-name
     const renderCity = useCallback(
+        // eslint-disable-next-line react/display-name
         () => (city: CityProps, region: ZoomedRegion, opacity: number) => {
             const scale = region?.scale || 1
             const cx = Number(city.path.cx) - 12 / scale
@@ -47,20 +48,34 @@ export const useZoomRegion = () => {
                     key={'city-' + city.id}
                     onClick={() => setActiveCity(city)}
                 >
+                    <defs>
+                        <g id="ripples" className={cls.ripples} style={{ '--scale': `${1 / scale}` }}>
+                            <circle
+                                r={14 / scale}
+                                stroke="none"
+                                className={cls.rp1}
+                            />
+                            <circle
+                                r={14 / scale}
+                                stroke="none"
+                                className={cls.rp2}
+                            />
+                            <circle
+                                r={14 / scale}
+                                stroke="none"
+                                className={cls.rp3}
+                            />
+                        </g>
+                    </defs>
+                    <use xlinkHref="#ripples" x={city.path.cx} y={city.path.cy} />
+
                     <circle
                         {...city.path}
                         r={6 / scale}
                         strokeWidth={4 / scale}
                         fill="white"
                         stroke="black"
-                    />
-                    <circle
-                        {...city.path}
-                        r={10 / scale}
-                        strokeWidth={6 / scale}
-                        opacity={0.3}
-                        stroke="black"
-                        fill="none"
+                        className={cls.inner__circle}
                     />
                     <text
                         x={cx}
@@ -81,6 +96,7 @@ export const useZoomRegion = () => {
     // eslint-disable-next-line react/display-name
     const renderRegion = useCallback(
         (handleClick: (e: React.MouseEvent<SVGGElement>, regionId?: number) => void) =>
+            // eslint-disable-next-line react/display-name
             (zoomedRegion: ZoomedRegion | undefined, style: string) => {
                 if (!zoomedRegion) return null
                 return (

@@ -1,6 +1,6 @@
 @import "@/app/styles/mixins"
 
-.technologies__container
+.document__container
 	display: grid
 	grid-template-columns: repeat(auto-fill, minmax(225px, 1fr))
 	grid-gap: calc(var(--gap) * 2)
@@ -9,6 +9,9 @@
 
 	+media-min(xxl)
 		grid-template-columns: repeat(3, 1fr)
+
+	article
+		cursor: pointer
 
 .excerpt
 	flex: auto

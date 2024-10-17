@@ -18,7 +18,7 @@ const DocumentList = ({ items }: { items: PostType[] }) => {
     }
 
     return (
-        <div className={cls.technologies__container}>
+        <div className={cls.document__container}>
             {items?.map(({ slug, title, excerpt, cover }, idx) => (
                 <Section
                     key={slug}

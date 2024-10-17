@@ -25,13 +25,13 @@
 	--controls-height: 2.4rem;
 	--controls-width: clamp(3.2rem, 2.8rem + 0.8vw, 4rem);
 	--slider-controls-width: 3.2rem;
-	--icon-size-xs: 1.2em;
-	--icon-size-sm: 1.6em;
-	--icon-size-md: 2.0em;
-	--icon-size-lg: 2.6em;
+	--icon-size-xs: 0.8em;
+	--icon-size-sm: 1em;
+	--icon-size-md: 1.6em;
+	--icon-size-lg: 2.0em;
 	--border-radius-index: 0.5;
-	--border-radius: clamp(1.5em, 3vw, 2.5em);
-	--border-radius-button: 1.2em;
+	--border-radius: clamp(1.4rem, 3vw, 2.5rem);
+	--border-radius-button: 1rem;
 	--border-radius-default: 0px;
 	--border-thickness: 3px;
 	--box-shadow: rgb(0 0 0 / 20%);
@@ -135,6 +135,9 @@ header {
 	background-color: var(--grey-color) !important;
 	z-index: 2;
 	@media (min-width: 576px) {
+		font-size: 0.9rem;
+	}
+	@media (min-width: 992px) {
 		font-size: 1rem;
 	}
 }
@@ -207,7 +210,7 @@ p {
 }
 
 ul {
-	margin-left: 30px;
+	padding-left: 30px;
 	padding-bottom: 0.75em;
 }
 

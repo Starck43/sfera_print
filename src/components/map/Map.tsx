@@ -175,6 +175,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
                         width={iconSize}
                         height={iconSize}
                         onClick={(e) => zoomRegionClick(e, value.regionId)}
+                        className={cls.marker}
                     >
                         {
                             <div

@@ -139,7 +139,8 @@
 				transform: translate($x, $y)
 		30%
 			@if $effect == zoom
-				transform: scale(1.4) //rotateY(0deg)
+				transform: scale(1.4)
+				//rotateY(0deg)
 				filter: grayscale(1)
 
 		60%
@@ -151,7 +152,8 @@
 
 		100%
 			@if $effect == zoom
-				transform: scale(1) //rotateY(360deg)
+				transform: scale(1)
+				//rotateY(360deg)
 				filter: grayscale(0)
 			@else if $effect != no-fade
 				opacity: if($effect == fade-out, 0, 1)
@@ -175,6 +177,38 @@
 		&:nth-child(#{$i+1})
 			transition-delay: $start-delay+($between-delay*($i))
 
+
+@mixin ripple($class, $scale-factor, $count, $duration, $scale-start, $scale-step, $opacity-start, $opacity-end)
+	$prev-s0: $scale-start + $scale-step * ($count - 1) - $scale-step * 0.5
+	$start: $scale-start
+	$end: $scale-start + $scale-step * 0.5
+	@for $i from 1 through $count
+		@if $i == 1 and $i != $count
+			$start: $prev-s0
+			$end: $prev-s0 + $scale-step * 1.5
+
+		@else if $i == $count
+			$start: $scale-start
+			$end:  $prev-s0
+		@else
+			$start: $prev-s0 - $scale-step
+			$end: $prev-s0
+
+		$prev-s0: $start
+
+		.#{$class}#{$i}
+			animation: ripple#{$i} $duration linear infinite
+
+		@keyframes ripple#{$i}
+			0%
+				transform: scale(calc($start * $scale-factor))
+				@if $i == 1
+					opacity: $opacity-start
+
+			100%
+				transform: scale(calc($end * $scale-factor))
+				@if $i == 1
+					opacity: $opacity-end
 
 @function shadows($max: 5, $color: white)
 	$out: null
@@ -228,7 +262,7 @@
 		height: $h
 		padding-bottom: $padding
 
-	>img
+	> img
 		+push--absolute
 
 
