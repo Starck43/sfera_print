@@ -6,6 +6,7 @@ import { SITE_TITLE } from '@/shared/const/page'
 
 import background from '@/images/header-bg.jpg'
 import cls from './PageHeader.module.sass'
+import { VideoPlayer } from '@/shared/ui/video-player'
 
 const carouselLoopDuration = 15000
 
@@ -25,6 +26,7 @@ const PageHeader = () => (
         />
 
         {/*<HeaderAnimation/>*/}
+        <VideoPlayer src={'/videos/sp-bg-anim.webm'} autoPlay controls={false} style={{height: '100%', 'pointerEvents': 'none'}}/>
 
         <CircleCarousel duration={300} loopDuration={carouselLoopDuration} infinite={process.env.NODE_ENV !== 'development'} />
     </div>

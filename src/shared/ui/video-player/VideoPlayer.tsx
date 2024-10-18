@@ -2,12 +2,12 @@
 
 import React, { memo, SyntheticEvent } from 'react'
 import Player from 'next-video/player'
-import type { PlayerProps } from 'next-video'
+import type { DefaultPlayerProps } from 'next-video'
 import { LazyImage } from '@/shared/ui/lazy-image'
 
 import cls from './VideoPlayer.module.sass'
 
-interface VideoPlayerProps extends PlayerProps {
+interface VideoPlayerProps extends DefaultPlayerProps {
     poster?: string
     alt?: string
     width?: number
