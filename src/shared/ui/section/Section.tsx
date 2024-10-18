@@ -92,7 +92,7 @@ const Section = (props: InfoProps) => {
             {...others}
         >
             {title && <Title className={classnames(cls, ['title', transform])}>{title}</Title>}
-            <div className={classnames(cls, ['content'], { isLoaded })}>{children}</div>
+            <Col gap="none" className={classnames(cls, ['content'], { isLoaded })}>{children}</Col>
         </Col>
     )
 }

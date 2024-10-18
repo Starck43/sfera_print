@@ -41,7 +41,6 @@ const CasesList = () => {
 
     useEffect(() => {
         setCases((prev) => [...prev, ...(data?.results || [])])
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nextLink])
 

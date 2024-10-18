@@ -1,5 +1,4 @@
 import React from 'react'
-import Player from 'next-video/player'
 import parse, {
     Element,
     Text,
@@ -44,7 +43,6 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
         .replace(/\n+\s*/g, '\n')
         .trim()
 
-    console.log(content)
     const options: HTMLReactParserOptions = {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error

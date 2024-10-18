@@ -10,17 +10,16 @@
 .slider__container
 	position: relative
 	width: 100%
-	padding: 0
-	flex: 0
 
 	+media-min(md)
 		padding-left: var(--slider-controls-width)
 		padding-right: var(--slider-controls-width)
 
-
 .slider__wrapper
-	overflow: hidden
 	+responsive-ratio(16, 9)
+	position: relative
+	width: 100%
+	overflow: hidden
 
 	@media (max-width: 575.98px) and (orientation: portrait)
 		+responsive-ratio(9, 16)
@@ -28,11 +27,9 @@
 		.slide.portrait img
 			object-fit: cover
 
-		top: 50%
-		transform: translateY(-50%)
-
 		.slide:not(.with_one_image)
 			background-color: var(--light-grey-color)
+
 
 .slider
 	position: absolute !important
@@ -45,6 +42,10 @@
 		right: var(--slider-controls-width)
 
 	.slide
+		display: flex
+		justify-content: center
+		align-items: center
+
 		&.with_one_image
 			@media (orientation: landscape)
 				display: inline-flex
@@ -89,7 +90,8 @@
 		height: auto
 
 	+media-max(md)
-		background-color: rgba(var(--secondary-color-alpha), 0.2)
+		color: white
+		background-color: rgba(var(--grey-color-alpha), 0.3)
 	//filter: invert(1)
 
 	&:hover
