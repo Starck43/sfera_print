@@ -56,7 +56,7 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
                     Ознакомиться с политикой можно &nbsp;
                     <NavLink href={file} title="здесь" target="_blank" rel="noopener noreferrer" />.
                 </p>
-                <Button feature="inverted" bordered rounded onClick={handleClose}>
+                <Button size="small" feature="inverted" bordered rounded onClick={handleClose}>
                     {!approved_policy ? 'Принять' : 'ОК'}
                 </Button>
             </Col>
