@@ -57,7 +57,7 @@ export const Header = memo((props: HeaderProps) => {
             className={classnames(cls, ['title', align, transform], {
                 shadowed,
                 fullWidth
-            })}
+            }, [!children && !subtitle && !href ? className : ''])}
             style={style}
         >
             {title}

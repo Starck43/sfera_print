@@ -121,5 +121,5 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
         }
     }
 
-    return parse(content, options)
+    return parse(content, options) || null
 }
