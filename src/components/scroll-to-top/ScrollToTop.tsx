@@ -1,12 +1,12 @@
 'use client'
-
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react'
 
-import cls from './ScrollToTop.module.sass'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { useScrollPosition } from '@/shared/lib/hooks/useScrollPosition'
 import { Button } from '@/shared/ui/button'
+
 import TopIcon from '@/svg/arrow-top.svg'
+import cls from './ScrollToTop.module.sass'
 
 const ScrollToTop = () => {
     const scrollRef = useRef(null) as RefObject<HTMLButtonElement>
@@ -35,7 +35,7 @@ const ScrollToTop = () => {
                 feature="inverted"
                 bordered
                 rounded
-                size="large"
+                size="medium"
                 onClick={scrollToTop}
                 className={classnames(cls, [
                     'scroll_to_top',

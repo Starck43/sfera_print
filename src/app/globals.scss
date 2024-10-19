@@ -28,7 +28,7 @@
 	--icon-size-xs: 0.8em;
 	--icon-size-sm: 1em;
 	--icon-size-md: 1.6em;
-	--icon-size-lg: 2.0em;
+	--icon-size-lg: 2.4em;
 	--border-radius-index: 0.5;
 	--border-radius: clamp(1.4rem, 3vw, 2.4rem);
 	--border-radius-button: 0.8rem;
@@ -118,7 +118,7 @@ header {
 
 .logo {
 	position: absolute;
-	top: 1.2em;
+	top: 1em;
 	left: 1em;
 	width: 24%;
 	height: 75px;
@@ -130,7 +130,6 @@ header {
 	position: absolute;
 	top: 1.5em;
 	right: 1.5em;
-	font-size: 0.8rem;
 	color: var(--white-color) !important;
 	background-color: rgba(var(--grey-color-alpha), 0.1) !important;
 	border: 1px solid rgb(var(--page-background-color), 0.3) !important;
@@ -141,10 +140,10 @@ header {
 	}
 
 	@media (min-width: 576px) {
-		font-size: 0.9rem;
+		font-size: 1.2rem;
 	}
 	@media (min-width: 992px) {
-		font-size: 1rem;
+		font-size: 1.4rem;
 	}
 }
 

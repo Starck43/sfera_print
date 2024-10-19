@@ -111,6 +111,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                     <VideoPlayer
                         src={src}
                         poster={poster}
+                        preload={'auto'}
                         width={parseInt(domNode.attribs.width)}
                         height={parseInt(domNode.attribs.height)}
                         alt={domNode.attribs.title}

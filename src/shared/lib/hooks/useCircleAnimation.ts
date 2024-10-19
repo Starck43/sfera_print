@@ -39,7 +39,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
             .add({
                 targets: '.' + rootClassName,
                 opacity: 1,
-                scale: 1.1,
+                // scale: 1.1,
                 duration: 300,
                 easing: 'linear'
             })

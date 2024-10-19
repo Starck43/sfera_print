@@ -62,17 +62,22 @@ const Section = (props: InfoProps) => {
         },
         [inViewRef]
     )
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [frameIsLoaded, setFrameIsLoaded] = useState(false)
 
     useEffect(() => {
-        const iframe = ref.current?.querySelector('iframe')
-        if (!iframe) {
-            setIsLoaded(true)
-        } else {
-            iframe?.addEventListener('load', () => {
-                setIsLoaded(true)
+        if (!ref.current) return
+        const iframe = ref.current.querySelector('iframe')
+        if (iframe) {
+            iframe.addEventListener('load', () => {
+                setFrameIsLoaded(true)
             })
+        } else {
+            setFrameIsLoaded(true)
         }
+        return () =>
+            iframe?.removeEventListener('load', () => {
+                setFrameIsLoaded(true)
+            })
     }, [])
 
     return (
@@ -83,7 +88,7 @@ const Section = (props: InfoProps) => {
             gap={gap}
             align={align}
             justify="start"
-            className={classnames(cls, ['section'], { inView }, [className])}
+            className={classnames(cls, ['section'], { inView }, [])}
             style={{
                 ...style,
                 opacity: inView ? 1 : 0,
@@ -92,7 +97,7 @@ const Section = (props: InfoProps) => {
             {...others}
         >
             {title && <Title className={classnames(cls, ['title', transform])}>{title}</Title>}
-            <Col gap="none" className={classnames(cls, ['content'], { isLoaded })}>{children}</Col>
+            <Col gap="none" className={classnames(cls, ['content'], { frameIsLoaded }, [className])}>{children}</Col>
         </Col>
     )
 }

@@ -92,7 +92,7 @@ export const Slider = (props: SliderProps) => {
                                         ])}
                                     >
                                         {videoSrc ? (
-                                            <VideoPlayer src={videoSrc} poster={imageSrc} />
+                                            <VideoPlayer src={videoSrc} poster={imageSrc} preload={'auto'}/>
                                         ) : (
                                             <LazyImage
                                                 src={imageSrc}

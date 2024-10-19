@@ -36,7 +36,6 @@ const VideoPlayer = ({ src, poster, alt, width, height, ...other }: VideoPlayerP
                 src={src}
                 poster={poster}
                 muted
-                preload={'auto'}
                 className={cls.player}
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
                 onLoadedData={onLoadDataHandler as any}

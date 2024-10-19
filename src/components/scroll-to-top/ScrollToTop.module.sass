@@ -1,3 +1,5 @@
+@import "@/app/styles/mixins"
+
 .scroll_to_top
 	position: sticky
 	bottom: 1.5rem
@@ -8,6 +10,10 @@
 	transition: all 300ms cubic-bezier(.07, .19, .3, 1.03), visibility 1000ms
 	transform: translate(100px, 0)
 	opacity: 0
+
+	+media-max(xl)
+		font-size: 1rem
+
 	svg
 		transition: transform 200ms
 		transform: scale(0.8)
