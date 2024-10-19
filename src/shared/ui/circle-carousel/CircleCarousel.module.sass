@@ -9,19 +9,21 @@
 	height: 90vw
 	//max-width: 600px
 	//max-height: 600px
-	padding: 2.6rem
+	padding: 7%
 	font-size: 0.8em
 	border-radius: 50%
 	transform: translate(-50%, -50%)
 	cursor: pointer
 	overflow: hidden
 
-	+media-min(sm)
+
+	@media (min-width: 576px) and (orientation: portrait)
 		font-size: 1em
 
 	@media (orientation: landscape)
-		width: 80vh
-		height: 80vh
+		width: 90vh
+		height: 90vh
+		padding: 7vh
 
 .circle__nav
 	opacity: 0
@@ -65,15 +67,15 @@
 	color: var(--white-color)
 
 .title
-	top: 8%
+	top: 10%
 	align-items: flex-end
 	text-transform: uppercase
 
 .excerpt
-	bottom: 8%
+	bottom: 10%
 
 .cover
-	padding: 28%
+	padding: 27%
 	overflow: hidden
 	object-fit: contain
 	opacity: 0
