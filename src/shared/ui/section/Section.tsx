@@ -88,7 +88,7 @@ const Section = (props: InfoProps) => {
             gap={gap}
             align={align}
             justify="start"
-            className={classnames(cls, ['section'], { inView }, [])}
+            className={classnames(cls, ['section'], { inView }, [className])}
             style={{
                 ...style,
                 opacity: inView ? 1 : 0,
@@ -97,7 +97,7 @@ const Section = (props: InfoProps) => {
             {...others}
         >
             {title && <Title className={classnames(cls, ['title', transform])}>{title}</Title>}
-            <Col gap="none" className={classnames(cls, ['content'], { frameIsLoaded }, [className])}>{children}</Col>
+            <Col gap="none" className={classnames(cls, ['content'], { frameIsLoaded }, [])}>{children}</Col>
         </Col>
     )
 }

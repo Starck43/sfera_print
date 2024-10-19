@@ -45,11 +45,12 @@ const PhilosophyPage = async () => {
                 </Section>
             )}
             <Section
+                gap="xs"
                 title={'Наши достижения'}
                 titleTag="h2"
                 align="start"
                 transform="upperFirst"
-                className={classnames(cls, ['section'], {}, ['grey__style'])}
+                className={classnames(cls, ['section', 'achievements'], {}, ['grey__style'])}
             >
                 <Achievements data={achievements as Achievement[]} />
             </Section>

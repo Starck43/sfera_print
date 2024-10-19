@@ -52,7 +52,6 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                 domNode.tagName === 'pre' &&
                 (domNode.firstChild as Element).attribs.class === 'language-html'
             ) {
-                console.log((domNode.firstChild as Element).firstChild)
                 const textElement = (domNode.firstChild as Element).firstChild as Text
                 return <>{domToReact(htmlToDOM(textElement.data))}</>
             }

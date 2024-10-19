@@ -243,7 +243,7 @@ blockquote {
 }
 
 .html-container {
-	> * {
+	> div >* {
 		width: 100%;
 	}
 
@@ -392,3 +392,16 @@ td:not(.media-grid) > .image img {
 		padding-bottom: var(--gap);
 	}
 }
+
+.b24-form {
+	overflow: hidden;
+}
+
+.b24-form-btn {
+	background-color: var(--secondary-color) !important;
+	border-radius: var(--border-radius-button) !important;
+}
+.b24-form-wrapper.b24-form-border-bottom {
+    border-bottom: none !important;
+}
+

@@ -7,7 +7,7 @@ const nextConfig = {
     images: {
         dangerouslyAllowSVG: true,
         contentDispositionType: 'attachment',
-        contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+        contentSecurityPolicy: 'default-src \'self\'; script-src \'none\'; sandbox;',
         deviceSizes: [50, 320, 576, 768, 992, 1200, 1400],
         remotePatterns: [
             {
@@ -25,16 +25,16 @@ const nextConfig = {
                 hostname: 'localhost',
                 port: '8000'
             }
-        ],
+        ]
         // minimumCacheTTL: 60 * 60 * 24,
     },
     logging:
         process.env.NODE_ENV === 'development'
             ? {
-                  fetches: {
-                      fullUrl: true
-                  }
-              }
+                fetches: {
+                    fullUrl: true
+                }
+            }
             : {},
     experimental: {
         cssChunking: 'loose' // default
@@ -51,7 +51,8 @@ const nextConfig = {
                 get() {
                     return 'source-map'
                 },
-                set() {}
+                set() {
+                }
             })
         }
 
