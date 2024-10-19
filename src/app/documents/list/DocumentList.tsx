@@ -23,9 +23,8 @@ const DocumentList = ({ items }: { items: PostType[] }) => {
                 <Section
                     key={slug}
                     as="article"
-                    gap="xs"
+                    gap="sm"
                     onClick={(e) => openDocumentHandler(e, idx)}
-                    style={{ padding: 0 }}
                 >
                     {cover && (
                         <LazyImage
@@ -41,7 +40,7 @@ const DocumentList = ({ items }: { items: PostType[] }) => {
                         />
                     )}
                     <Header tag="h3" title={title} transform="upperFirst" />
-                    <p className={cls.excerpt}>{excerpt}</p>
+                    {excerpt ? <p className={cls.excerpt}>{excerpt}</p> : null }
                 </Section>
             ))}
         </div>

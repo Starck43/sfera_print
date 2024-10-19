@@ -26,7 +26,7 @@ const DocumentsPage = async () => {
 
     return (
         <PageLayout title={title} gap={'none'} sectionMode className="documents-page">
-            {parsedContent && <Section className="html-container">{parsedContent}</Section>}
+            {parsedContent && <Section className="html-container" style={{paddingBottom: 0}}>{parsedContent}</Section>}
             <DocumentList items={documentsData || []} />
         </PageLayout>
     )

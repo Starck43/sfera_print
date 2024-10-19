@@ -3,17 +3,25 @@
 .document__container
 	display: grid
 	grid-template-columns: repeat(auto-fill, minmax(225px, 1fr))
-	grid-gap: calc(var(--gap) * 2)
+	grid-gap: var(--gap)
 	width: 100%
-	padding: 0 var(--page-padding) var(--page-padding)
+	padding: var(--page-padding)
 
 	+media-min(xxl)
 		grid-template-columns: repeat(3, 1fr)
 
 	article
-		h3
-			font-size: clamp(1.15rem, 0.8rem + 0.6vw, 1.25rem)
+		border: var(--border-thickness) var(--border-color-default) solid
+		padding: var(--gap)
 		cursor: pointer
+		h3
+			margin-top: 0.75rem
+			margin-bottom: 0
+			font-size: clamp(1.0rem,.8rem + 0.5vw, 1.15rem)
+
+		&:hover
+			transform: scale(1.02) !important
+			box-shadow: 0 0 1.4rem -0.2rem var(--box-shadow)
 
 .excerpt
 	flex: auto

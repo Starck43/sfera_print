@@ -30,7 +30,7 @@ const PageHeader = () => (
             src={'/videos/sp-bg-anim.webm'}
             preload={process.env.NODE_ENV !== 'development' ? 'auto' : 'none'}
             autoPlay={process.env.NODE_ENV !== 'development'}
-            loop={process.env.NODE_ENV !== 'development'}
+            loop={false}
             controls={false}
             style={{ height: '100%', pointerEvents: 'none'}}
         />
