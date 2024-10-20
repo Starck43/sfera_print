@@ -40,7 +40,7 @@ const VideoPlayer = ({ src, poster, alt, width, height, className, ...other }: V
                 muted
                 className={classnames(cls, ['player'], {}, [className])}
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
-                onLoadedData={onLoadDataHandler as any}
+                onCanPlay={onLoadDataHandler as any}
                 {...other}
             >
                 <style>{`
