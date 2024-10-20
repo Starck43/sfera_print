@@ -10,8 +10,6 @@
 .slider__container
 	position: relative
 	width: 100%
-	background-color: var(--light-grey-color)
-
 
 	+media-min(md)
 		padding-left: var(--slider-controls-width)
@@ -47,15 +45,15 @@
 		display: flex
 		justify-content: center
 		align-items: center
+		background-color: var(--light-grey-color)
 
 		&.with_one_image
 			@media (orientation: landscape)
 				display: inline-flex
 				align-items: stretch
 				justify-content: center
-
-			img
 				border-radius: var(--border-radius)
+				overflow: hidden
 
 		&:not(.with_one_image)
 			img
