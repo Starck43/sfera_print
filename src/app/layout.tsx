@@ -7,12 +7,12 @@ import Image from 'next/image'
 import { RouteEvents } from '@/components/routes/route-events'
 import PageHeader from '@/components/page-header'
 import { BurgerButton, Navbar } from '@/components/navbar'
+import { YandexMetrika } from '@/components/yandex-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
 
 import './globals.scss'
-import { YandexMetrika } from '@/components/yandex-metrika'
 
 export const metadata: Metadata = {
     title: {
@@ -102,8 +102,8 @@ export default async function RootLayout({
                     </NavigationProvider>
                 </header>
                 {children}
+                <YandexMetrika enabled={analyticsEnabled} />
             </body>
-            <YandexMetrika enabled={analyticsEnabled} />
         </html>
     )
 }

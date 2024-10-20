@@ -18,16 +18,15 @@ const LazyImage = ({ src, alt, className, blurDataURL, ...other }: ImageProps) =
         <Image
             src={src}
             overrideSrc={typeof src === 'string' ? src : undefined}
-            //srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
             alt={alt || ''}
+            //srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
+            {...other}
             quality={85}
             placeholder={blurDataURL ? 'blur' : placeholder}
             blurDataURL={blurDataURL}
             onLoad={onLoadHandler as any}
             onError={(e) => (e.currentTarget.style.visibility = 'hidden')}
             className={classnames(cls, ['image'], {}, [className])}
-            lazyBoundary="100px"
-            {...other}
         />
     )
 }

@@ -45,6 +45,8 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
         .replace(/\n+\s*/g, '\n')
         .trim()
 
+    if (!content) return null
+
     const options: HTMLReactParserOptions = {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
@@ -131,6 +133,5 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
             }
         }
     }
-
     return parse(content, options) || null
 }

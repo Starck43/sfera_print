@@ -17,6 +17,11 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
+                hostname: '*.yandex.ru',
+                port: ''
+            },
+            {
+                protocol: 'https',
                 hostname: 'i.postimg.cc',
                 port: ''
             },
