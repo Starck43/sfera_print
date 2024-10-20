@@ -135,6 +135,7 @@ header {
 	border: 1px solid rgb(var(--page-background-color), 0.3) !important;
 	box-shadow: 0 0 2px var(--white-color), 0 0.3em 1em -0.4em var(--box-shadow);
 	z-index: 2;
+
 	svg {
 		stroke-width: 2px;
 	}
@@ -243,7 +244,7 @@ blockquote {
 }
 
 .html-container {
-	> div >* {
+	> div > * {
 		width: 100%;
 	}
 
@@ -291,6 +292,9 @@ blockquote {
 			flex: 1 0 50% !important;
 			max-width: 50%;
 		}
+		.video-wrapper.portrait {
+			max-width: 35%;
+		}
 	}
 
 	> *:nth-child(odd) {
@@ -306,9 +310,16 @@ blockquote {
 	position: relative;
 	display: flex;
 	height: 100%;
-	img + * {
+
+	img + .video-player {
 		position: absolute;
 		visibility: hidden;
+	}
+
+	&.portrait {
+		.video-player {
+			height: 100%;
+		}
 	}
 }
 
@@ -401,7 +412,8 @@ td:not(.media-grid) > .image img {
 	background-color: var(--secondary-color) !important;
 	border-radius: var(--border-radius-button) !important;
 }
+
 .b24-form-wrapper.b24-form-border-bottom {
-    border-bottom: none !important;
+	border-bottom: none !important;
 }
 

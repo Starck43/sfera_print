@@ -4,14 +4,16 @@ import React, { CSSProperties, ReactNode, useMemo, useRef, useState } from 'reac
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperCore } from 'swiper/types'
 import { EffectFade } from 'swiper/modules'
-import Player from 'next-video/player'
 
 import type { Media } from '@/components/post'
+
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { getDeviceSrc } from '@/shared/lib/helpers/image'
 import { useWindowDimensions } from '@/shared/lib/hooks/useWindowDimensions'
+
 import { Section } from '@/shared/ui/section'
 import { LazyImage } from '@/shared/ui/lazy-image'
+import { VideoPlayer } from '@/shared/ui/video-player'
 
 import SliderThumbs from './SliderThumbs'
 
@@ -19,7 +21,6 @@ import SliderControls from './SliderControls'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import cls from './Slider.module.sass'
-import { VideoPlayer } from '@/shared/ui/video-player'
 
 export type ContentPosition = 'header' | 'footer'
 

@@ -3,6 +3,8 @@
 import React, { memo, SyntheticEvent } from 'react'
 import Player from 'next-video/player'
 import type { DefaultPlayerProps } from 'next-video'
+
+import { classnames } from '@/shared/lib/helpers/classnames'
 import { LazyImage } from '@/shared/ui/lazy-image'
 
 import cls from './VideoPlayer.module.sass'
@@ -14,7 +16,7 @@ interface VideoPlayerProps extends DefaultPlayerProps {
     height?: number
 }
 
-const VideoPlayer = ({ src, poster, alt, width, height, ...other }: VideoPlayerProps) => {
+const VideoPlayer = ({ src, poster, alt, width, height, className, ...other }: VideoPlayerProps) => {
     if (!src) return null
 
     const onLoadDataHandler = (e: SyntheticEvent<HTMLVideoElement>) => {
@@ -36,7 +38,7 @@ const VideoPlayer = ({ src, poster, alt, width, height, ...other }: VideoPlayerP
                 src={src}
                 poster={poster}
                 muted
-                className={cls.player}
+                className={classnames(cls, ['player'], {}, [className])}
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
                 onLoadedData={onLoadDataHandler as any}
                 {...other}

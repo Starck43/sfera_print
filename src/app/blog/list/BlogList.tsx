@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import PageLayout from '@/components/layout/page-layout'
 import type { PostType } from '@/components/post'
@@ -25,6 +25,36 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
         true,
         [activeBlog]
     )
+
+        const onItemClick = (idx: number | null) => {
+        if (idx !== null) {
+            history.pushState({ idx }, '', posts[idx].path)
+            setActiveBlog(idx)
+        } else {
+            history.back()
+            setActiveBlog(null)
+        }
+    }
+
+    // Эффект для обработки перехода назад
+    useEffect(() => {
+        const handlePopState = (event: PopStateEvent) => {
+            if (event.state && event.state.idx !== undefined) {
+                setActiveBlog(event.state.idx)
+            } else {
+                setActiveBlog(null)
+            }
+        }
+
+        // Подписываемся на событие popstate
+        window.addEventListener('popstate', handlePopState)
+
+        // Чистим подписку при размонтировании компонента
+        return () => {
+            window.removeEventListener('popstate', handlePopState)
+        }
+    }, [])
+
 
     const blogContent = useMemo(
         () => (
@@ -64,14 +94,27 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                                 </span>
                             )}
                             {excerpt && <p className={cls.excerpt}>{excerpt}</p>}
-                            <Button title="Подробнее" rounded onClick={() => setActiveBlog(idx)} />
+                            <Button title="Подробнее" rounded onClick={() => onItemClick(idx)} />
                         </Section>
                     )
                 )}
             </div>
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [posts]
     )
+
+    if (!posts?.length) {
+        return (
+            <Header
+                fullWidth
+                align="center"
+                tag="h3"
+                transform="upperFirst"
+                title="Новости скоро будут..."
+            />
+        )
+    }
 
     return (
         <>
@@ -80,7 +123,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                 <PageLayout
                     gap={'none'}
                     sectionMode={false}
-                    handleOnClose={() => setActiveBlog(null)}
+                    handleOnClose={() => onItemClick(null)}
                     className="blog-detail"
                 >
                     {isError ? (

@@ -29,11 +29,13 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
         linkSrc: string,
         ext: string,
         imageSrc: string,
-        width: string,
-        height: string,
+        width: number,
+        height: number,
         alt: string
     ) =>
-        `<video poster="${imageSrc}" src="${linkSrc}" width="${width}" height="${height}" title="${alt}" />`
+        `<video poster="${imageSrc}" src="${linkSrc}" width="${width || 1}" height="${
+            height || 1
+        }" title="${alt || ''}" />`
 
     const content = html
         //.replace(/<(\/?)(tbody)([^>]*)>/g, '')
@@ -65,17 +67,28 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
             } else if (
                 domNode instanceof Element &&
                 domNode.tagName === 'td' &&
-                (domNode.firstChild?.name === 'video' || domNode.lastChild?.name === 'video')
+                (domNode.firstChild?.tagName === 'video' || domNode.lastChild?.tagName === 'video')
             ) {
-                return <td className="video-wrapper">{domToReact(domNode.children, options)}</td>
+                const elem = domNode.firstChild as Element
+                const orientation =
+                    parseInt(elem.attribs?.width) >= parseInt(elem.attribs?.height)
+                        ? ' landscape'
+                        : ' portrait'
+
+                return <td className={'video-wrapper' + orientation}>{domToReact(domNode.children, options)}</td>
             } else if (
                 domNode instanceof Element &&
                 domNode.tagName === 'td' &&
                 domNode.firstChild.tagName === 'figure' &&
-                ((domNode.firstChild as Element).firstChild as Element).name === 'video'
+                ((domNode.firstChild as Element).firstChild as Element).tagName === 'video'
             ) {
+                const elem = (domNode.firstChild as Element).firstChild as Element
+                const orientation =
+                    parseInt(elem.attribs?.width) >= parseInt(elem.attribs?.height)
+                        ? ' landscape'
+                        : ' portrait'
                 return (
-                    <td className="video-wrapper">
+                    <td className={'video-wrapper' + orientation}>
                         {domToReact((domNode.firstChild as ExtendedDOMNode).children, options)}
                     </td>
                 )
@@ -98,7 +111,6 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
 
                 if (domNode.parent?.tagName === 'figure') return img
                 return <div className="image">{img}</div>
-
             } else if (domNode instanceof Element && domNode.tagName === 'video') {
                 if (!domNode.attribs?.src || !domNode.attribs?.poster) return null
 
@@ -114,6 +126,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                         width={parseInt(domNode.attribs.width)}
                         height={parseInt(domNode.attribs.height)}
                         alt={domNode.attribs.title}
+                        className="video-player"
                     />
                 )
             }

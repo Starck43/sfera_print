@@ -1,6 +1,6 @@
 'use client'
 
-import React, { memo, useMemo, useState } from 'react'
+import React, { memo, useEffect, useMemo, useState } from 'react'
 
 import PageLayout from '@/components/layout/page-layout'
 import type { PostType } from '@/components/post'
@@ -23,6 +23,35 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
         [activeTechnology]
     )
 
+    const onItemClick = (idx: number | null) => {
+        if (idx !== null) {
+            history.pushState({ idx }, '', items[idx].path)
+            setActiveTechnology(idx)
+        } else {
+            history.back()
+            setActiveTechnology(null)
+        }
+    }
+
+    // Эффект для обработки перехода назад
+    useEffect(() => {
+        const handlePopState = (event: PopStateEvent) => {
+            if (event.state && event.state.idx !== undefined) {
+                setActiveTechnology(event.state.idx)
+            } else {
+                setActiveTechnology(null)
+            }
+        }
+
+        // Подписываемся на событие popstate
+        window.addEventListener('popstate', handlePopState)
+
+        // Чистим подписку при размонтировании компонента
+        return () => {
+            window.removeEventListener('popstate', handlePopState)
+        }
+    }, [])
+
     const technologiesContent = useMemo(
         () => (
             <div className={cls.technologies__container}>
@@ -32,7 +61,7 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                         as="article"
                         gap="xs"
                         align="center"
-                        onClick={() => setActiveTechnology(idx)}
+                        onClick={() => onItemClick(idx)}
                         style={{ padding: 0, height: 'max-content' }}
                     >
                         {cover && (
@@ -60,8 +89,21 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                 ))}
             </div>
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [items]
     )
+
+    if (!items?.length) {
+        return (
+            <Header
+                fullWidth
+                align="center"
+                tag="h3"
+                transform="upperFirst"
+                title="Данные пока отсутствуют"
+            />
+        )
+    }
 
     return (
         <>
@@ -70,7 +112,7 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                 <PageLayout
                     gap={'none'}
                     sectionMode={false}
-                    handleOnClose={() => setActiveTechnology(null)}
+                    handleOnClose={() => onItemClick(null)}
                     className="technology-detail"
                 >
                     {isError ? (

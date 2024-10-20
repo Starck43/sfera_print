@@ -1,9 +1,8 @@
-// @import "src/app/styles/mixins"
+@import "src/app/styles/mixins"
 .image
 	width: 100%
 	height: auto
-	opacity: 0
 	transition: opacity 0.3s ease-in
 	&.loaded
 		& + *
-			visibility: visible
+			visibility: visible !important

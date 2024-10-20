@@ -28,8 +28,9 @@ const Post = ({ data, style, className }: ContentProps) => {
     const { id, title, cover: image, media, event_date, desc } = data
     const parsedContent = htmlParser(desc)
 
-    if (parsedContent instanceof Array && !parsedContent.length) {
+    if (!desc || parsedContent instanceof Array && !parsedContent.length) {
         const imageSrc = getDeviceSrc(image)
+
         return (
             <Section className={className} style={style}>
                 <Header title={title} tag="h2" transform="upperCase" className={cls.header} />
