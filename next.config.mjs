@@ -25,8 +25,8 @@ const nextConfig = {
                 hostname: 'localhost',
                 port: '8000'
             }
-        ]
-        // minimumCacheTTL: 60 * 60 * 24,
+        ],
+        minimumCacheTTL: 60 * 60 * 24 * 30,
     },
     logging:
         process.env.NODE_ENV === 'development'
