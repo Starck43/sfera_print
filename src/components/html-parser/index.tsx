@@ -102,7 +102,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                 const img = (
                     <LazyImage
                         src={src}
-                        alt={domNode.attribs.alt || ''}
+                        alt={domNode.attribs.alt}
                         sizes="(min-width:992px) 50vw, 100vw"
                         fill
                         style={{ objectFit: 'cover' }}
@@ -117,7 +117,6 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, domNode.attribs.src)
                 const poster = buildAbsoluteUrl(host, domNode.attribs.poster)
-
                 return (
                     <VideoPlayer
                         src={src}

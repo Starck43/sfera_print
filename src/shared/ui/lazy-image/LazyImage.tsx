@@ -6,6 +6,7 @@ import { classnames } from '@/shared/lib/helpers/classnames'
 
 import cls from './LazyImage.module.sass'
 
+const placeholder = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
 
 const LazyImage = ({ src, alt, className, blurDataURL, ...other }: ImageProps) => {
     const onLoadHandler = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -15,16 +16,18 @@ const LazyImage = ({ src, alt, className, blurDataURL, ...other }: ImageProps) =
 
     return (
         <Image
-            {...other}
             src={src}
             overrideSrc={typeof src === 'string' ? src : undefined}
             //srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
-            alt={alt}
-            placeholder={blurDataURL ? 'blur' : "empty"}
-            blurDataURL={blurDataURL || "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="}
+            alt={alt || ''}
+            quality={85}
+            placeholder={blurDataURL ? 'blur' : placeholder}
+            blurDataURL={blurDataURL}
             onLoad={onLoadHandler as any}
             onError={(e) => (e.currentTarget.style.visibility = 'hidden')}
             className={classnames(cls, ['image'], {}, [className])}
+            lazyBoundary="100px"
+            {...other}
         />
     )
 }

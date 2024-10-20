@@ -15,3 +15,13 @@ export function getDeviceSrc(image?: Media['image'] | null, thumb = false): stri
 
     return typeof image === 'object' && 'src' in image ? (thumb ? image.srcset?.[0] || image.src : image.src) : image
 }
+
+export const createThumbUrl = (src: string, width: number) => {
+	const path = src?.split(".")
+	if (path && path.length > 1) {
+		const ext = path.pop()
+		const thumbName = "_" + width + "w"
+		return path.join(".") + thumbName + "." + ext
+	}
+	return src
+}

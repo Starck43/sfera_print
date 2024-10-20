@@ -1,4 +1,3 @@
-export { default as getMenu } from './getMenu'
 export { default as getPage } from './getPage'
 
 import { normalizeUrlPath } from '@/shared/lib/helpers/url'
