@@ -1,8 +1,8 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
+import { classnames } from '@/shared/lib/helpers/classnames'
 import type { CityProps, ZoomedRegion } from './types'
 import { animateRegion } from './helpers'
-import { classnames } from '@/shared/lib/helpers/classnames'
 
 import cls from '@/components/map/Map.module.sass'
 
@@ -14,7 +14,7 @@ export const useZoomRegion = () => {
 
     const [activeCity, setActiveCity] = useState<CityProps | null>(null)
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!zoomedRegion) return
         animateRegion(zoomedRegion)
     }, [zoomedRegion])
@@ -35,7 +35,6 @@ export const useZoomRegion = () => {
     }, [])
 
     // Создаем города в выбранном регионе
-    // eslint-disable-next-line react/display-name
     const renderCity = useCallback(
         // eslint-disable-next-line react/display-name
         () => (city: CityProps, region: ZoomedRegion, opacity: number) => {
@@ -49,22 +48,14 @@ export const useZoomRegion = () => {
                     onClick={() => setActiveCity(city)}
                 >
                     <defs>
-                        <g id="ripples" className={cls.ripples} style={{ '--scale': `${1 / scale}` }}>
-                            <circle
-                                r={14 / scale}
-                                stroke="none"
-                                className={cls.rp1}
-                            />
-                            <circle
-                                r={14 / scale}
-                                stroke="none"
-                                className={cls.rp2}
-                            />
-                            <circle
-                                r={14 / scale}
-                                stroke="none"
-                                className={cls.rp3}
-                            />
+                        <g
+                            id="ripples"
+                            className={cls.ripples}
+                            style={{ '--scale': `${1 / scale}` }}
+                        >
+                            <circle r={14 / scale} stroke="none" className={cls.rp1} />
+                            <circle r={14 / scale} stroke="none" className={cls.rp2} />
+                            <circle r={14 / scale} stroke="none" className={cls.rp3} />
                         </g>
                     </defs>
                     <use xlinkHref="#ripples" x={city.path.cx} y={city.path.cy} />
@@ -93,7 +84,6 @@ export const useZoomRegion = () => {
     )
 
     // Создаем увеличенный регион
-    // eslint-disable-next-line react/display-name
     const renderRegion = useCallback(
         (handleClick: (e: React.MouseEvent<SVGGElement>, regionId?: number) => void) =>
             // eslint-disable-next-line react/display-name

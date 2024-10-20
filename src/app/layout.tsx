@@ -12,6 +12,7 @@ import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
 
 import './globals.scss'
+import { YandexMetrika } from '@/components/yandex-metrika'
 
 export const metadata: Metadata = {
     title: {
@@ -74,6 +75,8 @@ const titleFont = localFont({
 export default async function RootLayout({
     children = null
 }: Readonly<{ children: React.ReactNode }>) {
+    const analyticsEnabled = process.env.NODE_ENV === "production"
+
     return (
         <html
             lang="ru"
@@ -100,6 +103,7 @@ export default async function RootLayout({
                 </header>
                 {children}
             </body>
+            <YandexMetrika enabled={analyticsEnabled} />
         </html>
     )
 }

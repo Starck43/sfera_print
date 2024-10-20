@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import PageLayout from '@/components/layout/page-layout'
 
@@ -50,7 +50,6 @@ const Map = ({ pageTitle, cities }: MapProps) => {
             y: 235.25,
             stroke: '#000',
             fontSize: 140,
-            fontFamily: 'Helvetica, Arial, sans-serif',
             fontWeight: 700,
             textAnchor: 'middle'
         }
@@ -227,4 +226,4 @@ const Map = ({ pageTitle, cities }: MapProps) => {
     )
 }
 
-export default Map
+export default memo(Map)
