@@ -314,8 +314,6 @@ blockquote {
 	position: relative;
 	display: flex;
 	height: 100%;
-	max-height: 90vh;
-	width: max-content;
 
 	img + .video-player {
 		position: absolute;
@@ -326,6 +324,13 @@ blockquote {
 		.video-player {
 			height: 100%;
 		}
+
+		@media (max-width: 991.98px) {
+			max-height: 90vh;
+			width: max-content;
+			margin: auto;
+		}
+
 	}
 }
 
@@ -333,7 +338,6 @@ blockquote {
 	position: relative;
 	display: flex;
 	width: 100%;
-	height: 100%;
 	pointer-events: none;
 	border-radius: var(--border-radius);
 	overflow: hidden;

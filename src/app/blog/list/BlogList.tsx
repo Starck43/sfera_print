@@ -112,6 +112,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                 tag="h3"
                 transform="upperFirst"
                 title="Новости скоро будут..."
+                style={{width: '100%'}}
             />
         )
     }
