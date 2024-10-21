@@ -33,9 +33,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
         height: number,
         alt: string
     ) =>
-        `<video poster="${imageSrc}" src="${linkSrc}" width="${width || 1}" height="${
-            height || 1
-        }" title="${alt || ''}" />`
+        `<video poster="${imageSrc}" src="${linkSrc}" width="${width || 16}" height="${height || 9}" title="${alt || ''}" />`
 
     const content = html
         //.replace(/<(\/?)(tbody)([^>]*)>/g, '')
@@ -77,7 +75,11 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                         ? ' landscape'
                         : ' portrait'
 
-                return <td className={'video-wrapper' + orientation}>{domToReact(domNode.children, options)}</td>
+                return (
+                    <td className={'video-wrapper' + orientation}>
+                        {domToReact(domNode.children, options)}
+                    </td>
+                )
             } else if (
                 domNode instanceof Element &&
                 domNode.tagName === 'td' &&
@@ -96,23 +98,33 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                 )
             }
 
-            if (domNode instanceof Element && domNode.tagName === 'img') {
-                if (!domNode.attribs?.src) return null
+            if (
+                domNode instanceof Element &&
+                ((domNode.tagName === 'img' && domNode.parent.tagName !== 'figure') ||
+                    (domNode.attribs.class === 'image' && domNode?.firstChild.tagName === 'img'))
+            ) {
+                const imgNode =
+                    domNode.tagName === 'img' ? domNode : (domNode.firstChild as Element)
+                if (!imgNode.attribs.src) return null
 
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
-                const src = buildAbsoluteUrl(host, domNode.attribs.src)
-                const img = (
-                    <LazyImage
-                        src={src}
-                        alt={domNode.attribs.alt}
-                        sizes="(min-width:992px) 50vw, 100vw"
-                        fill
-                        style={{ objectFit: 'cover' }}
-                    />
+                const src = buildAbsoluteUrl(host, imgNode.attribs.src)
+                const width = parseInt(imgNode.attribs?.width)
+                const height = parseInt(imgNode.attribs?.height)
+                return (
+                    <figure
+                        className="image"
+                        style={{ height: 0, paddingTop: `${(height / width) * 100}%` }}
+                    >
+                        <LazyImage
+                            src={src}
+                            alt={domNode.attribs.alt || ''}
+                            sizes="(min-width:992px) 70vw, 100vw"
+                            fill
+                            style={{ objectFit: 'cover' }}
+                        />
+                    </figure>
                 )
-
-                if (domNode.parent?.tagName === 'figure') return img
-                return <div className="image">{img}</div>
             } else if (domNode instanceof Element && domNode.tagName === 'video') {
                 if (!domNode.attribs?.src || !domNode.attribs?.poster) return null
 
@@ -124,6 +136,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                         src={src}
                         poster={poster}
                         //preload={'auto'}
+                        sizes="(min-width:992px) 70vw, 100vw"
                         width={parseInt(domNode.attribs.width)}
                         height={parseInt(domNode.attribs.height)}
                         alt={domNode.attribs.title}

@@ -14,9 +14,10 @@ interface VideoPlayerProps extends DefaultPlayerProps {
     alt?: string
     width?: number
     height?: number
+    sizes?: string
 }
 
-const VideoPlayer = ({ src, poster, alt, width, height, className, ...other }: VideoPlayerProps) => {
+const VideoPlayer = ({ src, poster, alt, width, height, sizes, className, ...other }: VideoPlayerProps) => {
     if (!src) return null
 
     const onLoadDataHandler = (e: SyntheticEvent<HTMLVideoElement>) => {
@@ -28,10 +29,11 @@ const VideoPlayer = ({ src, poster, alt, width, height, className, ...other }: V
             {poster && (
                 <LazyImage
                     src={poster}
+                    alt={alt || ''}
+                    sizes={sizes || '100vw'}
                     fill={!width || !height}
                     width={width}
                     height={height}
-                    alt={alt || ''}
                 />
             )}
             <Player
@@ -48,6 +50,8 @@ const VideoPlayer = ({ src, poster, alt, width, height, className, ...other }: V
                 ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
                 ::part(play):hover {--media-icon-color: inherit !important; background-color: var(--secondary-color) !important;} 
                 ::part(seek-backward), ::part(seek-forward) {display: none;}
+                ::part(mute) {margin-left: 1.2em;}
+                ::part(fullscreen) {margin-right: 1.2em;}
             `}</style>
             </Player>
         </>

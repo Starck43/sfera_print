@@ -4,8 +4,8 @@ import React, { useLayoutEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import anime from 'animejs/lib/anime.es'
 
-import { calcWheelColor, generateSvgChart, splitTextIntoArray } from './helper'
 import { classnames } from '@/shared/lib/helpers/classnames'
+import { calcWheelColor, generateSvgChart, splitTextIntoArray } from './helper'
 
 import cls from '../Philosophy.module.sass'
 

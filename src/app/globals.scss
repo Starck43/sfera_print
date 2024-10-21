@@ -301,12 +301,9 @@ blockquote {
 		}
 	}
 
-	> *:nth-child(odd) {
+	> td {
 		flex: 1;
-	}
-
-	> *:nth-child(even) {
-		flex: 1;
+		max-width: 100%;
 	}
 }
 
@@ -315,9 +312,14 @@ blockquote {
 	display: flex;
 	height: 100%;
 
+	> img {
+		z-index: 1;
+	}
+
 	img + .video-player {
 		position: absolute;
 		visibility: hidden;
+		z-index: 2;
 	}
 
 	&.portrait {
@@ -326,7 +328,7 @@ blockquote {
 		}
 
 		@media (max-width: 991.98px) {
-			max-height: 90vh;
+			max-height: 95vh;
 			width: max-content;
 			margin: auto;
 		}
@@ -339,16 +341,12 @@ blockquote {
 	display: flex;
 	width: 100%;
 	pointer-events: none;
+}
+
+.video-wrapper, .image {
 	border-radius: var(--border-radius);
 	overflow: hidden;
 
-	img {
-		object-fit: contain;
-
-	}
-}
-
-.video-wrapper, .image:not([data-nimg="fill"]) {
 	&::before {
 		@include pseudo(absolute);
 		background-color: var(--light-grey-color);
@@ -365,9 +363,7 @@ blockquote {
 	order: 1;
 
 	.image {
-		width: 100% !important;
-		height: 0;
-		padding-top: 100%;
+		padding-top: 100% !important;
 	}
 
 	@media (min-width: 768px) {
@@ -377,11 +373,6 @@ blockquote {
 	@media (min-width: 1200px) {
 		grid-template-columns: repeat(2, 1fr);
 	}
-}
-
-td:not(.media-grid) > .image img {
-	position: relative !important;
-	height: auto !important;
 }
 
 .grey__style {

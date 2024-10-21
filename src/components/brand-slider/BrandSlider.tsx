@@ -64,7 +64,12 @@ const BrandSlider = <T,>({ items }: { items: Partial<T>[] }) => {
                 <SwiperSlide key={'slide-' + idx} className={cls.slide}>
                     <Col justify="center" align="center" className={cls.brand}>
                         {logo && (
-                            <LazyImage src={logo} alt={name || 'Логотип партнера'} sizes="100vw" fill />
+                            <LazyImage
+                                src={logo}
+                                alt={name || 'Логотип партнера'}
+                                sizes="(min-width: 576px) 14vw, (min-width: 1200px) 11vw, 24vw"
+                                fill
+                            />
                         )}
                     </Col>
                 </SwiperSlide>
