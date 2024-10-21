@@ -296,6 +296,9 @@ blockquote {
 		}
 		.video-wrapper.portrait {
 			max-width: 35%;
+			max-height: 90vh;
+			width: max-content;
+			@include push--auto();
 		}
 	}
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import Image from 'next/image'
@@ -75,7 +75,7 @@ const titleFont = localFont({
 export default async function RootLayout({
     children = null
 }: Readonly<{ children: React.ReactNode }>) {
-    const analyticsEnabled = process.env.NODE_ENV === "production"
+    const analyticsEnabled = process.env.NODE_ENV === 'production'
 
     return (
         <html
@@ -102,7 +102,9 @@ export default async function RootLayout({
                     </NavigationProvider>
                 </header>
                 {children}
-                <YandexMetrika enabled={analyticsEnabled} />
+                <Suspense>
+                    <YandexMetrika enabled={analyticsEnabled} />
+                </Suspense>
             </body>
         </html>
     )
