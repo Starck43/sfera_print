@@ -1,14 +1,10 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import Script from 'next/script'
 
-type Props = {
-    enabled: boolean
-}
-
-const YandexMetrika: React.FC<Props> = ({ enabled }) => {
+const YandexMetrika = ({ enabled }: { enabled: boolean }) => {
     const pathName = usePathname()
     const searchParams = useSearchParams()
     const ID = parseInt(process.env.NEXT_PUBLIC_YANDEX_ID || '')
