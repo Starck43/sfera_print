@@ -1,32 +1,18 @@
 import React, { memo } from 'react'
-import Image from 'next/image'
 
 import { CircleCarousel } from '@/shared/ui/circle-carousel'
 import { VideoPlayer } from '@/shared/ui/video-player'
-import { SITE_TITLE } from '@/shared/const/page'
-
-import background from '@/images/header-bg.webp'
 import cls from './PageHeader.module.sass'
 
 const carouselLoopDuration = 15000
 
 const PageHeader = () => (
     <div className={cls.container}>
-        <Image
-            alt={SITE_TITLE}
-            src={background}
-            placeholder="blur"
-            fill
-            sizes="100vw"
-            style={{
-                objectFit: 'cover'
-            }}
-            priority
-        />
 
         {/*<HeaderAnimation/>*/}
         <VideoPlayer
             src={'/videos/sp-bg-anim.webm'}
+            poster={'/images/header-bg.webp'}
             preload={process.env.NODE_ENV !== 'development' ? 'auto' : 'none'}
             autoPlay={process.env.NODE_ENV !== 'development'}
             loop={false}
