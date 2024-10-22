@@ -74,12 +74,6 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                         ((domNode.firstChild as Element).firstChild as Element)?.tagName ===
                             'video'))
             ) {
-                const video = (
-                    domNode.firstChild?.tagName === 'video'
-                        ? domNode.firstChild
-                        : (domNode.firstChild as Element).firstChild
-                ) as Element
-
                 return (
                     <td className="video-grid">
                         {domNode.firstChild?.tagName === 'figure'
@@ -100,8 +94,8 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
 
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, imgNode.attribs.src)
-                const width = parseInt(imgNode.attribs?.width)
-                const height = parseInt(imgNode.attribs?.height)
+                const width = parseInt(imgNode.attribs?.width || '16')
+                const height = parseInt(imgNode.attribs?.height || '9')
                 return (
                     <figure
                         className="image"
@@ -122,8 +116,8 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, domNode.attribs.src)
                 const poster = buildAbsoluteUrl(host, domNode.attribs.poster)
-                const width = parseInt(domNode.attribs?.width)
-                const height = parseInt(domNode.attribs?.height)
+                const width = parseInt(domNode.attribs?.width || '16')
+                const height = parseInt(domNode.attribs?.height || '9')
                 const orientation = width >= height ? ' landscape' : ' portrait'
                 return (
                     <figure
