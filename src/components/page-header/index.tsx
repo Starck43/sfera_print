@@ -2,11 +2,11 @@ import React, { memo } from 'react'
 import Image from 'next/image'
 
 import { CircleCarousel } from '@/shared/ui/circle-carousel'
+import { VideoPlayer } from '@/shared/ui/video-player'
 import { SITE_TITLE } from '@/shared/const/page'
 
-import background from '@/images/header-bg.jpg'
+import background from '@/images/header-bg.webp'
 import cls from './PageHeader.module.sass'
-import { VideoPlayer } from '@/shared/ui/video-player'
 
 const carouselLoopDuration = 15000
 

@@ -51,7 +51,7 @@ const CarouselNav = (props: CarouselNavProps) => {
             className={cls.circle__nav}
             style={{
                 strokeWidth: strokeWidth,
-                '--path-width': strokeWidth * 1.4
+                '--path-width': strokeWidth * 3
             }}
         />
     )

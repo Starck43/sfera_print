@@ -23,23 +23,24 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
     if (!html) return null
 
     const linkImgRegex =
-        /<a[^>]*?href=["']?((?:.)*.(mp4|ogg|webm|avi|mov))[^>]*><img [^>]*?src=["']?((?:.)*.\.\w+)(?:[^>]*?width=["']?(\d+)["'])?(?:[^>]*?height=["']?(\d+)["'])?(?:[^>]*?alt=["']?([^>]+)["'])?[^>]*?><\/a>/gi
+        /(?:<figure [^>]*>\s*)?<a[^>]*?href=["']((?:[^"'])*\.(mp4|ogg|webm|avi|mov))["']>\s*<img[^>]*src=["']((?:\S+))['"](?:[^>]*?width=["']?(\d+)["'])?(?:[^>]*?height=["']?(\d+)["'])?(?:[^>]*?alt=["']([^>]+)["'])?>\s*<\/a>(?:\s*<\/figure>)?/gi
+
     const videoContentReplacement = (
         match: string,
         linkSrc: string,
         ext: string,
         imageSrc: string,
-        width: number,
-        height: number,
-        alt: string
+        width: number = 16,
+        height: number = 9,
+        alt: string = ''
     ) =>
-        `<video poster="${imageSrc}" src="${linkSrc}" width="${width || 16}" height="${height || 9}" title="${alt || ''}" />`
+        `<video poster="${imageSrc}" src="${linkSrc}" width="${width}" height="${height}" title="${alt}" />`
 
     const content = html
         //.replace(/<(\/?)(tbody)([^>]*)>/g, '')
         //.replace(/<\/?table>/g, '')
-        .replace(/<[^/>][^>]?>(?:[\s+|&nbsp;]+)?<\/[^>]+>/g, '')
         .replace(linkImgRegex, videoContentReplacement)
+        .replace(/<[^/>][^>]?>(?:[\s+|&nbsp;]+)?<\/[^>]+>/g, '')
         .replace(/\n+\s*/g, '\n')
         .trim()
 
@@ -67,33 +68,23 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
             } else if (
                 domNode instanceof Element &&
                 domNode.tagName === 'td' &&
-                (domNode.firstChild?.tagName === 'video' || domNode.lastChild?.tagName === 'video')
+                (domNode.firstChild?.tagName === 'video' ||
+                    domNode.lastChild?.tagName === 'video' ||
+                    (domNode.firstChild?.tagName === 'figure' &&
+                        ((domNode.firstChild as Element).firstChild as Element)?.tagName ===
+                            'video'))
             ) {
-                const elem = domNode.firstChild as Element
-                const orientation =
-                    parseInt(elem.attribs?.width) >= parseInt(elem.attribs?.height)
-                        ? ' landscape'
-                        : ' portrait'
+                const video = (
+                    domNode.firstChild?.tagName === 'video'
+                        ? domNode.firstChild
+                        : (domNode.firstChild as Element).firstChild
+                ) as Element
 
                 return (
-                    <td className={'video-wrapper' + orientation}>
-                        {domToReact(domNode.children, options)}
-                    </td>
-                )
-            } else if (
-                domNode instanceof Element &&
-                domNode.tagName === 'td' &&
-                domNode.firstChild.tagName === 'figure' &&
-                ((domNode.firstChild as Element).firstChild as Element).tagName === 'video'
-            ) {
-                const elem = (domNode.firstChild as Element).firstChild as Element
-                const orientation =
-                    parseInt(elem.attribs?.width) >= parseInt(elem.attribs?.height)
-                        ? ' landscape'
-                        : ' portrait'
-                return (
-                    <td className={'video-wrapper' + orientation}>
-                        {domToReact((domNode.firstChild as ExtendedDOMNode).children, options)}
+                    <td className="video-grid">
+                        {domNode.firstChild?.tagName === 'figure'
+                            ? domToReact((domNode.firstChild as ExtendedDOMNode).children, options)
+                            : domToReact(domNode.children, options)}
                     </td>
                 )
             }
@@ -131,17 +122,25 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, domNode.attribs.src)
                 const poster = buildAbsoluteUrl(host, domNode.attribs.poster)
+                const width = parseInt(domNode.attribs?.width)
+                const height = parseInt(domNode.attribs?.height)
+                const orientation = width >= height ? ' landscape' : ' portrait'
                 return (
-                    <VideoPlayer
-                        src={src}
-                        poster={poster}
-                        //preload={'auto'}
-                        sizes="(min-width:992px) 70vw, 100vw"
-                        width={parseInt(domNode.attribs.width)}
-                        height={parseInt(domNode.attribs.height)}
-                        alt={domNode.attribs.title}
-                        className="video-player"
-                    />
+                    <figure
+                        className={'video' + orientation}
+                        style={orientation === ' landscape' ? { height: 0, paddingTop: `${(height / width) * 100}%` } : {}}
+                    >
+                        <VideoPlayer
+                            src={src}
+                            poster={poster}
+                            //preload={'auto'}
+                            sizes="(min-width:992px) 70vw, 100vw"
+                            width={width}
+                            height={height}
+                            alt={domNode.attribs.title}
+                            className="video-player"
+                        />
+                    </figure>
                 )
             }
         }

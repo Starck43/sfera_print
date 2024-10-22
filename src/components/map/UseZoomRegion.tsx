@@ -14,6 +14,35 @@ export const useZoomRegion = () => {
 
     const [activeCity, setActiveCity] = useState<CityProps | null>(null)
 
+    const onCityClick = (city: CityProps | null) => {
+        if (city !== null) {
+            history.pushState({ city }, '', `cases/${city.id}`)
+            setActiveCity(city)
+        } else {
+            history.back()
+            setActiveCity(null)
+        }
+    }
+
+    // Эффект для обработки перехода назад
+    useEffect(() => {
+        const handlePopState = (event: PopStateEvent) => {
+            if (event.state && event.state.sity !== undefined) {
+                setActiveCity(event.state.sity)
+            } else {
+                setActiveCity(null)
+            }
+        }
+
+        // Подписываемся на событие popstate
+        window.addEventListener('popstate', handlePopState)
+
+        // Чистим подписку при размонтировании компонента
+        return () => {
+            window.removeEventListener('popstate', handlePopState)
+        }
+    }, [])
+
     useEffect(() => {
         if (!zoomedRegion) return
         animateRegion(zoomedRegion)
@@ -42,11 +71,7 @@ export const useZoomRegion = () => {
             const cx = Number(city.path.cx) - 12 / scale
             const cy = Number(city.path.cy) - 16 / scale
             return (
-                <g
-                    id={'city-' + city.id}
-                    key={'city-' + city.id}
-                    onClick={() => setActiveCity(city)}
-                >
+                <g id={'city-' + city.id} key={'city-' + city.id} onClick={() => onCityClick(city)}>
                     <defs>
                         <g
                             id="ripples"
@@ -125,6 +150,6 @@ export const useZoomRegion = () => {
         setZoomedRegion: updateZoomedRegion,
         showZoomedRegion,
         activeCity,
-        setActiveCity
+        setActiveCity: onCityClick
     }
 }

@@ -91,6 +91,9 @@ const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselPr
                             transition: `opacity ${duration}ms linear`
                         }}
                     >
+                        <div className={cls.title}>{item.title}</div>
+                        <p className={cls.excerpt}>{item?.excerpt || ''}</p>
+
                         {item.cover && (
                             <NextImage
                                 src={item.cover as string}
@@ -106,8 +109,6 @@ const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselPr
                                 onLoad={(e) => onLoadImage(e, idx)}
                             />
                         )}
-                        <div className={cls.title}>{item.title}</div>
-                        <p className={cls.excerpt}>{item?.excerpt || ''}</p>
                     </Col>
                 ))}
             </div>

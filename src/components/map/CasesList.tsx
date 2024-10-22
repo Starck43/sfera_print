@@ -34,6 +34,35 @@ const CasesList = () => {
         [inView]
     )
 
+    const onItemClick = (idx: number | null) => {
+        if (idx !== null) {
+            history.pushState({ idx }, '', '')
+            setActiveCase(idx)
+        } else {
+            history.back()
+            setActiveCase(null)
+        }
+    }
+
+    // Эффект для обработки перехода назад
+    useEffect(() => {
+        const handlePopState = (event: PopStateEvent) => {
+            if (event.state && event.state.idx !== undefined) {
+                setActiveCase(event.state.idx)
+            } else {
+                setActiveCase(null)
+            }
+        }
+
+        // Подписываемся на событие popstate
+        window.addEventListener('popstate', handlePopState)
+
+        // Чистим подписку при размонтировании компонента
+        return () => {
+            window.removeEventListener('popstate', handlePopState)
+        }
+    }, [])
+
     useEffect(() => {
         if (!data) return
         setNextLink(data?.next)
@@ -52,7 +81,7 @@ const CasesList = () => {
                     as="article"
                     gap="xs"
                     className={cls.article}
-                    onClick={() => setActiveCase(idx)}
+                    onClick={() => onItemClick(idx)}
                 >
                     <div className={cls.cover__wrapper}>
                         {cover && (
@@ -81,7 +110,7 @@ const CasesList = () => {
                 <PageLayout
                     gap="none"
                     sectionMode={false}
-                    handleOnClose={() => setActiveCase(null)}
+                    handleOnClose={() => onItemClick(null)}
                     className="case-detail"
                 >
                     <Portfolio items={[cases[activeCase]]} />

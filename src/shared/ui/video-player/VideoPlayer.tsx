@@ -1,6 +1,4 @@
-'use client'
-
-import React, { memo, SyntheticEvent } from 'react'
+import React, { memo } from 'react'
 import Player from 'next-video/player'
 import type { DefaultPlayerProps } from 'next-video'
 
@@ -17,35 +15,33 @@ interface VideoPlayerProps extends DefaultPlayerProps {
     sizes?: string
 }
 
-const VideoPlayer = ({ src, poster, alt, width, height, sizes, className, ...other }: VideoPlayerProps) => {
+const VideoPlayer = ({
+    src,
+    poster,
+    alt,
+    width,
+    height,
+    sizes,
+    className,
+    ...other
+}: VideoPlayerProps) => {
     if (!src) return null
 
-    const onLoadDataHandler = (e: SyntheticEvent<HTMLVideoElement>) => {
-       e.currentTarget.style.opacity = '1'
-    }
+    // const onLoadDataHandler = (e: SyntheticEvent<HTMLVideoElement>) => {
+    //     e.currentTarget.style.opacity = '1'
+    // }
 
     return (
-        <>
-            {poster && (
-                <LazyImage
-                    src={poster}
-                    alt={alt || ''}
-                    sizes={sizes || '100vw'}
-                    fill={!width || !height}
-                    width={width}
-                    height={height}
-                />
-            )}
-            <Player
-                src={src}
-                poster={poster}
-                muted
-                className={classnames(cls, ['player'], {}, [className])}
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
-                onCanPlay={onLoadDataHandler as any}
-                {...other}
-            >
-                <style>{`
+        <Player
+            src={src}
+            poster={poster}
+            muted
+            className={classnames(cls, ['player'], {}, [className])}
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
+            //onCanPlay={onLoadDataHandler as any}
+            {...other}
+        >
+            <style>{`
                 ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;padding: 0.8rem; border-radius: 50%; width: var(--controls-width); height: var(--controls-width);}
                 ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
                 ::part(play):hover {--media-icon-color: inherit !important; background-color: var(--secondary-color) !important;} 
@@ -53,8 +49,19 @@ const VideoPlayer = ({ src, poster, alt, width, height, sizes, className, ...oth
                 ::part(mute) {margin-left: 1.2em;}
                 ::part(fullscreen) {margin-right: 1.2em;}
             `}</style>
-            </Player>
-        </>
+            {poster && (
+                <LazyImage
+                    slot="poster"
+                    src={poster}
+                    alt={alt || ''}
+                    sizes={sizes || '100vw'}
+                    fill={!width}
+                    width={width}
+                    height={height}
+                    style={{ height: '100%', objectFit: 'cover' }}
+                />
+            )}
+        </Player>
     )
 }
 
