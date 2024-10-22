@@ -94,8 +94,9 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
 
                 const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, imgNode.attribs.src)
-                const width = parseInt(imgNode.attribs?.width || '16')
-                const height = parseInt(imgNode.attribs?.height || '9')
+                const width = parseInt(imgNode.attribs?.width || '') || 16
+                const height = parseInt(imgNode.attribs?.height || '') || 9
+
                 return (
                     <figure
                         className="image"
@@ -106,7 +107,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                             alt={domNode.attribs.alt || ''}
                             sizes="(min-width:992px) 70vw, 100vw"
                             fill
-                            style={{ objectFit: 'cover' }}
+                            style={{ objectFit: 'cover'}}
                         />
                     </figure>
                 )
@@ -122,7 +123,14 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                 return (
                     <figure
                         className={'video' + orientation}
-                        style={orientation === ' landscape' ? { height: 0, paddingTop: `${(height / width) * 100}%` } : {}}
+                        style={
+                            orientation === ' landscape'
+                                ? {
+                                      height: 0,
+                                      paddingTop: `${(height / width) * 100}%`
+                                  }
+                                : {}
+                        }
                     >
                         <VideoPlayer
                             src={src}

@@ -8,7 +8,7 @@ import cls from './LazyImage.module.sass'
 
 const placeholder = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
 
-const LazyImage = ({ src, alt, className, blurDataURL, ...other }: ImageProps) => {
+const LazyImage = ({ src, alt, className, blurDataURL,...other }: ImageProps) => {
     const onLoadHandler = (e: React.SyntheticEvent<HTMLImageElement>) => {
         e.currentTarget.style.opacity = '1'
         e.currentTarget.classList.add(cls.loaded)
