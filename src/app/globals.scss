@@ -51,6 +51,7 @@ html * /* override x.xhtml.ru style */
 {
 	scrollbar-width: thin;
 	scrollbar-color: var(--secondary-color) transparent;
+	--webkit-scrollbar-color: var(--secondary-color);
 }
 
 *::-webkit-scrollbar,
@@ -83,6 +84,7 @@ img:not([src]):not([srcset]) {
 }
 
 html {
+	scroll-behavior:smooth;
 	font-size: 15px;
 
 	@media (min-width: 576px) {
@@ -210,6 +212,7 @@ h5 {
 a {
 	color: inherit;
 	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
 }
 
 p {
