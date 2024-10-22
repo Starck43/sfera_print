@@ -327,7 +327,10 @@ blockquote {
 
 	&.portrait {
 		max-width: max-content;
-		height: auto;
+		height: 100%;
+		@media (min-width: 768px) {
+			height: max-content;
+		}
 		.video-player {
 			height: auto;
 		}
