@@ -4,7 +4,8 @@ import anime from 'animejs/lib/anime.es'
 
 interface CircleAnimationProps {
     rootClassName?: string
-    childrenClassName?: string
+    carouselClassName?: string
+    selectedDotClassName: string
     steps: number
     duration: number
     delay?: number
@@ -16,7 +17,8 @@ interface CircleAnimationProps {
 const useCircleAnimation = (props: CircleAnimationProps) => {
     const {
         rootClassName = '',
-        childrenClassName = '',
+        carouselClassName = '',
+        selectedDotClassName,
         steps,
         duration,
         delay = 0,
@@ -24,38 +26,31 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         onDotClick,
         handleOnStepChange
     } = props
-    const animationFirstRef = useRef<AnimeInstance | null>(null)
-    const animationSecondRef = useRef<AnimeInstance | null>(null)
-    const prefixName = childrenClassName ? `.${childrenClassName}__` : '.'
+    const pathAnimationRef = useRef<AnimeInstance | null>(null)
+    const prefixName = carouselClassName ? `.${carouselClassName}__` : '.'
+    const dotsRef = useRef<Element[]>([])
+    const currentStep = useRef(-1)
+    const pathLength = useRef(0)
 
     useLayoutEffect(() => {
-        anime
-            .timeline({
-                targets: prefixName + 'selected-dot',
-                translateX: 55,
-                translateY: 5,
-                easing: 'linear'
-            })
-            .add({
-                targets: '.' + rootClassName,
-                opacity: 1,
-                // scale: 1.1,
-                duration: 300,
-                easing: 'linear'
-            })
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        anime({
+            targets: '.' + rootClassName,
+            opacity: 1,
+            // scale: 1.1,
+            duration: 300,
+            easing: 'linear'
+        })
+    }, [rootClassName])
 
     useLayoutEffect(() => {
-        if (animationFirstRef?.current && animationSecondRef?.current) return
+        if (pathAnimationRef?.current || typeof currentStep === 'undefined') return
 
         const path: any = anime.path(prefixName + 'circle', 100)
-        const pathLength = path().totalLength || 0
-        if (!pathLength) return
+        pathLength.current = path().totalLength || 0
+        if (!pathLength?.current) return
 
         // анимация пути, движущегося по кругу
-        animationFirstRef.current = anime({
+        pathAnimationRef.current = anime({
             targets: prefixName + 'animated-circle',
             strokeDashoffset: [anime.setDashoffset, 0],
             easing: 'linear',
@@ -64,67 +59,73 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
             loop: loop,
             direction: 'normal',
             autoplay: true,
-            update: function (anim) {
-                const currentStep = Math.floor((steps / 100) * anim.progress)
-                handleOnStepChange?.(currentStep === steps ? currentStep - 1 : currentStep)
+            begin: function (anim) {
                 anim.animatables[0].target.setAttribute(
                     'stroke-dasharray',
-                    `${pathLength} ${pathLength}`
+                    `${pathLength.current} ${pathLength.current}`
                 )
+            },
+            update: function (anim) {
+                const step = Math.floor((steps / 100) * anim.progress)
+                if (step != currentStep.current) {
+                    // const index = step === steps ? 0 : step
+                    handleOnStepChange?.(step)
+                    updateSelectedDot(step)
+                }
             }
         })
-
-        // Анимация точки с интервалом
-        animationSecondRef.current = anime({
-            targets: prefixName + 'selected-dot',
-            translateX: path('x'),
-            translateY: path('y'),
-            easing: `steps(${steps})`,
-            duration: duration,
-            delay: delay,
-            loop: loop,
-            direction: 'normal',
-            autoplay: true,
-            opacity: {
-                value: [0, 1],
-                duration: 300,
-                easing: 'linear'
-            }
-        })
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [handleOnStepChange])
-
-    useEffect(() => {
-        const elements = document.querySelectorAll('.' + rootClassName + ' ' + prefixName + 'dot')
-        const OnClickHandler = (index: number) => {
-            onDotClick?.(index)
-        }
-
-        elements.forEach((element, index) => {
-            element.addEventListener('click', () => OnClickHandler(index))
-        })
-
-        return () => {
-            elements.forEach((element, index) => {
-                element.removeEventListener('click', () => OnClickHandler(index))
-            })
-        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const runAnimation = useCallback((action: boolean) => {
         if (action) {
-            animationFirstRef.current?.play()
-            animationSecondRef.current?.play()
+            pathAnimationRef.current?.play()
         } else {
-            animationFirstRef.current?.pause()
-            animationSecondRef.current?.pause()
+            pathAnimationRef.current?.pause()
         }
     }, [])
 
-    return { runAnimation }
+    const updateSelectedDot = useCallback(
+        (index: number) => {
+            dotsRef.current.forEach((dot) => dot.classList.remove(selectedDotClassName))
+            dotsRef.current[(index + steps) % steps].classList.add(selectedDotClassName)
+        },
+        [selectedDotClassName, steps]
+    )
+
+    const onClickHandler = useCallback(
+        (index: number) => {
+            currentStep.current = index
+            runAnimation(false)
+            updateSelectedDot(index)
+            const path = document.querySelector(prefixName + 'animated-circle') as SVGPathElement
+            if (path) {
+                path.style.strokeDashoffset = (pathLength.current / steps) * (steps - index) + 'px'
+                //const newStrokeDasharray = `${(pathLength.current / steps) * index} ${pathLength.current}`
+                //path.setAttribute('stroke-dasharray', newStrokeDasharray)
+            }
+            onDotClick?.(index)
+        },
+        [onDotClick, prefixName, runAnimation, steps, updateSelectedDot]
+    )
+
+    useEffect(() => {
+        const dots = document.querySelectorAll('.' + rootClassName + ' ' + prefixName + 'dot')
+        dotsRef.current = Array.from(dots)
+
+        dotsRef.current.forEach((element, index) => {
+            element.addEventListener('click', () => onClickHandler(index))
+        })
+
+        return () => {
+            dotsRef.current.forEach((element, index) => {
+                element.removeEventListener('click', () => onClickHandler(index))
+            })
+        }
+    }, [prefixName, rootClassName, onClickHandler])
+
+    return { runAnimation, currentSlide: currentStep.current }
 }
 
 export default useCircleAnimation

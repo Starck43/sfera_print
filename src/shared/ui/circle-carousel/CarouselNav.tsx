@@ -23,7 +23,8 @@ const CarouselNav = (props: CarouselNavProps) => {
 
     const { runAnimation } = useCircleAnimation({
         rootClassName: cls.circle__nav,
-        childrenClassName: 'carousel_svg',
+        carouselClassName: 'carousel_svg',
+        selectedDotClassName: cls.selected_dot,
         steps: steps,
         duration: loopDuration,
         loop: infinite,

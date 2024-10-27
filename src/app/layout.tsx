@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react'
+import React, { Suspense } from 'react'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import Image from 'next/image'
@@ -53,6 +53,9 @@ export const metadata: Metadata = {
             'max-image-preview': 'large',
             'max-snippet': -1
         }
+    },
+    other: {
+        'yandex-verification': 'd322f95e36747029'
     }
 }
 

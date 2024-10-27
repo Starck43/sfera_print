@@ -13,6 +13,4 @@
     <circle cx="79.39" cy="90.45" r="1.5" class="dot" fill="currentColor" stroke="white"/>
     <circle cx="20.61" cy="90.45" r="1.5" class="dot" fill="currentColor" stroke="white"/>
     <circle cx="2.45" cy="34.55" r="1.5" class="dot" fill="currentColor" stroke="white"/>
-
-    <circle cx="-5" cy="-5" r="1.2" class="selected-dot" fill="white" transform="translate(55,5) scale(1)" pointer-events="none"/>
 </svg>

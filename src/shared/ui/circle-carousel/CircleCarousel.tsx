@@ -13,6 +13,7 @@ import { Col } from '@/shared/ui/stack'
 import CarouselNav from './CarouselNav'
 
 import cls from './CircleCarousel.module.sass'
+import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
 
 interface CarouselProps {
     duration: number
@@ -27,25 +28,21 @@ const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselPr
     const currentSlide = useRef(0)
     const slidesRef = useRef<HTMLDivElement | null>(null)
     const [firstLoaded] = useState(true)
+    const { setPlayHeaderAnimation } = useNavigation()
 
-    const showDetailPage = useCallback(
-        (index: number) => {
-            const route = items?.[index]?.path || ('/' as string)
-            router.push(route)
-        },
-        [items, router]
-    )
 
     const onCarouselContentClick = useCallback(
         (e: SyntheticEvent) => {
+            setPlayHeaderAnimation(false)
             const target = e.target as Node
             if (target.nodeName === 'circle') {
                 e.preventDefault()
             } else {
-                showDetailPage(currentSlide?.current || 0)
+                const route = items?.[currentSlide?.current || 0]?.path || ('/' as string)
+                router.push(route)
             }
         },
-        [showDetailPage]
+        [items, router, setPlayHeaderAnimation]
     )
 
     const handleOnSlideChange = useCallback(
@@ -55,11 +52,23 @@ const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselPr
             currentSlide.current = index
             const slides = slidesRef.current
             const activeSlide = slides?.children[index]
-            const prevSlide = slides?.children[(index - 1 + items.length) % items.length]
-            prevSlide?.classList.remove(cls.active)
+            //const prevSlide = slides?.children[(index - 1 + items.length) % items.length]
+            // prevSlide?.classList.remove(cls.active)
+            for (let i = 0; i < items.length; i++) {
+                const item = slides?.children[i]
+                item?.classList.remove(cls.active)
+            }
             activeSlide?.classList.add(cls.active)
         },
         [items]
+    )
+
+    const handleOnDotClick = useCallback(
+        (index: number = 0) => {
+            setPlayHeaderAnimation(false)
+            handleOnSlideChange?.(index)
+        },
+        [handleOnSlideChange, setPlayHeaderAnimation]
     )
 
     const onLoadImage = (e: SyntheticEvent<HTMLImageElement>, index: number) => {
@@ -117,7 +126,7 @@ const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselPr
                 steps={5}
                 loopDuration={loopDuration}
                 infinite={infinite}
-                onDotClick={showDetailPage}
+                onDotClick={handleOnDotClick}
                 handleOnStepChange={handleOnSlideChange}
             />
         </div>
