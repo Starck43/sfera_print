@@ -3,7 +3,7 @@ import { VideoPlayer } from '@/shared/ui/video-player'
 
 import cls from './PageHeader.module.sass'
 
-const slidesCount = parseInt(process.env.CIRCLE_CAROUSEL_SLIDES_COUNT || '5')
+// const slidesCount = parseInt(process.env.CIRCLE_CAROUSEL_SLIDES_COUNT || '5')
 const slideDuration = parseInt(process.env.CIRCLE_CAROUSEL_SLIDE_DURATION || '3000')
 
 const PageHeader = () => (
@@ -21,7 +21,6 @@ const PageHeader = () => (
         />
 
         <CircleCarousel
-            itemsLength={slidesCount}
             slideDuration={slideDuration}
             duration={300}
             infinite={process.env.NODE_ENV !== 'development'}

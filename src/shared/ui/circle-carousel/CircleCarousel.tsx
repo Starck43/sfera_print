@@ -1,6 +1,6 @@
 'use client'
 
-import React, { memo, SyntheticEvent, useCallback, useRef, useState } from 'react'
+import React, { memo, MouseEvent, SyntheticEvent, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import NextImage from 'next/image'
 
@@ -16,41 +16,37 @@ import CarouselNav from './CarouselNav'
 import cls from './CircleCarousel.module.sass'
 
 interface CarouselProps {
-    itemsLength: number
     duration: number
     slideDuration: number
     infinite?: boolean
 }
 
-const CircleCarousel = ({
-    itemsLength,
-    duration,
-    slideDuration,
-    infinite = false
-}: CarouselProps) => {
+const CircleCarousel = ({ duration, slideDuration, infinite = false }: CarouselProps) => {
     const { data: items } = useFetch<PostType[]>('features')
 
     const router = useRouter()
-    const currentSlide = useRef(0)
     const slidesRef = useRef<HTMLDivElement | null>(null)
-    const [firstLoaded] = useState(true)
     const { setPlayHeaderAnimation } = useNavigation()
 
-    const onCarouselContentClick = useCallback(() => {
-        setPlayHeaderAnimation(false)
-        const route = items?.[currentSlide.current]?.path || ('/' as string)
-        router.push(route)
-    }, [items, router, setPlayHeaderAnimation])
+    const handleOnSlideClick = useCallback(
+        (e: MouseEvent<SVGGElement>, index: number) => {
+            const target = e.target as Element
+            if (target.tagName === 'circle') {
+                return
+            }
+            setPlayHeaderAnimation(false)
+            const route = items?.[index]?.path || ('/' as string)
+            router.push(route)
+        },
+        [items, router, setPlayHeaderAnimation]
+    )
 
     const handleOnSlideChange = useCallback(
         (index: number = 0) => {
             if (!items) return
-
-            currentSlide.current = index
             const slides = slidesRef.current
-            const activeSlide = slides?.children[index]
-            //const prevSlide = slides?.children[(index - 1 + items.length) % items.length]
-            // prevSlide?.classList.remove(cls.active)
+
+            const activeSlide = slides?.children[(index + items.length) % items.length]
             for (let i = 0; i < items.length; i++) {
                 const item = slides?.children[i]
                 item?.classList.remove(cls.active)
@@ -58,14 +54,6 @@ const CircleCarousel = ({
             activeSlide?.classList.add(cls.active)
         },
         [items]
-    )
-
-    const handleOnDotClick = useCallback(
-        (index: number = 0) => {
-            setPlayHeaderAnimation(false)
-            handleOnSlideChange?.(index)
-        },
-        [handleOnSlideChange, setPlayHeaderAnimation]
     )
 
     const onLoadImage = (e: SyntheticEvent<HTMLImageElement>, index: number) => {
@@ -81,15 +69,7 @@ const CircleCarousel = ({
 
     return (
         <div className={cls.carousel}>
-            <CarouselNav
-                steps={itemsLength}
-                slideDuration={slideDuration}
-                infinite={infinite}
-                onDotClick={handleOnDotClick}
-                handleOnStepChange={handleOnSlideChange}
-            />
-
-            <div className={cls.slides} ref={slidesRef} onClick={onCarouselContentClick}>
+            <div className={cls.slides} ref={slidesRef}>
                 {items?.map((item, idx) => (
                     <Col
                         align="center"
@@ -97,10 +77,7 @@ const CircleCarousel = ({
                         wrap={false}
                         gap="md"
                         key={'carousel_slide-' + idx}
-                        className={classnames(cls, [
-                            'item',
-                            firstLoaded && idx === 0 ? 'active' : undefined
-                        ])}
+                        className={classnames(cls, ['item'])}
                         style={{
                             transition: `opacity ${duration}ms linear`
                         }}
@@ -129,6 +106,13 @@ const CircleCarousel = ({
                     </Col>
                 ))}
             </div>
+            <CarouselNav
+                steps={items.length}
+                slideDuration={slideDuration}
+                infinite={infinite}
+                onSlideClick={handleOnSlideClick}
+                onStepChange={handleOnSlideChange}
+            />
         </div>
     )
 }

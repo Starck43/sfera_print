@@ -28,18 +28,19 @@
 .circle__nav
 	opacity: 0
 	+push--absolute()
-	pointer-events: none
+	pointer-events: auto
 
 	> path
 		opacity: 0.5
 		stroke: var(--white-color)
+		pointer-events: none
 
 	circle
 		fill: var(--grey-color)
-		pointer-events: auto
 
 	.selected_dot
 		fill: var(--secondary-color)
+		pointer-events: none
 
 .slides
 	position: relative
@@ -63,7 +64,7 @@
 
 		&.active
 			opacity: 1
-			pointer-events: auto
+			//pointer-events: auto
 
 		+media-min(md)
 			font-size: 1.1rem

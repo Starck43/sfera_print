@@ -26,9 +26,9 @@ const ContactsPage = async () => {
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="contacts-page">
-            <Section gap={'md'} align="center" style={{ padding: 0 }}>
+            <Col as="section" gap={'md'} align="center" style={{ padding: 0 }}>
                 {parsedContent && (
-                    <Section as="div" className="html-container">
+                    <Section as="div" className="html-container" style={{paddingTop: 0}}>
                         {parsedContent}
                     </Section>
                 )}
@@ -47,7 +47,7 @@ const ContactsPage = async () => {
                 <div className={cls.bitrix__form}>
                     <BitrixForm/>
                 </div>
-            </Section>
+            </Col>
         </PageLayout>
     )
 }

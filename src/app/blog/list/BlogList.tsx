@@ -16,6 +16,7 @@ import { LazyImage } from '@/shared/ui/lazy-image'
 import BlogDetails from '../details/BlogDetails'
 
 import cls from './BlogList.module.sass'
+import { getDeviceSrc } from '@/shared/lib/helpers/image'
 
 const BlogList = ({ posts }: { posts: PostType[] }) => {
     const [activeBlog, setActiveBlog] = useState<number | null>(null)
@@ -26,7 +27,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
         [activeBlog]
     )
 
-        const onItemClick = (idx: number | null) => {
+    const onItemClick = (idx: number | null) => {
         if (idx !== null) {
             history.pushState({ idx }, '', posts[idx].path)
             setActiveBlog(idx)
@@ -55,48 +56,50 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
         }
     }, [])
 
-
     const blogContent = useMemo(
         () => (
             <div className={cls.blog__container}>
                 {posts?.map(
-                    ({ id, title, excerpt = null, cover = null, event_date = null }, idx) => (
-                        <Section
-                            key={'blog-' + id}
-                            as="article"
-                            gap="xs"
-                            className={cls.article}
-                            style={{ padding: 0 }}
-                        >
-                            {cover && (
-                                <LazyImage
-                                    src={
-                                        typeof cover === 'object' && 'src' in cover
-                                            ? cover.src
-                                            : cover
-                                    }
-                                    alt={title}
-                                    sizes="(max-width: 684px) 100vw, 50vw"
-                                    //priority
-                                    quality={80}
-                                    style={{
-                                        width: '100%',
-                                        height: 'auto',
-                                    }}
-                                    width={16}
-                                    height={9}
+                    ({ id, title, excerpt = null, cover = null, event_date = null }, idx) => {
+                        const coverSrc = getDeviceSrc(cover)
+                        return (
+                            <Section
+                                key={'blog-' + id}
+                                as="article"
+                                gap="xs"
+                                align="center"
+                                className={cls.article}
+                                style={{ padding: 0, height: 'max-content' }}
+                            >
+                                {coverSrc && (
+                                    <LazyImage
+                                        src={coverSrc}
+                                        alt={title}
+                                        //priority
+                                        sizes="(max-width: 684px) 50vw, 100vw"
+                                        style={{
+                                            width: '100%',
+                                            height: 'auto'
+                                        }}
+                                        width={16}
+                                        height={9}
+                                    />
+                                )}
+                                <Header tag="h3" title={title} transform="upperFirst" />
+                                {event_date && (
+                                    <span style={{ marginTop: '-0.5rem' }}>
+                                        {formatDate(event_date)}
+                                    </span>
+                                )}
+                                {excerpt && <p className={cls.excerpt}>{excerpt}</p>}
+                                <Button
+                                    title="Подробнее"
+                                    rounded
+                                    onClick={() => onItemClick(idx)}
                                 />
-                            )}
-                            <Header tag="h3" title={title} transform="upperFirst" />
-                            {event_date && (
-                                <span style={{ marginTop: '-0.5rem' }}>
-                                    {formatDate(event_date)}
-                                </span>
-                            )}
-                            {excerpt && <p className={cls.excerpt}>{excerpt}</p>}
-                            <Button title="Подробнее" rounded onClick={() => onItemClick(idx)} />
-                        </Section>
-                    )
+                            </Section>
+                        )
+                    }
                 )}
             </div>
         ),
@@ -112,7 +115,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                 tag="h3"
                 transform="upperFirst"
                 title="Новости скоро будут..."
-                style={{width: '100%'}}
+                style={{ width: '100%' }}
             />
         )
     }

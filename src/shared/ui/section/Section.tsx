@@ -85,7 +85,7 @@ const Section = (props: InfoProps) => {
             ref={setRefs}
             as={tag}
             fullWidth
-            gap={gap}
+            gap="xs"
             align={align}
             justify="start"
             className={classnames(cls, ['section'], { inView }, [className])}
@@ -97,7 +97,7 @@ const Section = (props: InfoProps) => {
             {...others}
         >
             {title && <Title className={classnames(cls, ['title', transform])}>{title}</Title>}
-            <Col gap="none" justify="start" className={classnames(cls, ['content'], { frameIsLoaded }, [])}>{children}</Col>
+            <Col gap={gap} justify="start" className={classnames(cls, ['content'], { frameIsLoaded }, [])}>{children}</Col>
         </Col>
     )
 }

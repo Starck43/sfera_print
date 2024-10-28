@@ -11,7 +11,7 @@ interface CircleAnimationProps {
     delay?: number
     loop?: boolean
     onDotClick?: (index: number) => void
-    handleOnStepChange?: (step: number) => void
+    onStepChange?: (step: number) => void
 }
 
 const useCircleAnimation = (props: CircleAnimationProps) => {
@@ -24,7 +24,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         delay = 0,
         loop = false,
         onDotClick,
-        handleOnStepChange
+        onStepChange
     } = props
     const pathAnimationRef = useRef<AnimeInstance | null>(null)
     const prefixName = carouselClassName ? `.${carouselClassName}__` : '.'
@@ -69,7 +69,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
                 const step = Math.floor((steps / 100) * anim.progress)
                 if (step != currentStep.current) {
                     // const index = step === steps ? 0 : step
-                    handleOnStepChange?.(step)
+                    onStepChange?.(step)
                     updateSelectedDot(step)
                 }
             }
@@ -88,6 +88,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
 
     const updateSelectedDot = useCallback(
         (index: number) => {
+            currentStep.current = index
             dotsRef.current.forEach((dot) => dot.classList.remove(selectedDotClassName))
             dotsRef.current[(index + steps) % steps].classList.add(selectedDotClassName)
         },
@@ -96,7 +97,6 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
 
     const onClickHandler = useCallback(
         (index: number) => {
-            currentStep.current = index
             runAnimation(false)
             updateSelectedDot(index)
             const path = document.querySelector(prefixName + 'animated-circle') as SVGPathElement
@@ -125,7 +125,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         }
     }, [prefixName, rootClassName, onClickHandler])
 
-    return { runAnimation, currentSlide: currentStep.current }
+    return { runAnimation, currentSlide: currentStep.current, updateSelectedDot }
 }
 
 export default useCircleAnimation
