@@ -5,7 +5,8 @@ import React, {
     useLayoutEffect,
     useState,
     TouchEvent,
-    WheelEvent
+    WheelEvent,
+    useRef
 } from 'react'
 
 import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
@@ -29,7 +30,7 @@ const CarouselNav = (props: CarouselNavProps) => {
     const { steps, slideDuration, infinite = false, onSlideClick, onStepChange } = props
     const { playHeaderAnimation } = useNavigation()
     const [strokeWidth, setStrokeWidth] = useState(0)
-    const [touchPosition, setTouchPosition] = useState<number | null>(null)
+    const touchPosition = useRef<number | null>(null)
     const { setPlayHeaderAnimation } = useNavigation()
 
     const handleOnDotClick = useCallback(
@@ -67,7 +68,7 @@ const CarouselNav = (props: CarouselNavProps) => {
 
     const changeSlide = useCallback(
         (direction: number) => {
-            const index = (currentSlide + direction + steps) % steps
+            const index = (currentSlide.current + direction + steps) % steps
             handleOnDotClick?.(index)
             updateSelectedDot?.(index)
         },
@@ -75,53 +76,59 @@ const CarouselNav = (props: CarouselNavProps) => {
     )
 
     const debouncedTrigger = useDebounce(() => {
-        setTouchPosition(null)
-    }, 100)
+        touchPosition.current = null
+    }, 50)
 
-    const handleWheel = (e: WheelEvent) => {
-        e.stopPropagation()
-        debouncedTrigger()
-        if (touchPosition !== null) {
-            return
-        }
-        const offset = e.deltaY
-        setTouchPosition(offset)
+    const handleWheel = useCallback(
+        (e: WheelEvent) => {
+            e.stopPropagation()
+            debouncedTrigger()
+            if (touchPosition.current === null) {
+                const offset = e.deltaY
+                touchPosition.current = offset
+                if (offset > 0) {
+                    changeSlide(1)
+                } else {
+                    changeSlide(-1)
+                }
+            }
+        },
+        [changeSlide, debouncedTrigger]
+    )
 
-        if (offset > 0) {
-            changeSlide(1)
-        } else {
-            changeSlide(-1)
-        }
-    }
-
-    const handleTouchStart = (e: TouchEvent) => {
+    const handleTouchStart = useCallback((e: TouchEvent) => {
         const touchDown = e.touches[0].clientY
 
-        setTouchPosition(touchDown)
-    }
-
-    const handleTouchMove = (e: TouchEvent) => {
-        if (touchPosition === null) {
-            return
+        if (touchPosition.current === null) {
+            touchPosition.current = touchDown
         }
+    }, [])
 
-        const currentPosition = e.touches[0].clientY
-        const direction = touchPosition - currentPosition
+    const handleTouchMove = useCallback(
+        (e: TouchEvent) => {
+            if (touchPosition.current === null) {
+                return
+            }
 
-        if (direction > 10) {
-            changeSlide(1)
-        }
+            const currentPosition = e.touches[0].clientY
+            const direction = touchPosition.current - currentPosition
 
-        if (direction < -10) {
-            changeSlide(-1)
-        }
+            if (direction > 20) {
+                changeSlide(1)
+            }
 
-        setTouchPosition(null)
-    }
+            if (direction < -20) {
+                changeSlide(-1)
+            }
+
+            touchPosition.current = null
+        },
+        [changeSlide]
+    )
 
     return (
         <CircleNav
-            onClick={(e: React.MouseEvent<SVGGElement>) => onSlideClick(e, currentSlide)}
+            onClick={(e: React.MouseEvent<SVGGElement>) => onSlideClick(e, currentSlide.current)}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onWheel={handleWheel}

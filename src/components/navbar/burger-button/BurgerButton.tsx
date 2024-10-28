@@ -13,7 +13,6 @@ const BurgerButton = () => {
         <Button
             Icon={<BurgerIcon />}
             feature="blank"
-            rounded
             size="medium"
             className="burger"
             onClick={() => setShowMenu(!showMenu)}

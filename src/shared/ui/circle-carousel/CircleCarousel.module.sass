@@ -14,7 +14,7 @@
 	border-radius: 50%
 	transform: translate(-50%, -50%)
 	cursor: pointer
-	overflow: hidden
+	pointer-events: none
 
 
 	@media (min-width: 576px) and (orientation: portrait)
@@ -28,19 +28,20 @@
 .circle__nav
 	opacity: 0
 	+push--absolute()
-	pointer-events: auto
+	pointer-events: none
 
 	> path
 		opacity: 0.5
 		stroke: var(--white-color)
-		pointer-events: none
+		fill: transparent // necessary for clicking inside the circle
+		pointer-events: visiblePainted
 
 	circle
 		fill: var(--grey-color)
+		pointer-events: visiblePainted
 
 	.selected_dot
 		fill: var(--secondary-color)
-		pointer-events: none
 
 .slides
 	position: relative

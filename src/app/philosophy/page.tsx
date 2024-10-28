@@ -60,7 +60,7 @@ const PhilosophyPage = async () => {
                 titleTag="h2"
                 align="end"
                 transform="upperFirst"
-                className={classnames(cls, ['section'], {}, ['darkgrey__style'])}
+                className={classnames(cls, ['section', 'commom__stat'], {}, ['darkgrey__style'])}
             >
                 <div className={cls.diagram__container}>
                     <Image

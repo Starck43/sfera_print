@@ -1,12 +1,17 @@
 @import "/src/app/styles/mixins"
 
 .section
+	&.commom__stat
+		> div
+			padding: var(--gap) 0
+
 	&.achievements
 		> div
 			overflow: unset
 
 	h2
 		color: var(--primary-color)
+		margin-bottom: 0
 
 	.diagram__container
 		display: flex

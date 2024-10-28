@@ -125,7 +125,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         }
     }, [prefixName, rootClassName, onClickHandler])
 
-    return { runAnimation, currentSlide: currentStep.current, updateSelectedDot }
+    return { runAnimation, currentSlide: currentStep, updateSelectedDot }
 }
 
 export default useCircleAnimation
