@@ -30,6 +30,7 @@ export interface FlexProps<E extends ElementType = ElementType> {
     className?: string
     style?: CSSProperties
     role?: string
+    onClick?: (e:any) => void
     children?: ReactNode | ReactNode[]
 }
 

@@ -4,6 +4,7 @@ import React, { memo, SyntheticEvent, useCallback, useRef, useState } from 'reac
 import { useRouter } from 'next/navigation'
 import NextImage from 'next/image'
 
+import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
 import type { PostType } from '@/components/post'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
@@ -13,15 +14,20 @@ import { Col } from '@/shared/ui/stack'
 import CarouselNav from './CarouselNav'
 
 import cls from './CircleCarousel.module.sass'
-import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
 
 interface CarouselProps {
+    itemsLength: number
     duration: number
-    loopDuration: number
+    slideDuration: number
     infinite?: boolean
 }
 
-const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselProps) => {
+const CircleCarousel = ({
+    itemsLength,
+    duration,
+    slideDuration,
+    infinite = false
+}: CarouselProps) => {
     const { data: items } = useFetch<PostType[]>('features')
 
     const router = useRouter()
@@ -30,20 +36,11 @@ const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselPr
     const [firstLoaded] = useState(true)
     const { setPlayHeaderAnimation } = useNavigation()
 
-
-    const onCarouselContentClick = useCallback(
-        (e: SyntheticEvent) => {
-            setPlayHeaderAnimation(false)
-            const target = e.target as Node
-            if (target.nodeName === 'circle') {
-                e.preventDefault()
-            } else {
-                const route = items?.[currentSlide?.current || 0]?.path || ('/' as string)
-                router.push(route)
-            }
-        },
-        [items, router, setPlayHeaderAnimation]
-    )
+    const onCarouselContentClick = useCallback(() => {
+        setPlayHeaderAnimation(false)
+        const route = items?.[currentSlide.current]?.path || ('/' as string)
+        router.push(route)
+    }, [items, router, setPlayHeaderAnimation])
 
     const handleOnSlideChange = useCallback(
         (index: number = 0) => {
@@ -83,8 +80,16 @@ const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselPr
     if (!items) return null
 
     return (
-        <div className={cls.carousel} onClick={(e) => onCarouselContentClick(e)}>
-            <div className={cls.slides} ref={slidesRef}>
+        <div className={cls.carousel}>
+            <CarouselNav
+                steps={itemsLength}
+                slideDuration={slideDuration}
+                infinite={infinite}
+                onDotClick={handleOnDotClick}
+                handleOnStepChange={handleOnSlideChange}
+            />
+
+            <div className={cls.slides} ref={slidesRef} onClick={onCarouselContentClick}>
                 {items?.map((item, idx) => (
                     <Col
                         align="center"
@@ -94,41 +99,36 @@ const CircleCarousel = ({ duration, loopDuration, infinite = false }: CarouselPr
                         key={'carousel_slide-' + idx}
                         className={classnames(cls, [
                             'item',
-                            firstLoaded && idx === 0 ? 'active' : ''
+                            firstLoaded && idx === 0 ? 'active' : undefined
                         ])}
                         style={{
                             transition: `opacity ${duration}ms linear`
                         }}
                     >
                         <div className={cls.title}>{item.title}</div>
-                        <p className={cls.excerpt}>{item?.excerpt || ''}</p>
 
                         {item.cover && (
-                            <NextImage
-                                src={item.cover as string}
-                                alt={item.title}
-                                sizes="100%"
-                                fill
-                                priority
-                                className={cls.cover}
-                                style={{
-                                    opacity: 0,
-                                    transition: `opacity ${duration}ms linear`
-                                }}
-                                onLoad={(e) => onLoadImage(e, idx)}
-                            />
+                            <div className={cls.cover}>
+                                <NextImage
+                                    src={item.cover as string}
+                                    alt={item.title}
+                                    sizes="100%"
+                                    fill
+                                    priority
+                                    style={{
+                                        opacity: 0,
+                                        objectFit: 'contain',
+                                        transition: `opacity ${duration}ms linear`
+                                    }}
+                                    onLoad={(e) => onLoadImage(e, idx)}
+                                />
+                            </div>
                         )}
+
+                        <p className={cls.excerpt}>{item?.excerpt || ''}</p>
                     </Col>
                 ))}
             </div>
-
-            <CarouselNav
-                steps={5}
-                loopDuration={loopDuration}
-                infinite={infinite}
-                onDotClick={handleOnDotClick}
-                handleOnStepChange={handleOnSlideChange}
-            />
         </div>
     )
 }

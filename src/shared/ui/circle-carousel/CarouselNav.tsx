@@ -10,14 +10,14 @@ import cls from './CircleCarousel.module.sass'
 
 interface CarouselNavProps {
     steps: number
-    loopDuration: number
+    slideDuration: number
     infinite?: boolean
     onDotClick: (index: number) => void
     handleOnStepChange?: (step: number) => void
 }
 
 const CarouselNav = (props: CarouselNavProps) => {
-    const { steps, loopDuration, infinite = false, onDotClick, handleOnStepChange } = props
+    const { steps, slideDuration, infinite = false, onDotClick, handleOnStepChange } = props
     const { playHeaderAnimation } = useNavigation()
     const [strokeWidth, setStrokeWidth] = useState(0)
 
@@ -26,7 +26,7 @@ const CarouselNav = (props: CarouselNavProps) => {
         carouselClassName: 'carousel_svg',
         selectedDotClassName: cls.selected_dot,
         steps: steps,
-        duration: loopDuration,
+        duration: steps * slideDuration,
         loop: infinite,
         onDotClick,
         handleOnStepChange

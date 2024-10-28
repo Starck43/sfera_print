@@ -5,11 +5,11 @@
 	display: flex
 	top: 50%
 	left: 50%
-	width: 90vw
-	height: 90vw
+	width: 92vw
+	height: 92vw
 	//max-width: 600px
 	//max-height: 600px
-	padding: 7%
+	padding: 8%
 	font-size: 0.8em
 	border-radius: 50%
 	transform: translate(-50%, -50%)
@@ -28,6 +28,7 @@
 .circle__nav
 	opacity: 0
 	+push--absolute()
+	pointer-events: none
 
 	> path
 		opacity: 0.5
@@ -35,30 +36,40 @@
 
 	circle
 		fill: var(--grey-color)
+		pointer-events: auto
 
 	.selected_dot
 		fill: var(--secondary-color)
 
 .slides
 	position: relative
+	display: flex
+	flex-direction: column
+	justify-content: space-between
+	align-items: center
 	width: 100%
 	height: 100%
 	border-radius: 50%
 	backdrop-filter: blur(8px)
 	box-shadow: 0 0 0.1em 0.1em rgb(var(--page-background-color), 0.1), 0 0 0.6em 0.3em rgb(var(--page-background-color), 0.2), inset 0 0 0.1em 0.5em rgb(var(--page-background-color), 0.2)
+	pointer-events: none
+	overflow: hidden
 
-.item
-	+push--absolute()
-	opacity: 0
+	.item
+		+push--absolute()
+		opacity: 0
+		border-radius: 50%
+		overflow: hidden
 
-	&.active
-		opacity: 1
+		&.active
+			opacity: 1
+			pointer-events: auto
 
-	+media-min(md)
-		font-size: 1.1rem
+		+media-min(md)
+			font-size: 1.1rem
 
-	+media-min(xl)
-		font-size: 1.2rem
+		+media-min(xl)
+			font-size: 1.2rem
 
 .title, .excerpt
 	position: relative
@@ -67,14 +78,14 @@
 	padding: 0
 	display: flex
 	justify-content: center
-	//align-items: center
+	align-items: center
 	font-family: var(--font-family-secondary), serif
 	text-align: center
 	color: var(--white-color)
 
 .title
 	top: 10%
-	align-items: flex-end
+	//align-items: flex-end
 	text-transform: uppercase
 	font-weight: bold
 
@@ -82,10 +93,12 @@
 	bottom: 10%
 
 .cover
-	padding: 27%
+	position: relative
+	height: 100%
+	width: 100%
+	max-height: 38%
 	overflow: hidden
-	object-fit: contain
-	opacity: 0
+	flex: 1
 
 //img
 //	box-shadow: 0 0 1rem 1.8rem rgb(var(--black-color), 0.2)

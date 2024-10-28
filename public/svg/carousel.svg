@@ -9,8 +9,8 @@
     </g>
 
     <circle cx="50" cy="0" r="1.5" class="dot" fill="currentColor" stroke="white"/>
-    <circle cx="97.55" cy="34.55" r="1.5" class="dot" fill="currentColor" stroke="white"/>
-    <circle cx="79.39" cy="90.45" r="1.5" class="dot" fill="currentColor" stroke="white"/>
-    <circle cx="20.61" cy="90.45" r="1.5" class="dot" fill="currentColor" stroke="white"/>
-    <circle cx="2.45" cy="34.55" r="1.5" class="dot" fill="currentColor" stroke="white"/>
+    <circle cx="97.55" cy="34.55" r="1.7" class="dot" fill="currentColor" stroke="white"/>
+    <circle cx="79.39" cy="90.45" r="1.7" class="dot" fill="currentColor" stroke="white"/>
+    <circle cx="20.61" cy="90.45" r="1.7" class="dot" fill="currentColor" stroke="white"/>
+    <circle cx="2.45" cy="34.55" r="1.7" class="dot" fill="currentColor" stroke="white"/>
 </svg>

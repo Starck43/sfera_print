@@ -1,10 +1,10 @@
-import React, { memo } from 'react'
-
 import { CircleCarousel } from '@/shared/ui/circle-carousel'
 import { VideoPlayer } from '@/shared/ui/video-player'
+
 import cls from './PageHeader.module.sass'
 
-const carouselLoopDuration = 15000
+const slidesCount = parseInt(process.env.CIRCLE_CAROUSEL_SLIDES_COUNT || '5')
+const slideDuration = parseInt(process.env.CIRCLE_CAROUSEL_SLIDE_DURATION || '3000')
 
 const PageHeader = () => (
     <div className={cls.container}>
@@ -21,11 +21,12 @@ const PageHeader = () => (
         />
 
         <CircleCarousel
+            itemsLength={slidesCount}
+            slideDuration={slideDuration}
             duration={300}
-            loopDuration={carouselLoopDuration}
             infinite={process.env.NODE_ENV !== 'development'}
         />
     </div>
 )
 
-export default memo(PageHeader)
+export default PageHeader
