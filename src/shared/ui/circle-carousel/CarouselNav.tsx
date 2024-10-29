@@ -96,13 +96,9 @@ const CarouselNav = (props: CarouselNavProps) => {
         [changeSlide, debouncedTrigger]
     )
 
-    const handleTouchStart = useCallback((e: TouchEvent) => {
-        const touchDown = e.touches[0].clientY
-
-        if (touchPosition.current === null) {
-            touchPosition.current = touchDown
-        }
-    }, [])
+    const handleTouchStart = (e: TouchEvent) => {
+        touchPosition.current = e.touches[0].clientY
+    }
 
     const handleTouchMove = useCallback(
         (e: TouchEvent) => {
@@ -113,11 +109,11 @@ const CarouselNav = (props: CarouselNavProps) => {
             const currentPosition = e.touches[0].clientY
             const direction = touchPosition.current - currentPosition
 
-            if (direction > 20) {
+            if (direction > 10) {
                 changeSlide(1)
             }
 
-            if (direction < -20) {
+            if (direction < -10) {
                 changeSlide(-1)
             }
 
@@ -127,17 +123,23 @@ const CarouselNav = (props: CarouselNavProps) => {
     )
 
     return (
-        <CircleNav
-            onClick={(e: React.MouseEvent<SVGGElement>) => onSlideClick(e, currentSlide.current)}
+        <div
+            className={cls.circle__nav_container}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onWheel={handleWheel}
-            className={cls.circle__nav}
-            style={{
-                strokeWidth: strokeWidth,
-                '--path-width': strokeWidth * 3
-            }}
-        />
+        >
+            <CircleNav
+                onClick={(e: React.MouseEvent<SVGGElement>) =>
+                    onSlideClick(e, currentSlide.current)
+                }
+                className={cls.circle__nav}
+                style={{
+                    strokeWidth: strokeWidth,
+                    '--path-width': strokeWidth * 3
+                }}
+            />
+        </div>
     )
 }
 
