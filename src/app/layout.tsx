@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import Image from 'next/image'
+import Link from 'next/link'
 // import { Montserrat } from 'next/font/google'
 
 import { RouteEvents } from '@/components/routes/route-events'
@@ -11,6 +12,7 @@ import { YandexMetrika } from '@/components/yandex-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
+import BrandLogo from '@/sp-logo.svg'
 
 import './globals.scss'
 
@@ -89,13 +91,9 @@ export default async function RootLayout({
             <body>
                 <header>
                     <div className="logo">
-                        <Image
-                            src="/sp-logo.svg"
-                            alt="Рекламно-производственная компания Сфера Принт"
-                            sizes={'100%'}
-                            fill
-                            priority
-                        />
+                        <Link href="/">
+                            <BrandLogo />
+                        </Link>
                     </div>
                     <NavigationProvider>
                         <RouteEvents />

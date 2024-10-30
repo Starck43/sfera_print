@@ -1,18 +1,12 @@
-'use client'
-
-import React, { ElementType, ReactNode } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { ReactNode } from 'react'
 
 import ScrollToTop from '@/components/scroll-to-top/ScrollToTop'
-
 import { classnames } from '@/shared/lib/helpers/classnames'
-import usePageAnimation from '@/shared/lib/hooks/usePageAnimation'
 
 import type { SizeType } from '@/shared/types/ui'
 import { Portal } from '@/shared/ui/portal'
-import { Header } from '@/shared/ui/header'
 import { Col } from '@/shared/ui/stack'
-import { BackButton } from '@/shared/ui/button'
+import PageHeader from './page-header'
 
 import cls from './Layout.module.sass'
 
@@ -36,12 +30,7 @@ export default function PageLayout(props: PageLayoutProps) {
         children,
         className = 'page__layout'
     } = props
-    const router = useRouter()
-    const { handleClick } = usePageAnimation(className)
 
-    const onClose = () => {
-        handleClick(handleOnClose ? handleOnClose : () => router.push('/'))
-    }
 
     let content = (
         <Col
@@ -49,14 +38,7 @@ export default function PageLayout(props: PageLayoutProps) {
             justify="between"
             className={classnames(cls, ['container'], { sectionMode }, [className])}
         >
-            <Header
-                tag={titleTag as ElementType}
-                title={title}
-                subTitle={<BackButton handleOnClick={onClose} />}
-                inlined
-                align="start"
-                className={cls.header}
-            />
+            <PageHeader title={title} titleTag={titleTag} onClose={handleOnClose} className={className} />
             {children}
             <ScrollToTop />
         </Col>
