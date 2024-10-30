@@ -11,11 +11,11 @@ interface PageHeaderProps {
     title: ReactNode
     titleTag: ElementType
     onClose?: () => void
-    className: string
+    container: string
 }
 
-const PageHeader = ({title, titleTag, onClose: handleOnClose, className}: PageHeaderProps) => {
-    const { handleClick } = usePageAnimation(className)
+const PageHeader = ({title, titleTag, onClose: handleOnClose, container}: PageHeaderProps) => {
+    const { handleClick } = usePageAnimation(container)
 
     const onClose = () => {
         handleClick(handleOnClose ? handleOnClose : () => history.back())

@@ -23,8 +23,8 @@ const LazyImage = ({ src, alt, className, blurDataURL, ...other }: ImageProps) =
             //srcSet={'srcset' in image && image.srcset.length ? createSrcSet(image.srcset) : undefined}
             {...other}
             quality={85}
-            placeholder={blurDataURL ? 'blur' : placeholder}
-            blurDataURL={blurDataURL}
+            placeholder={blurDataURL ? 'blur' : 'empty'}
+            blurDataURL={blurDataURL || placeholder}
             onLoad={onLoadHandler as any}
             onError={(e) => (e.currentTarget.style.visibility = 'hidden')}
             className={classnames(cls, ['image'], {}, [className])}

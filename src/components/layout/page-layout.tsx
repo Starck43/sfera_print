@@ -38,7 +38,7 @@ export default function PageLayout(props: PageLayoutProps) {
             justify="between"
             className={classnames(cls, ['container'], { sectionMode }, [className])}
         >
-            <PageHeader title={title} titleTag={titleTag} onClose={handleOnClose} className={className} />
+            <PageHeader title={title} titleTag={titleTag} onClose={handleOnClose} container={className} />
             {children}
             <ScrollToTop />
         </Col>
