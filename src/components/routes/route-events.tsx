@@ -11,9 +11,10 @@ export function RouteEvents() {
     const { showMenu, setPlayHeaderAnimation } = useNavigation()
 
     useEffect(() => {
+        if (!currentPath) return
         // const prevPath = ref.current
-        const isDetailPage = currentPath?.split('/').filter(Boolean).length === 2
-        setPlayHeaderAnimation(!showMenu && !isDetailPage)
+        const isHomePage = currentPath.split('/').filter(Boolean).length === 0
+        setPlayHeaderAnimation(!showMenu && isHomePage)
 
         ref.current = currentPath
     }, [currentPath, showMenu, setPlayHeaderAnimation])

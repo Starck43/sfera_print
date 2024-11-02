@@ -18,7 +18,7 @@ export default function usePageAnimation(className: string) {
             ...animationOptions,
             translateY: ['100%', 0],
             //opacity: [0.5, 1],
-            complete: (el) => {
+            begin: (el) => {
                 el.animatables[0].target.style.position = 'fixed'
             }
         })

@@ -10,7 +10,7 @@ interface HookModalProps {
 }
 
 /**
- * useModal - the custom hook for modal components (Drawer/Modal)
+ * useModal — the custom hook for modal components (Drawer/Modal)
  * @param onSubmit
  * @param onClose
  * @param isOpen
