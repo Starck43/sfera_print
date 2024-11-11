@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...generateSitemapRoutes(['cases'], routesUrl, 'weekly', 1),
         ...generateSitemapRoutes(['blog', 'philosophy'], routesUrl, 'weekly', 0.8),
         ...generateSitemapRoutes(
-            ['features', 'technologies', 'documents', 'contacts'],
+            ['', 'features', 'technologies', 'documents', 'contacts'],
             routesUrl,
             'monthly',
             0.5

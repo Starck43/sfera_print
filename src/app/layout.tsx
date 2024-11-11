@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     },
     referrer: 'origin-when-cross-origin',
     robots: {
-        index: false,
+        index: true,
         follow: true,
         nocache: true,
         googleBot: {
