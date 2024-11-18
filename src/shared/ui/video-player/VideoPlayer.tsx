@@ -1,6 +1,9 @@
+'use client'
+
 import React, { memo } from 'react'
 import Player from 'next-video/player'
 import type { DefaultPlayerProps } from 'next-video'
+import { useInView } from 'react-intersection-observer'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { LazyImage } from '@/shared/ui/lazy-image'
@@ -19,12 +22,15 @@ const VideoPlayer = ({
     src,
     poster,
     alt,
+    autoPlay = false,
     width,
     height,
     sizes,
     className,
     ...other
 }: VideoPlayerProps) => {
+    const [playerRef, inView] = useInView({threshold: 1})
+
     if (!src) return null
 
     // const onLoadDataHandler = (e: SyntheticEvent<HTMLVideoElement>) => {
@@ -33,7 +39,10 @@ const VideoPlayer = ({
 
     return (
         <Player
+            ref={playerRef}
             src={src}
+            autoPlay={autoPlay}
+            paused={!inView}
             // poster={poster}
             muted
             className={classnames(cls, ['player'], {}, [className])}
