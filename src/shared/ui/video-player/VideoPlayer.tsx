@@ -10,9 +10,10 @@ import { LazyImage } from '@/shared/ui/lazy-image'
 
 import cls from './VideoPlayer.module.sass'
 
-interface VideoPlayerProps extends DefaultPlayerProps {
+interface VideoPlayerProps extends Omit<DefaultPlayerProps, 'autoPlay'> {
     poster?: string
     alt?: string
+    autoPlay?: boolean
     width?: number
     height?: number
     sizes?: string
@@ -29,7 +30,11 @@ const VideoPlayer = ({
     className,
     ...other
 }: VideoPlayerProps) => {
-    const [playerRef, inView] = useInView({threshold: 1})
+    const [playerRef, inView] = useInView({ threshold: 1 })
+
+    const onErrorHandler = (event: ErrorEvent): void => {
+        (event?.currentTarget as HTMLVideoElement).style.opacity = '0'
+    }
 
     if (!src) return null
 
@@ -42,7 +47,9 @@ const VideoPlayer = ({
             ref={playerRef}
             src={src}
             autoPlay={autoPlay}
+            loop={autoPlay}
             paused={!inView}
+            onError={onErrorHandler}
             // poster={poster}
             muted
             className={classnames(cls, ['player'], {}, [className])}
