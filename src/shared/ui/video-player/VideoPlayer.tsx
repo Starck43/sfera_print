@@ -52,6 +52,7 @@ const VideoPlayer = ({
             onError={onErrorHandler}
             // poster={poster}
             muted
+            crossOrigin="anonymous"
             className={classnames(cls, ['player'], {}, [className])}
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
             //onCanPlay={onLoadDataHandler as any}

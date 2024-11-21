@@ -283,6 +283,11 @@ blockquote {
 	tbody {
 		gap: calc(var(--gap) + 2vw);
 	}
+
+	iframe {
+		width: 100%;
+		height: 100%;
+	}
 }
 
 .table tr {

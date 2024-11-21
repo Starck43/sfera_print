@@ -6,6 +6,7 @@ import PageLayout from '@/components/layout/page-layout'
 import type { PostType } from '@/components/post'
 
 import { formatDate } from '@/shared/lib/helpers/datetime'
+import { getDeviceSrc } from '@/shared/lib/helpers/image'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 
 import { Section } from '@/shared/ui/section'
@@ -16,7 +17,6 @@ import { LazyImage } from '@/shared/ui/lazy-image'
 import BlogDetails from '../details/BlogDetails'
 
 import cls from './BlogList.module.sass'
-import { getDeviceSrc } from '@/shared/lib/helpers/image'
 
 const BlogList = ({ posts }: { posts: PostType[] }) => {
     const [activeBlog, setActiveBlog] = useState<number | null>(null)
