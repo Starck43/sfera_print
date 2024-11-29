@@ -1,5 +1,6 @@
 'use client'
 import { ReactNode, ElementType, memo } from 'react'
+import { useRouter } from 'next/navigation'
 
 import usePageAnimation from '@/shared/lib/hooks/usePageAnimation'
 import { Header } from '@/shared/ui/header'
@@ -16,9 +17,9 @@ interface PageHeaderProps {
 
 const PageHeader = ({title, titleTag, onClose: handleOnClose, container}: PageHeaderProps) => {
     const { handleClick } = usePageAnimation(container)
-
+    const route = useRouter()
     const onClose = () => {
-        handleClick(handleOnClose ? handleOnClose : () => history.back())
+        handleClick(handleOnClose ? handleOnClose : () => route.push('/'))
     }
     return (
         <Header

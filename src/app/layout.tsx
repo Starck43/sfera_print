@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import Image from 'next/image'
 import Link from 'next/link'
 // import { Montserrat } from 'next/font/google'
 
