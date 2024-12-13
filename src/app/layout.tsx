@@ -14,6 +14,7 @@ import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
 import BrandLogo from '@/sp-logo.svg'
 
 import './globals.scss'
+import { TopMailCounter } from '@/components/mailru-metrika'
 
 export const metadata: Metadata = {
     title: {
@@ -104,6 +105,7 @@ export default async function RootLayout({
                 {children}
                 <Suspense>
                     <YandexMetrika enabled={analyticsEnabled} />
+                    <TopMailCounter enabled={analyticsEnabled} />
                 </Suspense>
             </body>
         </html>
