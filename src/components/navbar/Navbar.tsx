@@ -89,17 +89,17 @@ const Navbar = ({ className }: NavbarProps) => {
 
                             {data?.policy && (
                                 <a href={data.policy} target="_blank" className={cls.policy}>
-                                    Политика конфиденциальности
+                                    Политика обработки персональных данных
                                 </a>
                             )}
 
                             {data?.agreement && (
                                 <a href={data.agreement} target="_blank" className={cls.policy}>
-                                    Соглашение на использование материалов
+                                    Положение об обработке персональных данных
                                 </a>
                             )}
                             <div onClick={() => setIsCookieOpen(true)} className={cls.policy}>
-                                Соглашение на обработку персональных данных
+                                Согласие на обработку персональных данных
                             </div>
                         </Col>
                     </Col>
