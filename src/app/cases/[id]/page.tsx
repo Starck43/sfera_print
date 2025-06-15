@@ -37,9 +37,7 @@ export async function generateStaticParams() {
     const data = await getCityCases<CityCases>()
 
     return data?.map((post) => ({
-        params: {
-            id: post.id
-        }
+        id: post.id
     }))
 }
 

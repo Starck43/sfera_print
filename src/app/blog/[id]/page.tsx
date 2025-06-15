@@ -22,7 +22,7 @@ export async function generateStaticParams() {
     const posts = await getBlog<PostType>()
 
     return posts?.map((post) => ({
-        params: { id: post.id }
+        id: post.id.toString()
     }))
 }
 

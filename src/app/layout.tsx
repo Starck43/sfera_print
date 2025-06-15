@@ -8,13 +8,13 @@ import { RouteEvents } from '@/components/routes/route-events'
 import PageHeader from '@/components/page-header'
 import { BurgerButton, Navbar } from '@/components/navbar'
 import { YandexMetrika } from '@/components/yandex-metrika'
+import { TopMailCounter } from '@/components/mailru-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
 import BrandLogo from '@/sp-logo.svg'
 
 import './globals.scss'
-import { TopMailCounter } from '@/components/mailru-metrika'
 
 export const metadata: Metadata = {
     title: {
@@ -77,10 +77,11 @@ const titleFont = localFont({
     display: 'swap'
 })
 
+const analyticsEnabled = process.env.NODE_ENV === 'production'
+
 export default async function RootLayout({
     children = null
 }: Readonly<{ children: React.ReactNode }>) {
-    const analyticsEnabled = process.env.NODE_ENV === 'production'
 
     return (
         <html

@@ -43,7 +43,7 @@ const ScrollToTop = () => {
                 ])}
             />
         ),
-        [scroll?.reachedTarget]
+        [scroll?.reachedTarget, scrollToTop]
     )
 }
 

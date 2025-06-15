@@ -25,7 +25,7 @@ export async function generateStaticParams() {
     const posts: PostType[] = await getTechnologies()
 
     return posts?.map((post) => ({
-        params: { slug: post.slug }
+        slug: post.slug
     }))
 }
 
