@@ -6,7 +6,7 @@ import { classnames } from '@/shared/lib/helpers/classnames'
 import { formatDate } from '@/shared/lib/helpers/datetime'
 import { Slider } from '@/shared/ui/slider'
 import { LazyImage } from '@/shared/ui/lazy-image'
-import { getDeviceSrc } from '@/shared/lib/helpers/image'
+import { getDeviceImage } from '@/shared/lib/helpers/image'
 import { Section } from '@/shared/ui/section'
 import { Header } from '@/shared/ui/header'
 import { Col } from '@/shared/ui/stack'
@@ -28,15 +28,15 @@ const Post = ({ data, style, className }: ContentProps) => {
     const { id, title, cover: image, media, event_date, desc } = data
     const parsedContent = htmlParser(desc)
 
-    if (!desc || parsedContent instanceof Array && !parsedContent.length) {
-        const imageSrc = getDeviceSrc(image)
+    if (!desc || (parsedContent instanceof Array && !parsedContent.length)) {
+        const imageSrc = getDeviceImage(image)
 
         return (
             <Section className={className} style={style}>
                 <Header title={title} tag="h2" transform="upperCase" className={cls.header} />
-                {imageSrc ? (
+                {imageSrc.src ? (
                     <div className={cls.cover__wrapper}>
-                        <LazyImage src={imageSrc} alt={title} fill />
+                        <LazyImage src={imageSrc.src} srcSet={imageSrc.srcSet} alt={title} fill />
                     </div>
                 ) : null}
             </Section>

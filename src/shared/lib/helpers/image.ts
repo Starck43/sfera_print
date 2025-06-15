@@ -1,27 +1,50 @@
 import type { Media } from '@/components/post'
 
-export const createSrcSet = (srcset: Array<string> | undefined) => {
-    if (!srcset) return undefined
+export const createSrcSet = (srcset: string[] | undefined) => {
+    if (!srcset) return { media: undefined, srcset: undefined }
+    let media
 
-    return srcset.reduce((acc, value, index) => {
+    const srcSet = srcset.reduce((acc, value, index) => {
         const arr = value.match(/(?!_)\d+w/g)
-        if (!arr) return acc
-        return `${acc + value} ${arr.pop()}${index < srcset.length - 1 ? ', ' : ''}`
+        const width = arr && arr.length ? arr.pop() : ''
+        if (width && index === srcset.length - 1) {
+            media = `(max-width: ${parseInt(width, 10)}px)`
+        }
+        return `${acc + value} ${width}${index < srcset.length - 1 ? ', ' : ''}`
     }, '')
+
+    return {
+        media,
+        srcSet
+    }
 }
 
-export function getDeviceSrc(image?: Media['image'] | null, thumb = false): string | undefined {
-    if (!image) return
+export function getDeviceImage(
+    image?: Media['image'] | null,
+    thumb = false
+): {
+    src: string | undefined
+    srcSet: string[] | undefined
+} {
+    if (!image) return { src: undefined, srcSet: undefined }
 
-    return typeof image === 'object' && 'src' in image ? (thumb ? image.srcset?.[0] || image.src : image.src) : image
+    return typeof image === 'object' && 'src' in image
+        ? {
+              src: thumb ? image.srcset?.[0] || image.src : image.src,
+              srcSet: image.srcset
+          }
+        : {
+              src: image,
+              srcSet: undefined
+          }
 }
 
 export const createThumbUrl = (src: string, width: number) => {
-	const path = src?.split(".")
-	if (path && path.length > 1) {
-		const ext = path.pop()
-		const thumbName = "_" + width + "w"
-		return path.join(".") + thumbName + "." + ext
-	}
-	return src
+    const path = src?.split('.')
+    if (path && path.length > 1) {
+        const ext = path.pop()
+        const thumbName = '_' + width + 'w'
+        return path.join('.') + thumbName + '.' + ext
+    }
+    return src
 }

@@ -30,10 +30,10 @@ const VideoPlayer = ({
     className,
     ...other
 }: VideoPlayerProps) => {
-    const [playerRef, inView] = useInView({ threshold: 1 })
+    const { ref: inViewRef, inView } = useInView({ threshold: 0.5 })
 
     const onErrorHandler = (event: ErrorEvent): void => {
-        (event?.currentTarget as HTMLVideoElement).style.opacity = '0'
+        ;(event?.currentTarget as HTMLVideoElement).style.opacity = '0'
     }
 
     if (!src) return null
@@ -43,22 +43,22 @@ const VideoPlayer = ({
     // }
 
     return (
-        <Player
-            ref={playerRef}
-            src={src}
-            autoPlay={autoPlay}
-            loop={autoPlay}
-            paused={!inView}
-            onError={onErrorHandler}
-            // poster={poster}
-            muted
-            crossOrigin="anonymous"
-            className={classnames(cls, ['player'], {}, [className])}
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
-            //onCanPlay={onLoadDataHandler as any}
-            {...other}
-        >
-            <style>{`
+        <div ref={inViewRef} style={{height: '100%', pointerEvents: 'none'}}>
+            <Player
+                src={src}
+                autoPlay={autoPlay}
+                loop={autoPlay}
+                onError={onErrorHandler}
+                paused={!inView}
+                // poster={poster}
+                muted
+                crossOrigin="anonymous"
+                className={classnames(cls, ['player'], {}, [className])}
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjePfu3X8ACWIDyvrS0aMAAAAASUVORK5CYII="
+                //onCanPlay={onLoadDataHandler as any}
+                {...other}
+            >
+                <style>{`
                 ::part(center) {--media-control-background: rgba(0,0,0, 0.5) !important;padding: 0.8rem; border-radius: 50%; width: var(--controls-width); height: var(--controls-width);}
                 ::part(play) {--media-button-icon-transform: 0; --media-icon-color: var(--secondary-color) !important; transition: all 150ms ease-out !important;} 
                 ::part(play):hover {--media-icon-color: inherit !important; background-color: var(--secondary-color) !important;} 
@@ -66,19 +66,21 @@ const VideoPlayer = ({
                 ::part(mute) {margin-left: 1.2em;}
                 ::part(fullscreen) {margin-right: 1.2em;}
             `}</style>
-            {poster && (
-                <LazyImage
-                    slot="poster"
-                    src={poster}
-                    alt={alt || ''}
-                    sizes={sizes || '100vw'}
-                    fill={!width}
-                    width={width}
-                    height={height}
-                    style={{ height: '100%', objectFit: 'cover' }}
-                />
-            )}
-        </Player>
+
+                {poster && (
+                    <LazyImage
+                        slot="poster"
+                        src={poster}
+                        alt={alt || ''}
+                        sizes={sizes || '100vw'}
+                        fill={!width}
+                        width={width}
+                        height={height}
+                        style={{ height: '100%', objectFit: 'cover' }}
+                    />
+                )}
+            </Player>
+        </div>
     )
 }
 

@@ -14,6 +14,7 @@ import { Col } from '@/shared/ui/stack'
 import CarouselNav from './CarouselNav'
 
 import cls from './CircleCarousel.module.sass'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 interface CarouselProps {
     duration: number
@@ -86,7 +87,7 @@ const CircleCarousel = ({ duration, slideDuration, infinite = false }: CarouselP
 
                         {item.cover && (
                             <div className={cls.cover}>
-                                <NextImage
+                                <LazyImage
                                     src={item.cover as string}
                                     alt={item.title}
                                     sizes="100%"

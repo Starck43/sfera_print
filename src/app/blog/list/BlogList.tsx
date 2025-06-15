@@ -6,7 +6,7 @@ import PageLayout from '@/components/layout/page-layout'
 import type { PostType } from '@/components/post'
 
 import { formatDate } from '@/shared/lib/helpers/datetime'
-import { getDeviceSrc } from '@/shared/lib/helpers/image'
+import { getDeviceImage } from '@/shared/lib/helpers/image'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 
 import { Section } from '@/shared/ui/section'
@@ -61,7 +61,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
             <div className={cls.blog__container}>
                 {posts?.map(
                     ({ id, title, excerpt = null, cover = null, event_date = null }, idx) => {
-                        const coverSrc = getDeviceSrc(cover)
+                        const coverSrc = getDeviceImage(cover)
                         return (
                             <Section
                                 key={'blog-' + id}
@@ -71,9 +71,10 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                                 className={cls.article}
                                 style={{ padding: 0, height: 'max-content' }}
                             >
-                                {coverSrc && (
+                                {coverSrc.src && (
                                     <LazyImage
-                                        src={coverSrc}
+                                        src={coverSrc.src}
+                                        srcSet={coverSrc.srcSet}
                                         alt={title}
                                         //priority
                                         sizes="(max-width: 684px) 50vw, 100vw"

@@ -89,11 +89,11 @@ const CasesList = () => {
                                 src={
                                     typeof cover === 'object' && 'src' in cover ? cover.src : cover
                                 }
+                                srcSet={typeof cover === 'object' && 'srcset' in cover ? cover.srcset : undefined}
                                 alt={title}
                                 sizes="(max-width: 684px) 100vw, 50vw"
                                 fill
                                 priority
-                                quality={80}
                                 style={{ objectFit: 'cover' }}
                             />
                         )}
