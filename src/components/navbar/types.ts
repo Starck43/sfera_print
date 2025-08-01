@@ -15,6 +15,7 @@ export interface Menu {
     policy?: string
     agreement?: string
     cookie?: string
+    offer?: string
 }
 
 export interface NavItemType {

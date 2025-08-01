@@ -38,6 +38,7 @@ const Navbar = ({ className }: NavbarProps) => {
                 <NavMenu>
                     <Col gap="sm" align="baseline" justify="start" className={cls.navmenu}>
                         <Flex gap="xs" justify="between" fullWidth style={{ marginBottom: 'auto' }}>
+
                             <Col gap="sm" className={cls.navitems}>
                                 {data?.pages?.map((item) => (
                                     <NavItem key={item.path} {...item} />
@@ -58,6 +59,7 @@ const Navbar = ({ className }: NavbarProps) => {
 								       `}</Fragment>
                                         ))}
                                     </style>
+
                                     {data.socials.map(({ name, title, link, image }, idx) => (
                                         <a
                                             key={'social-' + name}
@@ -74,6 +76,7 @@ const Navbar = ({ className }: NavbarProps) => {
                                                 src={image || `/svg/socials/${name}.svg`}
                                                 alt={title}
                                                 sizes="100%"
+                                                priority
                                                 fill
                                             />
                                         </a>
@@ -98,9 +101,16 @@ const Navbar = ({ className }: NavbarProps) => {
                                     Положение об обработке персональных данных
                                 </a>
                             )}
+
                             <div onClick={() => setIsCookieOpen(true)} className={cls.policy}>
                                 Согласие на обработку персональных данных
                             </div>
+
+                            {data?.offer && (
+                                <a href={data.offer} target="_blank" className={cls.policy}>
+                                    Оферта по использованию реестровых записей
+                                </a>
+                            )}
                         </Col>
                     </Col>
                 </NavMenu>
