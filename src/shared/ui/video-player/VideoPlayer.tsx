@@ -2,7 +2,7 @@
 
 import React, { memo } from 'react'
 import Player from 'next-video/player'
-import type { DefaultPlayerProps } from 'next-video'
+import type { PlayerProps } from 'next-video'
 import { useInView } from 'react-intersection-observer'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
@@ -10,13 +10,16 @@ import { LazyImage } from '@/shared/ui/lazy-image'
 
 import cls from './VideoPlayer.module.sass'
 
-interface VideoPlayerProps extends Omit<DefaultPlayerProps, 'autoPlay'> {
+interface VideoPlayerProps extends PlayerProps {
     poster?: string
     alt?: string
     autoPlay?: boolean
+    loop?: boolean
     width?: number
     height?: number
     sizes?: string
+    className?: string
+    style?: React.CSSProperties
 }
 
 const VideoPlayer = ({
@@ -24,6 +27,7 @@ const VideoPlayer = ({
     poster,
     alt,
     autoPlay = false,
+    loop = false,
     width,
     height,
     sizes,
@@ -32,7 +36,7 @@ const VideoPlayer = ({
 }: VideoPlayerProps) => {
     const { ref: inViewRef, inView } = useInView({ threshold: 0.5 })
 
-    const onErrorHandler = (event: ErrorEvent): void => {
+    const onErrorHandler = (event: any): void => {
         ;(event?.currentTarget as HTMLVideoElement).style.opacity = '0'
     }
 
@@ -46,10 +50,9 @@ const VideoPlayer = ({
         <div ref={inViewRef} style={{height: '100%', pointerEvents: 'none'}}>
             <Player
                 src={src}
-                autoPlay={autoPlay}
-                loop={autoPlay}
+                autoPlay={autoPlay || inView}
+                loop={loop}
                 onError={onErrorHandler}
-                paused={!inView}
                 // poster={poster}
                 muted
                 crossOrigin="anonymous"

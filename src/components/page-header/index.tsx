@@ -21,7 +21,6 @@ const PageHeader = () => (
         {/*<HeaderAnimation/>*/}
         <VideoPlayer
             src={'/videos/sp-bg-anim.webm'}
-            preload={process.env.NODE_ENV !== 'development' ? 'auto' : 'none'}
             autoPlay
             loop={false}
             controls={false}
