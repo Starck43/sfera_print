@@ -136,8 +136,8 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                         <VideoPlayer
                             src={src}
                             poster={poster}
-                            autoPlay={true}
-                            //preload={'auto'}
+                            autoPlay
+                            controls={false}
                             sizes="(min-width:992px) 70vw, 100vw"
                             width={width}
                             height={height}

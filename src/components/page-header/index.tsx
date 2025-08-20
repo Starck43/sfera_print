@@ -22,8 +22,8 @@ const PageHeader = () => (
         <VideoPlayer
             src={'/videos/sp-bg-anim.webm'}
             autoPlay
-            loop={false}
             controls={false}
+            loop={false}
             style={{ height: '100%', pointerEvents: 'none' }}
         />
 

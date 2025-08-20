@@ -30,7 +30,7 @@ const nextConfig = {
             {
                 protocol: 'http',
                 hostname: 'localhost',
-                port: '8000'
+                port: '8005'
             }
         ],
         minimumCacheTTL: 60 * 60 * 24 * 30,

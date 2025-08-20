@@ -26,7 +26,7 @@ const SliderThumbs = ({ media, activeIndex, swiperRef }: ThumbsProps) => {
                         'thumb',
                         idx === activeIndex ? 'active' : undefined
                     ])}
-                    style={{width: '150px', height: '150px'}}
+                    style={{width: 'auto', height: 'auto'}}
                     onClick={() => handleThumbClick(idx)}
                 >
                     <LazyImage
