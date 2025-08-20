@@ -16,7 +16,7 @@ export const useZoomRegion = () => {
 
     const onCityClick = (city: CityProps | null) => {
         if (city !== null) {
-            history.pushState({ city }, '', `cases/${city.id}`)
+            history.pushState({ city }, '', `${city.id}`)
             setActiveCity(city)
         } else {
             history.back()
