@@ -17,14 +17,15 @@ export function detectMobile() {
 export const detectDeviceOrientation = (): 'portrait' | 'landscape' | null => {
     if (typeof window === 'undefined') return null
 
-    const isMobile = window.matchMedia
-    if (!isMobile) return null
-
-    const device = isMobile('(pointer:coarse)')
-    if (device.matches) {
+    // Для мобильных устройств используем медиа-запрос orientation
+    const isMobile = window.matchMedia('(pointer:coarse)').matches
+    if (isMobile) {
         return window.matchMedia('(orientation: portrait)').matches ? 'portrait' : 'landscape'
     }
-    return null
+
+    // Для десктопа определяем ориентацию по соотношению сторон
+    const aspectRatio = window.innerWidth / window.innerHeight
+    return aspectRatio > 1 ? 'landscape' : 'portrait'
 }
 
 export const getWindowDimensions = (container?: Element | null) => {

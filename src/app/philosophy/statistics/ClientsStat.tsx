@@ -18,7 +18,7 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
     const viewBoxWidth = 300
     const chartRadius = viewBoxWidth / 6
     const totalDuration = 3000
-    const generateArcColors = calcWheelColor('#478631', 70, data.length - 1)
+    const generateArcColors = calcWheelColor('#0d47a1', 70, data.length - 1)
     const { arcs, refs } = generateSvgChart(data, viewBoxWidth, chartRadius)
     const { ref, inView } = useInView({
         //rootMargin: '10px 0px 0px 0px',

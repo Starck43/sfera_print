@@ -64,7 +64,7 @@ const PhilosophyPage = async () => {
             >
                 <div className={cls.diagram__container}>
                     <Image
-                        src={'/images/target_image.png'}
+                        src={'/images/target-img.webp'}
                         alt="Причины выбрать нас"
                         fill
                         style={{ left: '-3%' }}
@@ -82,7 +82,7 @@ const PhilosophyPage = async () => {
                 className={classnames(cls, ['section'])}
             >
                 <div className={cls.diagram__container}>
-                    <Image src={'/images/logo3d.png'} alt="Наши заказчики" fill />
+                    <Image src={'/images/stat-img.webp'} alt="Наши заказчики" fill />
                     <ClientsStat data={calculatePercentByGroup(partners)} />
                 </div>
             </Section>

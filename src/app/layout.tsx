@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react'
-import type { Metadata } from 'next'
+import { type Metadata } from 'next'
+import Image from 'next/image'
 import localFont from 'next/font/local'
 import Link from 'next/link'
-// import { Montserrat } from 'next/font/google'
 
 import { RouteEvents } from '@/components/routes/route-events'
 import PageHeader from '@/components/page-header'
@@ -12,9 +12,11 @@ import { TopMailCounter } from '@/components/mailru-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
-import BrandLogo from '@/sp-logo.svg'
+import brandImage from '@/images/atmo-logo-hw.png'
+import brandMobileImage from '@/images/atmo-logo-vw.png'
 
 import './globals.scss'
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 export const metadata: Metadata = {
     title: {
@@ -31,10 +33,10 @@ export const metadata: Metadata = {
         type: 'website',
         siteName: SITE_TITLE,
         url: new URL(process.env.URL || SITE_URL),
-        title: 'Сфера Принт',
-        images: '/sp-logo.svg'
+        title: 'Атмосфера Пространств',
+        images: '/atmo-logo.svg'
     },
-    applicationName: 'sferaprint',
+    applicationName: 'atmosfera',
     authors: [{ name: 'S. Shabalin', url: 'https://istarck.ru' }],
     creator: 'Stanislav Shabalin',
     formatDetection: {
@@ -62,19 +64,45 @@ export const metadata: Metadata = {
 }
 
 const brandFont = localFont({
-    src: './fonts/PFBeauSansPro-Regular.woff2',
-    variable: '--font-family-primary',
-    weight: '400',
-    style: 'normal',
-    display: 'swap'
+    src: [
+        {
+            path: './fonts/Onest-Regular.ttf',
+            weight: '400',
+            style: 'normal'
+        },
+        {
+            path: './fonts/Onest-SemiBold.ttf',
+            weight: '700',
+            style: 'normal'
+        },
+        {
+            path: './fonts/Onest-Black.ttf',
+            weight: '900',
+            style: 'normal'
+        }
+    ],
+    variable: '--font-family-primary'
 })
 
-const titleFont = localFont({
-    src: './fonts/Montserrat-Medium.woff2',
-    //subsets: ['cyrillic'],
-    variable: '--font-family-secondary',
-    weight: '700',
-    display: 'swap'
+const accentFont = localFont({
+    src: [
+        {
+            path: './fonts/inter-28pt-Regular.ttf',
+            weight: '400',
+            style: 'normal'
+        },
+        {
+            path: './fonts/inter-28pt-SemiBold.ttf',
+            weight: '700',
+            style: 'normal'
+        },
+        {
+            path: './fonts/inter-28pt-Black-Italic.ttf',
+            weight: '900',
+            style: 'normal'
+        }
+    ],
+    variable: '--font-family-secondary'
 })
 
 const analyticsEnabled = process.env.NODE_ENV === 'production'
@@ -82,18 +110,32 @@ const analyticsEnabled = process.env.NODE_ENV === 'production'
 export default async function RootLayout({
     children = null
 }: Readonly<{ children: React.ReactNode }>) {
-
     return (
         <html
             lang="ru"
-            className={`${brandFont.className} ${titleFont.variable}`}
+            className={`${brandFont.className} ${accentFont.variable}`}
             suppressHydrationWarning
         >
             <body>
                 <header>
                     <div className="logo">
                         <Link href="/">
-                            <BrandLogo />
+                            <LazyImage
+                                src={brandImage.src}
+                                alt="Атмосфера Пространств"
+                                width={brandImage.width}
+                                height={brandImage.height}
+                                priority
+                                unoptimized
+                            />
+                            <LazyImage
+                                src={brandMobileImage.src}
+                                alt="Атмосфера Пространств"
+                                width={brandMobileImage.width}
+                                height={brandMobileImage.height}
+                                priority
+                                unoptimized
+                            />
                         </Link>
                     </div>
                     <NavigationProvider>

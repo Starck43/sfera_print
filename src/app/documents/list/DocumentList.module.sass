@@ -11,16 +11,18 @@
 		grid-template-columns: repeat(3, 1fr)
 
 	article
-		border: var(--border-thickness) var(--border-color-default) solid
 		padding: var(--gap)
+		border: var(--border-thickness) transparent dotted
+		border-radius: var(--border-radius)
 		cursor: pointer
 		h3
-			font-size: clamp(1.0rem,.8rem + 0.5vw, 1.15rem)
+			font-size: clamp(1.2rem,.8rem + 0.5vw, 1.15rem)
 
 		img
 			margin-top: 0.75rem
 
 		&:hover
+			border: var(--border-thickness) var(--border-color-default) solid
 			transform: scale(1.02) !important
 			box-shadow: 0 0 1.4rem -0.2rem var(--box-shadow)
 

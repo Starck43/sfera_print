@@ -16,7 +16,7 @@ interface NavMenuProps {
 
 const copyright = (
     <span className={cls.copyright}>
-        © {new Date().getFullYear()} ООО «Сфера Принт» Все права защищены
+        © {new Date().getFullYear()} ООО «Атмосфера Пространств» Все права защищены
     </span>
 )
 
@@ -29,9 +29,9 @@ export const NavMenu = (props: NavMenuProps) => {
     return (
         <Drawer
             position={position || 'right'}
-            bordered
+            bordered={false}
             //fullSize
-            animationTime={600}
+            animationTime={300}
             open={showMenu}
             closeOnOverlayClick={false}
             footer={copyright}

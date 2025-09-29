@@ -1,38 +1,39 @@
 import { CircleCarousel } from '@/shared/ui/circle-carousel'
 import { VideoPlayer } from '@/shared/ui/video-player'
-import { LazyImage } from '@/shared/ui/lazy-image'
 
-import cover from '@/images/header-bg.webp'
+import coverH from '@/images/header-h-bg.webp'
+import coverV from '@/images/header-v-bg.webp'
 import cls from './PageHeader.module.sass'
 
 // const slidesCount = parseInt(process.env.CIRCLE_CAROUSEL_SLIDES_COUNT || '5')
 const slideDuration = parseInt(process.env.CIRCLE_CAROUSEL_SLIDE_DURATION || '3000')
+const isDev = process.env.NODE_ENV === 'development'
 
-const PageHeader = () => (
-    <div className={cls.container}>
-        <LazyImage
-            src={cover}
-            alt="Рекламно-производственная компания Сфера Принт"
-            sizes={'100%'}
-            fill
-            priority
-            style={{ objectFit: 'cover' }}
-        />
-        {/*<HeaderAnimation/>*/}
-        <VideoPlayer
-            src={'/videos/sp-bg-anim.webm'}
-            autoPlay
-            controls={false}
-            loop={false}
-            style={{ height: '100%', pointerEvents: 'none' }}
-        />
+const PageHeader = () => {
+    return (
+        <div className={cls.container}>
+            {/*<HeaderAnimation/>*/}
+            <VideoPlayer
+                src={{
+                    landscape: '/videos/atmo-h-video.mp4',
+                    portrait: '/videos/atmo-v-video.mp4'
+                }}
+                poster={{
+                    landscape: coverH,
+                    portrait: coverV
+                }}
+                autoPlay={!isDev}
+                controls={false}
+                loop={!isDev}
+            />
 
-        <CircleCarousel
-            slideDuration={slideDuration}
-            duration={300}
-            infinite={process.env.NODE_ENV !== 'development'}
-        />
-    </div>
-)
+            <CircleCarousel
+                slideDuration={slideDuration}
+                duration={300}
+                infinite={!isDev}
+            />
+        </div>
+    )
+}
 
 export default PageHeader
