@@ -1,0 +1,503 @@
+@use "sass:color"
+@use "sass:list"
+@use "sass:map"
+@use "sass:string"
+@use "sass:math"
+@use 'sass:meta'
+
+@mixin transform-pos($x:50%, $y:50%, $zoom:1)
+	position: absolute
+	top: $x
+	left: $y
+	transform: translate(-$x, -$y) scale($zoom)
+
+
+@mixin make-container($margin: 0, $padding-x: 0)
+	position: relative
+	margin-right: $margin
+	margin-left: $margin
+
+	@if ($padding-x != 0)
+		padding-right: $padding-x
+		padding-left: $padding-x
+
+
+@mixin font($f-name, $f-style, $f-weight, $local-url, $format:"truetype", $display:swap)
+	@font-face
+		src: local($f-name), url($local-url) format($format)
+		font-display: $display
+		font-family: $f-name
+		font-style: $f-style
+		font-weight: $f-weight
+		@content
+
+
+//Убираем единицы измерения у чисел
+@function strip-units($size)
+	$number: math.div($size, ($size * 0 + 1))
+
+	@return $number
+
+
+@function em($pixels, $fontsize)
+	$fontsize: $fontsize + 0
+
+	@return math.div($pixels, $fontsize) * 1em
+
+
+@function px($em, $fontsize)
+	@return math.round(strip-units($em) * strip-units($fontsize)) * 1px
+
+
+//Автоматическое центрирование
+@mixin push--auto($margin: auto)
+	margin:
+		left: $margin
+		right: $margin
+
+
+//Абсолютное позиционирование в размер родителя
+@mixin push--fixed($offset: 0)
+	position: fixed
+	top: $offset
+	left: $offset
+	right: $offset
+	bottom: $offset
+	padding-bottom: $offset
+
+
+//Абсолютное позиционирование в размер родителя
+@mixin push--absolute($t: none, $r: none, $b: none, $l: none)
+	position: absolute
+
+	@if $l == none and $b == none and $r == none
+		@if $t == none
+			top: 0
+			left: 0
+			width: 100%
+			height: 100%
+
+		@else
+			top: $t
+			left: $t
+			right: $t
+			bottom: $t
+
+	@else
+		@if $t != none
+			top: $t
+
+		@if $r != none
+			right: $r
+
+		@if $b != none
+			bottom: $b
+
+		@if $l != none
+			left: $l
+
+
+@function hex-to-rgb($hex)
+	@if string.index(#{$hex}, '#')
+		@return rgb(color.red($hex), color.green($hex), color.blue($hex))
+	@else
+		@warn "Invalid input. The input must be a string in the format of a hexadecimal color (e.g., #FFFFFF or #000000)."
+		@return none
+
+
+@mixin blur-background($blur:10px, $color:white, $transparentize:0, $filter_transparentize:0)
+	@supports not (backdrop-filter: blur($blur))
+		background-color: color.adjust($color, $alpha: -$transparentize)
+
+	@supports (backdrop-filter: blur($blur)) or (-webkit-backdrop-filter: blur($blur))
+		@if $filter_transparentize != 0
+			background-color: color.adjust($color, $alpha: -$filter_transparentize)
+
+		backdrop-filter: blur($blur)
+
+
+// Вычисляем высоту блока за вычетом видимых в области экрана
+// например: height: calc-height($header-height, $nav-height, $top-bar-height)
+@function calc-height($parent_h, $h1, $h2:0, $h3:0, $h4:0)
+	$h: strip-units($h1) + strip-units($h2) + strip-units($h3)
+
+	@if $h4 != 0
+		@return calc(#{$parent_h} - #{$h}px - #{$h4})
+
+	@else
+		@return calc(#{$parent_h} - #{$h}px)
+
+
+@mixin animation($name, $animation, $effect:no-fade, $x:0, $y:0, $x1:0, $y1:0)
+	animation: animation-#{$name} $animation
+	animation-timing-function: cubic-bezier(.03, .2, .3, 1)
+	animation-fill-mode: both
+	@content
+
+	@keyframes animation-#{$name}
+		0%
+			@if $effect == zoom
+				transform: scale(0)
+				filter: grayscale(1)
+			@else if $effect != no-fade
+				opacity: if($effect == fade-out or $effect != fade-in, 1, 0)
+			@if strip-units($x)+strip-units($y) != 0
+				transform: translate($x, $y)
+		30%
+			@if $effect == zoom
+				transform: scale(1.4)
+				//rotateY(0deg)
+				filter: grayscale(1)
+
+		60%
+			@if $effect == zoom
+				transform: scale(1)
+				filter: grayscale(1)
+			@else if $effect != no-fade
+				opacity: if($effect == fade-in or $effect == fade-out, 0.5, 1)
+
+		100%
+			@if $effect == zoom
+				transform: scale(1)
+				//rotateY(360deg)
+				filter: grayscale(0)
+			@else if $effect != no-fade
+				opacity: if($effect == fade-out, 0, 1)
+			@if strip-units($x1)+strip-units($y1) != 0
+				transform: translate($x1, $y1)
+
+
+@mixin animation-delays($count, $start-delay: 0ms, $between-delay: 50ms, $bg: null)
+	@for $i from 0 through $count
+		&:nth-child(#{$i + 1})
+			animation-delay: $start-delay + ($between-delay * $i)
+			@if $bg != null
+				@if meta.type-of($bg) == color
+					background-color: rgba($bg, 1 - ($i + 1) * 0.1)
+				@else
+					// Для CSS переменных или других значений
+					background-color: $bg
+
+
+// End of magic parallax mixins
+@mixin transition-delays($count, $start-delay:0ms, $between-delay:50ms)
+	@for $i from 0 through $count
+		&:nth-child(#{$i+1})
+			transition-delay: $start-delay+($between-delay*($i))
+
+
+@mixin ripple($class, $scale-factor, $count, $duration, $scale-start, $scale-step, $opacity-start, $opacity-end)
+	$prev-s0: $scale-start + $scale-step * ($count - 1) - $scale-step * 0.5
+	$start: $scale-start
+	$end: $scale-start + $scale-step * 0.5
+	@for $i from 1 through $count
+		@if $i == 1 and $i != $count
+			$start: $prev-s0
+			$end: $prev-s0 + $scale-step * 1.5
+
+		@else if $i == $count
+			$start: $scale-start
+			$end:  $prev-s0
+		@else
+			$start: $prev-s0 - $scale-step
+			$end: $prev-s0
+
+		$prev-s0: $start
+
+		.#{$class}#{$i}
+			animation: ripple#{$i} $duration linear infinite
+
+		@keyframes ripple#{$i}
+			0%
+				transform: scale(calc($start * $scale-factor))
+				@if $i == 1
+					opacity: $opacity-start
+
+			100%
+				transform: scale(calc($end * $scale-factor))
+				@if $i == 1
+					opacity: $opacity-end
+
+@function shadows($max: 5, $color: white)
+	$out: null
+
+	@for $i from 0 through $max
+		$pos: #{$i}px
+		$pos-n: -$pos
+		$shadow-t-l: $pos-n $pos-n 0 $color
+		$out: list.append($out, $shadow-t-l, comma)
+		$shadow-t-r: $pos $pos-n 0 $color
+		$out: list.append($out, $shadow-t-r, comma)
+		$shadow-b-r: $pos $pos 0 $color
+		$out: list.append($out, $shadow-b-r, comma)
+		$shadow-b-l: $pos-n $pos 0 $color
+		$out: list.append($out, $shadow-b-l, comma)
+
+	$shadow-back: 0 5px 10px color.adjust(black, $alpha: -0.8)
+	$out: list.append($out, $shadow-back, comma)
+
+	@return $out
+
+
+@mixin pseudo($pos:relative, $content:"")
+	content: $content
+	display: table
+
+	@if $pos == absolute
+		+push--absolute()
+
+	@else
+		position: $pos
+
+
+// Миксин для создания масштабируемых элементов(обычно изображения/картинки заднего фона),
+// чтобы поддерживать соотношение. Пример: @include responsive-ratio(16,9)
+@mixin responsive-ratio($x:1, $y:1, $h:0, $pseudo:false, $pos:relative)
+	$padding: string.unquote(math.div($y, $x) *100+"%")
+
+	@if $pseudo
+		position: $pos
+
+		&::before
+			@include pseudo($pos)
+
+			width: 100%
+			padding-bottom: $padding
+
+	@else
+		position: $pos
+		width: 100%
+		height: $h
+		padding-bottom: $padding
+
+	> img
+		+push--absolute
+
+
+$breakpoints: (xs: 320px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px)
+
+@mixin media-max($breakpoint)
+	@if map.has-key($breakpoints, $breakpoint)
+		$value: map.get($breakpoints, $breakpoint)
+		@media (max-width: #{if($value == 320px, 320px, $value - 0.01px)})
+			@content
+
+	@else
+		@error "Unknown breakpoint #{$breakpoint}. Check your breakpoint definition."
+
+
+@mixin media-min($breakpoint)
+	@if map.has-key($breakpoints, $breakpoint)
+		@media (min-width: map.get($breakpoints, $breakpoint))
+			@content
+
+	@else
+		@error "Unknown breakpoint #{$breakpoint}. Check your breakpoint definition."
+
+
+//миксин создает треугольники. Задаются цвет, размер и направление
+@mixin css-triangle($color, $direction, $size: 6px, $position: absolute, $round: false)
+	@include pseudo($pos: $position)
+
+	width: 0
+	height: 0
+
+	@if $round
+		border-radius: 3px
+
+	@if $direction == down
+		border-left: $size solid transparent
+		border-right: $size solid transparent
+		border-top: $size solid $color
+		margin-top: (0 - math.round($size / 2.5))
+
+	@else if $direction == up
+		border-left: $size solid transparent
+		border-right: $size solid transparent
+		border-bottom: $size solid $color
+		margin-bottom: 0 - math.round($size / 2.5)
+
+	@else if $direction == right
+		border-top: $size solid transparent
+		border-bottom: $size solid transparent
+		border-left: $size solid $color
+		margin-right: -$size
+
+	@else if $direction == left
+		border-top: $size solid transparent
+		border-bottom: $size solid transparent
+		border-right: $size solid $color
+		margin-left: -$size
+
+
+// Responsive image
+@mixin img-responsive
+	img
+		width: 100%
+		height: auto
+
+
+@mixin placeholder($color)
+	::placeholder
+		color: $color
+
+
+@function calcFluidFontSize($f-min, $f-max, $w-min, $w-max, $units: px)
+	$f-min: strip-units($f-min)
+	$f-max: strip-units($f-max)
+	$w-min: strip-units($w-min)
+	$w-max: strip-units($w-max)
+
+	$k: ($f-max - $f-min)/($w-max - $w-min)
+	$b: $f-min - $k * $w-min
+
+	$b: $b + $units
+
+	@return calc(#{$k} * 100vw + #{$b})
+
+
+$pi: 3.1416
+$_precision: 10
+
+@function pow($base, $exp)
+	$value: $base
+
+	@if $exp > 1
+		@for $i from 2 through $exp
+			$value: $value * $base
+
+	@if $exp < 1
+		@for $i from 0 through -$exp
+			$value: $value / $base
+
+	@return $value
+
+
+@function fact($num)
+	$fact: 1
+
+	@if $num > 0
+		@for $i from 1 through $num
+			$fact: $fact * $i
+
+	@return $fact
+
+
+@function _to_unitless_rad($angle)
+	@if math.unit($angle) == deg
+		$angle: $angle / 180deg * $pi
+
+	@if math.unit($angle) == rad
+		$angle: $angle / 1rad
+
+	@return $angle
+
+
+@function sin($angle)
+	$a: _to_unitless_rad($angle)
+	$sin: $a
+
+	@for $n from 1 through $_precision
+		$sin: $sin + (pow(-1, $n) / fact(2 * $n + 1) ) * pow($a, (2 * $n + 1))
+
+	@return $sin
+
+
+@function cos($angle)
+	$a: _to_unitless_rad($angle)
+	$cos: 1
+
+	@for $n from 1 through $_precision
+		$cos: $cos + ( pow(-1, $n) / fact(2*$n) ) * pow($a, 2*$n)
+
+	@return $cos
+
+
+%skeleton-placeholder
+	position: relative
+	overflow: hidden
+
+	&::before
+		content: ""
+		position: absolute
+		top: 0
+		left: 0
+		height: 100%
+		width: 100%
+		transform: translateX(-100%)
+		animation: skeleton-animation 2s infinite
+		opacity: 0.7
+		pointer-events: none
+
+
+@mixin skeleton-background($color: null, $animate: true)
+	@extend %skeleton-placeholder
+
+	@if $animate != true
+		&::before
+			display: none
+
+	@else
+		@if $color != null
+			&::before
+				background: linear-gradient(to right, transparent 25%, color.adjust($color, $lightness: 0% ) 50%, transparent 75%)
+
+		&:not(:empty)
+			&::before
+				display: none
+
+
+@mixin skeleton-bone($color: null, $w: null,$max-w: null,$h: null,$max-h: null,$direction: false,$spacing: null,$last-w: null,$animate: true)
+	@extend %skeleton-placeholder
+
+	@if $w
+		width: $w
+
+	@if $h
+		height: $h
+
+	@if $max-w != null
+		max-width: $max-w
+
+	@if $max-h != null
+		max-height: $max-h
+
+	@if $direction != false and $spacing != null
+		&:not(:first-child)
+			@if $direction == top
+				margin: $spacing 0 0 0
+
+			@else
+				@if $direction == right
+					margin: 0 $spacing 0 0
+
+				@else
+					@if $direction == bottom
+						margin: 0 0 $spacing 0
+
+					@else
+						@if $direction == left
+							margin: 0 0 0 $spacing
+
+
+	@if $last-w != null
+		&:not(:only-child):last-child
+			max-width: $last-w
+
+
+	@if $animate != true
+		&::before
+			display: none
+
+	@else
+		@if $color != null
+			&::before
+				background: linear-gradient(to right, transparent 25%, color.adjust($color, $lightness: 0) 50%, transparent 75%)
+
+
+@keyframes skeleton-animation
+	0%
+		transform: translateX(-100%)
+
+	100%
+		transform: translateX(100%)

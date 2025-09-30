@@ -25,7 +25,7 @@ interface ContentProps {
 const Post = ({ data, style, className }: ContentProps) => {
     if (!data) return <Loader />
 
-    const { id, title, cover: image, media, event_date, desc } = data
+    const { title, cover: image, media, event_date, desc } = data
     const parsedContent = htmlParser(desc)
 
     if (!desc || (parsedContent instanceof Array && !parsedContent.length)) {

@@ -46,13 +46,13 @@ const config = [
             '@typescript-eslint/no-unused-vars': [
                 'warn',
                 {
-                    args: 'all',
-                    argsIgnorePattern: '^_',
-                    caughtErrors: 'all',
-                    caughtErrorsIgnorePattern: '^_',
-                    destructuredArrayIgnorePattern: '^_',
-                    varsIgnorePattern: '^_',
-                    ignoreRestSiblings: true
+                    'args': 'after-used',
+                    'argsIgnorePattern': '^_',
+                    'caughtErrors': 'all',
+                    'caughtErrorsIgnorePattern': '^_',
+                    'destructuredArrayIgnorePattern': '^_',
+                    'varsIgnorePattern': '^_',
+                    'ignoreRestSiblings': true
                 }
             ],
             'unused-imports/no-unused-imports': 'warn'

@@ -1,4 +1,4 @@
-@import "./styles/mixins";
+@use "./styles/mixins" as *;
 
 :root {
 	--page-background-color: 254, 254, 254;
@@ -45,7 +45,7 @@
 	--border-radius-default: 0px;
 	--border-thickness: 3px;
 	--box-shadow: rgb(0 0 0 / 20%);
-	--overlay-bg-color: rgb(0 0 0 / 20%);
+	--overlay-bg-color: 0, 0, 0;
 	--overlay-z-index: 100;
 	--translate-y-in-view: 3em;
 
@@ -133,7 +133,7 @@ header {
 	position: absolute;
 	top: 1.6em;
 	left: 1.6em;
-	width: 100%;
+	width: auto;
 	height: 4em;
 	z-index: 1;
 
@@ -208,6 +208,7 @@ h1 {
 h2 {
 	margin-top: 6px;
 	color: var(--secondary-color);
+	font-weight: 900;
 	font-family: var(--font-family-primary), sans-serif;
 	font-size: clamp(1.5rem, 0.8rem + 1.6vw, 2.4rem);
 	line-height: var(--line-height-title);

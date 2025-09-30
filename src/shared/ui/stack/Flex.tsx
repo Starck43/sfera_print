@@ -30,7 +30,7 @@ export interface FlexProps<E extends ElementType = ElementType> {
     className?: string
     style?: CSSProperties
     role?: string
-    onClick?: (e:any) => void
+    onClick?: (e: any) => void
     children?: ReactNode | ReactNode[]
 }
 
@@ -41,7 +41,7 @@ export type FlexPropsType<E extends ElementType> = FlexProps<E> &
 export const Flex = forwardRef(
     <E extends ElementType = keyof HTMLElementTagNameMap>(
         {
-            as = 'div',
+            as: Tag = 'div',
             href,
             justify = 'center',
             align = 'center',
@@ -69,13 +69,16 @@ export const Flex = forwardRef(
             [className]
         )
 
-        const Tag = as
-        return href ? (
-            <Link href={href} className={classes} style={style}>
-                {children}
-            </Link>
-        ) : (
-            <Tag ref={ref} className={classes} style={style} {...others}>
+        if (href) {
+            return (
+                <Link href={href} className={classes} style={style}>
+                    {children}
+                </Link>
+            )
+        }
+
+        return (
+            <Tag ref={ref} className={classes} style={style} {...(others as any)}>
                 {children}
             </Tag>
         )

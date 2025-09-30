@@ -97,7 +97,13 @@ const Section = (props: InfoProps) => {
             {...others}
         >
             {title && <Title className={classnames(cls, ['title', transform])}>{title}</Title>}
-            <Col gap={gap} justify="start" className={classnames(cls, ['content'], { frameIsLoaded }, [])}>{children}</Col>
+            <Col
+                gap={gap}
+                justify="start"
+                className={classnames(cls, ['content'], { frameIsLoaded }, [])}
+            >
+                {children}
+            </Col>
         </Col>
     )
 }

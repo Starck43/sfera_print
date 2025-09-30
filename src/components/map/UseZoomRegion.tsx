@@ -14,7 +14,7 @@ export const useZoomRegion = () => {
 
     const [activeCity, setActiveCity] = useState<CityProps | null>(null)
 
-    const onCityClick = (city: CityProps | null) => {
+    const onCityClick = useCallback((city: CityProps | null) => {
         if (city !== null) {
             history.pushState({ city }, '', `${city.id}`)
             setActiveCity(city)
@@ -22,12 +22,12 @@ export const useZoomRegion = () => {
             history.back()
             setActiveCity(null)
         }
-    }
+    }, [])
 
     // Эффект для обработки перехода назад
     useEffect(() => {
         const handlePopState = (event: PopStateEvent) => {
-            if (event.state && event.state.sity !== undefined) {
+            if (event.state?.sity !== undefined) {
                 setActiveCity(event.state.sity)
             } else {
                 setActiveCity(null)
@@ -36,11 +36,8 @@ export const useZoomRegion = () => {
 
         // Подписываемся на событие popstate
         window.addEventListener('popstate', handlePopState)
-
         // Чистим подписку при размонтировании компонента
-        return () => {
-            window.removeEventListener('popstate', handlePopState)
-        }
+        return () => window.removeEventListener('popstate', handlePopState)
     }, [])
 
     useEffect(() => {
@@ -65,16 +62,16 @@ export const useZoomRegion = () => {
 
     // Создаем города в выбранном регионе
     const renderCity = useCallback(
-        // eslint-disable-next-line react/display-name
-        () => (city: CityProps, region: ZoomedRegion, opacity: number) => {
+        (city: CityProps, region: ZoomedRegion, opacity: number = 1) => {
             const scale = region?.scale || 1
             const cx = Number(city.path.cx) - 12 / scale
             const cy = Number(city.path.cy) - 16 / scale
+
             return (
-                <g id={'city-' + city.id} key={'city-' + city.id} onClick={() => onCityClick(city)}>
+                <g id={`city-${city.id}`} key={`city-${city.id}`} onClick={() => onCityClick(city)}>
                     <defs>
                         <g
-                            id="ripples"
+                            id={`ripples-${city.id}`}
                             className={cls.ripples}
                             style={{ '--scale': `${1 / scale}` }}
                         >
@@ -83,7 +80,7 @@ export const useZoomRegion = () => {
                             <circle r={14 / scale} stroke="none" className={cls.rp3} />
                         </g>
                     </defs>
-                    <use xlinkHref="#ripples" x={city.path.cx} y={city.path.cy} />
+                    <use xlinkHref={`#ripples-${city.id}`} x={city.path.cx} y={city.path.cy} />
 
                     <circle
                         {...city.path}
@@ -93,19 +90,13 @@ export const useZoomRegion = () => {
                         stroke="black"
                         className={cls.inner__circle}
                     />
-                    <text
-                        x={cx}
-                        y={cy}
-                        fontSize={14 / scale}
-                        fill="black"
-                        opacity={Math.max(0.5, opacity)}
-                    >
+                    <text x={cx} y={cy} fontSize={14 / scale} fill="black" opacity={opacity}>
                         {city.name}
                     </text>
                 </g>
             )
         },
-        []
+        [onCityClick]
     )
 
     // Создаем увеличенный регион
@@ -122,7 +113,7 @@ export const useZoomRegion = () => {
                     >
                         <path d={zoomedRegion.path} />
                         {zoomedRegion.cities?.map((city, idx) =>
-                            renderCity()(
+                            renderCity(
                                 city,
                                 zoomedRegion,
                                 1 - (zoomedRegion.cities.length - 1 - idx) * 0.2
@@ -134,16 +125,17 @@ export const useZoomRegion = () => {
         [renderCity]
     )
 
-    const showZoomedRegion = (
-        handleClick: (e: React.MouseEvent<SVGGElement>, regionId?: number | null) => void
-    ) => {
-        return (
-            <>
-                {renderRegion(handleClick)(zoomedRegion?.prev, 'prev')}
-                {renderRegion(handleClick)(zoomedRegion?.next, 'next')}
-            </>
-        )
-    }
+    const showZoomedRegion = useCallback(
+        (handleClick: (e: React.MouseEvent<SVGGElement>, regionId?: number | null) => void) => {
+            return (
+                <>
+                    {renderRegion(handleClick)(zoomedRegion?.prev, 'prev')}
+                    {renderRegion(handleClick)(zoomedRegion?.next, 'next')}
+                </>
+            )
+        },
+        [renderRegion, zoomedRegion?.prev, zoomedRegion?.next]
+    )
 
     return {
         zoomedRegion,

@@ -89,7 +89,6 @@ const VideoPlayer = ({
     const srcUrl = getSourceUrl(currentSrc)
     const posterUrl = getSourceUrl(currentPoster)
 
-    console.log(orientation, windowWidth, currentSrc)
     if (!srcUrl) return null
 
     return (

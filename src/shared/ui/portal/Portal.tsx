@@ -8,5 +8,5 @@ interface PortalProps {
 
 export const Portal = (props: PortalProps) => {
     const { children, target = document.body } = props
-    return createPortal(children, target) as JSX.Element
+    return createPortal(children, target) as ReactNode | Promise<ReactNode>
 }

@@ -93,7 +93,12 @@ export const Slider = (props: SliderProps) => {
                                         ])}
                                     >
                                         {videoSrc ? (
-                                            <VideoPlayer src={videoSrc} poster={imageSrc.src} autoPlay controls={false} />
+                                            <VideoPlayer
+                                                src={videoSrc}
+                                                poster={imageSrc.src}
+                                                autoPlay
+                                                controls={false}
+                                            />
                                         ) : (
                                             <LazyImage
                                                 src={imageSrc.src}
@@ -101,7 +106,7 @@ export const Slider = (props: SliderProps) => {
                                                 alt={title}
                                                 style={{
                                                     width: '100%',
-                                                    height: 'auto'
+                                                    height: '100%',
                                                 }}
                                                 width={orientation === 'portrait' ? 1080 : 1920}
                                                 height={orientation === 'portrait' ? 1920 : 1080}

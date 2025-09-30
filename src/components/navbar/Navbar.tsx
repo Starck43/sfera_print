@@ -38,7 +38,6 @@ const Navbar = ({ className }: NavbarProps) => {
                 <NavMenu>
                     <Col gap="sm" align="baseline" justify="start" className={cls.navmenu}>
                         <Flex gap="xs" justify="between" fullWidth style={{ marginBottom: 'auto' }}>
-
                             <Col gap="sm" className={cls.navitems}>
                                 {data?.pages?.map((item) => (
                                     <NavItem key={item.path} {...item} />
@@ -73,7 +72,7 @@ const Navbar = ({ className }: NavbarProps) => {
                                             }}
                                         >
                                             <LazyImage
-                                                src={image || `/images/socials/${name}.webp`}
+                                                src={`/images/socials/${name}.webp`}
                                                 alt={title}
                                                 sizes="100%"
                                                 priority

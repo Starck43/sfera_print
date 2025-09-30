@@ -1,22 +1,18 @@
 import React, { Suspense } from 'react'
 import { type Metadata } from 'next'
-import Image from 'next/image'
 import localFont from 'next/font/local'
-import Link from 'next/link'
 
 import { RouteEvents } from '@/components/routes/route-events'
 import PageHeader from '@/components/page-header'
+import { BrandLogo } from '@/components/brand-logo'
 import { BurgerButton, Navbar } from '@/components/navbar'
 import { YandexMetrika } from '@/components/yandex-metrika'
 import { TopMailCounter } from '@/components/mailru-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
-import brandImage from '@/images/atmo-logo-hw.png'
-import brandMobileImage from '@/images/atmo-logo-vw.png'
 
 import './globals.scss'
-import { LazyImage } from '@/shared/ui/lazy-image'
 
 export const metadata: Metadata = {
     title: {
@@ -36,7 +32,7 @@ export const metadata: Metadata = {
         title: 'Атмосфера Пространств',
         images: '/atmo-logo.svg'
     },
-    applicationName: 'atmosfera',
+    applicationName: 'asfp',
     authors: [{ name: 'S. Shabalin', url: 'https://istarck.ru' }],
     creator: 'Stanislav Shabalin',
     formatDetection: {
@@ -114,30 +110,12 @@ export default async function RootLayout({
         <html
             lang="ru"
             className={`${brandFont.className} ${accentFont.variable}`}
+            data-scroll-behavior="smooth"
             suppressHydrationWarning
         >
             <body>
                 <header>
-                    <div className="logo">
-                        <Link href="/">
-                            <LazyImage
-                                src={brandImage.src}
-                                alt="Атмосфера Пространств"
-                                width={brandImage.width}
-                                height={brandImage.height}
-                                priority
-                                unoptimized
-                            />
-                            <LazyImage
-                                src={brandMobileImage.src}
-                                alt="Атмосфера Пространств"
-                                width={brandMobileImage.width}
-                                height={brandMobileImage.height}
-                                priority
-                                unoptimized
-                            />
-                        </Link>
-                    </div>
+                    <BrandLogo />
                     <NavigationProvider>
                         <RouteEvents />
                         <PageHeader />
@@ -146,7 +124,7 @@ export default async function RootLayout({
                     </NavigationProvider>
                 </header>
                 {children}
-                <Suspense>
+                <Suspense fallback={null}>
                     <YandexMetrika enabled={analyticsEnabled} />
                     <TopMailCounter enabled={analyticsEnabled} />
                 </Suspense>

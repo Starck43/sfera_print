@@ -2,7 +2,6 @@
 
 import React, { memo, MouseEvent, SyntheticEvent, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import NextImage from 'next/image'
 
 import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
 import type { PostType } from '@/components/post'

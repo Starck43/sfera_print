@@ -12,7 +12,6 @@ const isDev = process.env.NODE_ENV === 'development'
 const PageHeader = () => {
     return (
         <div className={cls.container}>
-            {/*<HeaderAnimation/>*/}
             <VideoPlayer
                 src={{
                     landscape: '/videos/atmo-h-video.mp4',
@@ -27,11 +26,7 @@ const PageHeader = () => {
                 loop={!isDev}
             />
 
-            <CircleCarousel
-                slideDuration={slideDuration}
-                duration={300}
-                infinite={!isDev}
-            />
+            <CircleCarousel slideDuration={slideDuration} duration={300} infinite={!isDev} />
         </div>
     )
 }

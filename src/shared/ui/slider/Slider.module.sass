@@ -1,4 +1,5 @@
-@import "@/app/styles/mixins"
+@use "@/app/styles/mixins" as *
+
 
 .section
 	height: auto
@@ -42,10 +43,13 @@
 		right: var(--slider-controls-width)
 
 	.slide
+		position: relative
 		display: flex
 		justify-content: center
 		align-items: center
 		background-color: var(--light-grey-color)
+		border-radius: var(--border-radius)
+		overflow: hidden
 
 		&.with_one_image
 			@media (orientation: landscape)

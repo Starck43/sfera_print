@@ -4,20 +4,22 @@ import { PositionType, SizeType } from '@/shared/types/ui'
 export interface DrawerProps {
     open: boolean
     onClose?: () => void
+    contentWidth?: number | string
+    contentHeight?: number | string
     lazy?: boolean
     closeOnOverlayClick?: boolean
     animationTime?: number
     showClose?: boolean
-    position: PositionType
-    fullSize?: boolean
+    position?: PositionType
     rounded?: boolean
     bordered?: boolean
-    header?: ReactElement | string | null
-    footer?: ReactElement | null
+    header?: ReactElement<any> | string | null
+    footer?: ReactElement<any> | string | null
     children: ReactNode
     portalRoot?: HTMLElement
     className?: string
     style?: CSSProperties
+    'aria-label'?: string
 }
 
 export interface ModalProps extends DrawerProps {
@@ -25,6 +27,7 @@ export interface ModalProps extends DrawerProps {
     closeBtnLabel?: string | null
     submitBtnLabel?: string | null
     size?: SizeType
+    fullSize?: boolean
     fullWidth?: boolean
     zIndex?: string
 }

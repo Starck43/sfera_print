@@ -19,6 +19,7 @@ import { generateRegionsMap } from './helpers'
 
 import geoJson from '@/assets/regions.ru.json'
 import cls from './Map.module.sass'
+import { Loader } from '@/shared/ui/loader'
 
 interface MapProps {
     pageTitle: string
@@ -26,8 +27,9 @@ interface MapProps {
 }
 
 const Map = ({ pageTitle, cities }: MapProps) => {
-    const containerRef = useRef<HTMLDivElement | null>(null)
-    const { width = 0, height = 0 } = useWindowDimensions(containerRef?.current || null)
+    const [isClient, setIsClient] = useState(false)
+    const containerRef = useRef<HTMLDivElement>(null)
+    const { width = 0, height = 0 } = useWindowDimensions(containerRef.current)
     const [regionsData, setRegionsData] = useState<Region[]>([])
     const [citiesData, setCitiesData] = useState<Record<number, RegionCitiesProps>>({})
     // const [selectedRegion, setSelectedRegion] = useState<number | null>(null)
@@ -36,11 +38,20 @@ const Map = ({ pageTitle, cities }: MapProps) => {
 
     const isPortrait = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < 1
 
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
+
     const { data: city } = useFetch<CityCases>(
         activeCity?.id ? `/city_cases/${activeCity.id}` : null,
         null,
         true,
         [activeCity?.id]
+    )
+
+    const memoizedGenerateRegionsMap = useCallback(
+        () => generateRegionsMap(geoJson as GeoJson, cities, [width, height]),
+        [cities, width, height]
     )
 
     const { svgContent: locationSvg, attributes: locationSvgAttr } = useDynamicSVG({
@@ -57,16 +68,10 @@ const Map = ({ pageTitle, cities }: MapProps) => {
 
     useEffect(() => {
         if (!width || isPortrait) return
-
-        const { regionsData: regions, citiesData } = generateRegionsMap(
-            geoJson as GeoJson,
-            cities,
-            [width, height]
-        )
-
+        const { regionsData: regions, citiesData } = memoizedGenerateRegionsMap()
         setRegionsData(regions)
         setCitiesData(citiesData)
-    }, [cities, width, height, isPortrait])
+    }, [memoizedGenerateRegionsMap, isPortrait, width])
 
     // const selectRegionClick = useCallback((id: number) => {
     // 	if (selectedRegion === id) {
@@ -117,15 +122,17 @@ const Map = ({ pageTitle, cities }: MapProps) => {
                 ]
 
                 const scale = Math.min(width / featureWidth, height / featureHeight)
-                const translateX = width / 2 - featureCenter[0] * scale
-                const translateY = height / 2 - featureCenter[1] * scale
+                const translate: [number, number] = [
+                    width / 2 - featureCenter[0] * scale,
+                    height / 2 - featureCenter[1] * scale
+                ]
 
                 const zoomedRegionsProps: ZoomedRegion = {
                     id: regionId,
                     name: selectedFeature.properties?.id || '',
                     path: selectedFeature.svg.path,
-                    translate: [translateX, translateY],
-                    scale: scale,
+                    translate,
+                    scale,
                     //parentSize: [width, height],
                     //bounds: selectedFeature.svg.bounds,
                     cities: citiesData?.[regionId]?.data || []
@@ -137,33 +144,61 @@ const Map = ({ pageTitle, cities }: MapProps) => {
         [width, isPortrait, regionsData, setZoomedRegion, height, citiesData]
     )
 
-    const regionsMap = useMemo(
-        () =>
-            regionsData?.map((region, key) => (
-                <path
-                    key={region.id || key}
-                    id={region.properties?.id || ''}
-                    d={region.svg.path}
-                    className={classnames(cls, ['region'], {
-                        occupied: region.occupied
-                    })}
-                    onClick={(e) => zoomRegionClick(e, region.id)}
-                    //onMouseDown={() => selectRegionClick(region.id)}
-                />
-            )),
-        [regionsData, zoomRegionClick]
+    const regionsMap = useMemo(() => {
+        const handleRegionClick = (e: React.MouseEvent<SVGGElement, MouseEvent>, id: number) => {
+            e.stopPropagation()
+            zoomRegionClick(e, id)
+        }
+
+        return (
+            <g className={cls.regions}>
+                {regionsData.map((region) => (
+                    <path
+                        key={region.id}
+                        d={region.svg.path}
+                        className={classnames(cls, ['region'], {
+                            occupied: region.occupied
+                        })}
+                        onClick={(e) => handleRegionClick(e, region.id)}
+                    />
+                ))}
+            </g>
+        )
+    }, [regionsData, zoomRegionClick])
+
+    const handleMarkerClick = useCallback(
+        (e: React.MouseEvent<SVGGElement, MouseEvent>, regionId: number) => {
+            e.stopPropagation()
+            zoomRegionClick(e, regionId)
+        },
+        [zoomRegionClick]
     )
 
     // Выводим маркеры с отметкой количества городов на общей карте регионов
-    const citiesMarkers = useMemo(
-        () =>
-            Object.entries(citiesData)?.map(([key, value]) => {
+    const citiesMarkers = useMemo(() => {
+        if (
+            !locationSvg ||
+            !locationSvgAttr ||
+            isPortrait ||
+            typeof window === 'undefined' ||
+            window.innerWidth < 768
+        )
+            return null
+
+        return Object.entries(citiesData)
+            .map(([key, value]) => {
+                const portfolioCount = value.data.reduce(
+                    (sum, city) => sum + city.portfolioCount,
+                    0
+                )
+                if (portfolioCount === 0) return null
+
                 const coord = value.regionSvg.center
                 const iconSize = Math.min(40, Math.max(20, Math.min(width, height) * 0.1))
                 const changedLocationSvg = changeSvgText({
                     svgContent: locationSvg,
                     newAttributes: locationSvgAttr,
-                    newText: value.data?.length.toString() || ''
+                    newText: portfolioCount.toString()
                 })
 
                 return (
@@ -173,7 +208,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
                         y={coord[1] - iconSize}
                         width={iconSize}
                         height={iconSize}
-                        onClick={(e) => zoomRegionClick(e, value.regionId)}
+                        onClick={(e) => handleMarkerClick(e, value.regionId)}
                         className={cls.marker}
                     >
                         {
@@ -185,12 +220,20 @@ const Map = ({ pageTitle, cities }: MapProps) => {
                         }
                     </foreignObject>
                 )
-            }),
-        [citiesData, width, height, locationSvg, locationSvgAttr, zoomRegionClick]
-    )
+            })
+            .filter(Boolean)
+    }, [locationSvg, locationSvgAttr, isPortrait, citiesData, width, height, handleMarkerClick])
+
+    if (!isClient) {
+        return (
+            <div className={cls.container} ref={containerRef}>
+                <Loader />
+            </div>
+        )
+    }
 
     // Если ширина окна меньше высоты, то отобразим кейсы в виде плитки
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    if (window.innerWidth < 768 || isPortrait) {
         return <CasesList />
     }
 

@@ -1,30 +1,41 @@
-@import "@/app/styles/mixins"
+@use "@/app/styles/mixins" as *
 
 
 .drawer
-	--drawer-width-default: 100%
-	--drawer-height-default: 100%
-	--radius: var(--border-radius-default)
+	--radius: 0
 
-	@include push--fixed
+	+push--fixed()
+	background-color: rgba(var(--overlay-bg-color), var(--bg-opacity))
+	overflow: hidden
 	touch-action: none
-	z-index: calc(var(--overlay-z-index) + 1)
+	z-index: var(--overlay-z-index)
 
 .drawer__content
-	position: absolute
-	max-width: 100%
-	max-height: 100%
+	position: relative
+	display: flex
+	flex-direction: column
+	gap: var(--gap)
+	height: 100%
+	width: 100%
+	padding: var(--gap)
+	background-color: #fff
+	//transform: none
+	box-shadow: 0 0 1rem -0.3rem var(--box-shadow)
+
+	&::after
+		content: ''
+		position: absolute
+		width: 40px
+		height: 0
+		left: calc(50% - 20px)
+		border: 2px solid transparent
+		border-radius: 2px
 
 .rounded
-	--radius: calc(var(--border-radius-index) * 6em)
-
-
-.shadowed
-	box-shadow: 0 0 2rem -0.5rem var(--box-shadow)
+	--radius: var(--border-radius-default)
 
 .left
-	left: 0
-	transform: translate(-100%, -50%)
+	margin-right: auto
 	border-top-right-radius: var(--radius)
 	border-bottom-right-radius: var(--radius)
 
@@ -32,8 +43,7 @@
 		border-left: none
 
 .right
-	right: 0
-	transform: translate(100%, -50%)
+	margin-left: auto
 	border-top-left-radius: var(--radius)
 	border-bottom-left-radius: var(--radius)
 
@@ -41,10 +51,13 @@
 		border-right: none
 
 .top
-	top: 0
-	transform: translate(-50%, -100%)
+	margin-bottom: auto
 	border-bottom-left-radius: var(--radius)
 	border-bottom-right-radius: var(--radius)
+
+	&::after
+		bottom: 10px
+		border-color: var(--border-color-default)
 
 	&.bordered
 		border-top: none
@@ -53,42 +66,16 @@
 		flex-grow: 0
 
 .bottom
-	bottom: 0
-	transform: translate(-50%, 100%)
+	margin-top: auto
 	border-top-left-radius: var(--radius)
 	border-top-right-radius: var(--radius)
+
+	&::after
+		top: 10px
+		border-color: var(--border-color-default)
 
 	&.bordered
 		border-bottom: none
 
-.left, .right
-	top: 50%
-	max-width: var(--drawer-height-default)
-	height:  var(--drawer-width-default)
-
-	&.show
-		transform: translate(0, -50%)
-
-	&.fullSize
-		height: 100%
-
-		&.bordered
-			border-top: none
-			border-bottom: none
-
-
-.bottom, .top
-	left: 50%
-	width: var(--drawer-width-default)
-	max-height:  var(--drawer-height-default)
-
-	&.show
-		transform: translate(-50%, 0)
-
-	&.fullSize
-		width: 100%
-		height: var(--drawer-width-default)
-
-		&.bordered
-			border-left: none
-			border-right: none
+.body
+	overflow-y: auto

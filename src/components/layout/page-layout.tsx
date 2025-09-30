@@ -31,14 +31,18 @@ export default function PageLayout(props: PageLayoutProps) {
         className = 'page__layout'
     } = props
 
-
     let content = (
         <Col
             gap={gap}
             justify="between"
             className={classnames(cls, ['container'], { sectionMode }, [className])}
         >
-            <PageHeader title={title} titleTag={titleTag} onClose={handleOnClose} container={className} />
+            <PageHeader
+                title={title}
+                titleTag={titleTag}
+                onClose={handleOnClose}
+                container={className}
+            />
             {children}
             <ScrollToTop />
         </Col>

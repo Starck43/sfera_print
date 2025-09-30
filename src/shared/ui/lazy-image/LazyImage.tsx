@@ -20,13 +20,13 @@ const LazyImage = ({
     alt,
     width,
     height,
-    className,
+    className = '',
     blurDataURL,
     ...rest
 }: LazyImageProps) => {
     const onLoadHandler = (e: React.SyntheticEvent<HTMLImageElement>) => {
         e.currentTarget.style.opacity = '1'
-        e.currentTarget.classList.add(cls.loaded)
+        // e.currentTarget.classList.add(cls.loaded)
     }
     const onErrorHandler = (e: React.SyntheticEvent<HTMLImageElement>) => {
         e.currentTarget.style.visibility = 'hidden'
@@ -46,6 +46,7 @@ const LazyImage = ({
         ...rest,
         className: classnames(cls, ['image'], {}, [className])
     }
+
     const { props: imageProps } = getImageProps(props)
 
     return (

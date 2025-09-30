@@ -8,8 +8,9 @@ async function getPage<T>(slug: string | null = null): Promise<T> {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': 'true'
-            }
-        }
+            },
+            cache: 'force-cache'
+        },
     )
     if (!res.ok) {
         console.error(res.statusText, `(${res.status})`)
