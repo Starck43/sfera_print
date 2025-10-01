@@ -6,7 +6,7 @@ import { generateSitemapPosts, generateSitemapRoutes } from '@/shared/lib/helper
 import { getBlog, getCityCases, getFeatures, getTechnologies } from '@/shared/lib/api'
 import { SITE_URL } from '@/shared/const/page'
 
-export const revalidate = 86400 // 24 часа в секундах
+export const revalidate = 2592000 // 24 часа * 30 (в секундах)
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const routesUrl = process.env.URL || SITE_URL
