@@ -44,9 +44,6 @@ const nextConfig = {
                 }
             }
             : {},
-    sassOptions: {
-        outputStyle: 'expanded'
-    },
     eslint: {
         ignoreDuringBuilds: true
     },
@@ -54,6 +51,10 @@ const nextConfig = {
         optimizeCss: true,
         scrollRestoration: true,
         globalNotFound: true
+    },
+    allowedDevOrigins: ['192.168.1.*', '*.local-origin.dev'],
+    sassOptions: {
+        outputStyle: 'expanded'
     },
     turbopack: {
         rules: {

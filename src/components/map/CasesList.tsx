@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, memo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 import PageLayout from '@/components/layout/page-layout'
@@ -141,4 +141,4 @@ const CasesList = () => {
     )
 }
 
-export default memo(CasesList)
+export default CasesList

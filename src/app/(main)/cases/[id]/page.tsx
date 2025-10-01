@@ -19,7 +19,7 @@ export const generateMetadata = async (
 
     const { portfolio, ...data } = await getCityCases<CityCases>(id)
 
-    if (!data) {
+    if (!data && !portfolio) {
         notFound()
     }
 

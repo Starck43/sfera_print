@@ -196,7 +196,7 @@ h1 {
 	margin: 0;
 	/*background: linear-gradient(to bottom, rgb(var(--page-background-color), 1), rgb(var(--page-background-color), 0));*/
 	color: var(--secondary-color);
-	font-family: var(--font-family-primary), sans-serif;
+	font-family: var(--font-family-primary), serif;
 	line-height: var(--line-height-title);
 	font-size: clamp(1.7rem, 0.8rem + 2vw, 3rem);
 	font-weight: 900;
@@ -207,9 +207,9 @@ h1 {
 
 h2 {
 	margin-top: 6px;
-	color: var(--secondary-color);
+	color: var(--primary-color);
 	font-weight: 900;
-	font-family: var(--font-family-primary), sans-serif;
+	font-family: var(--font-family-primary), serif;
 	font-size: clamp(1.5rem, 0.8rem + 1.6vw, 2.4rem);
 	line-height: var(--line-height-title);
 	margin-bottom: 0.9rem;

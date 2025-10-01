@@ -15,15 +15,15 @@ interface LazyImageProps extends Omit<ImageProps, 'srcSet'> {
 }
 
 const LazyImage = ({
-    src,
-    srcSet,
-    alt,
-    width,
-    height,
-    className = '',
-    blurDataURL,
-    ...rest
-}: LazyImageProps) => {
+                       src,
+                       srcSet,
+                       alt,
+                       width,
+                       height,
+                       className = '',
+                       blurDataURL,
+                       ...rest
+                   }: LazyImageProps) => {
     const onLoadHandler = (e: React.SyntheticEvent<HTMLImageElement>) => {
         e.currentTarget.style.opacity = '1'
         // e.currentTarget.classList.add(cls.loaded)
@@ -48,11 +48,18 @@ const LazyImage = ({
     }
 
     const { props: imageProps } = getImageProps(props)
+    const { media, srcset } = createSrcSet(srcSet)
 
     return (
         <picture>
-            {srcSet?.length && <source {...createSrcSet(srcSet)} />}
-            <img {...imageProps} alt={props.alt} onLoad={onLoadHandler} onError={onErrorHandler} />
+            {srcset && <source media={media} srcSet={srcset} />}
+            <img
+                {...imageProps}
+                srcSet={srcset}
+                alt={props.alt}
+                onLoad={onLoadHandler}
+                onError={onErrorHandler}
+            />
         </picture>
     )
 }
