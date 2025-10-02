@@ -21,7 +21,7 @@ export interface TimelineElementProps extends PostType {
 
 // eslint-disable-next-line react/display-name
 export const TimelineElement = memo((props: TimelineElementProps) => {
-    const { title, excerpt, desc, event_date, cover, icon, color } = props
+    const { title, desc, cover, icon } = props
     const [visible, setVisible] = useState(false)
     const [isHover, { onMouseLeave, onMouseEnter }] = useHover()
     const { ref, inView } = useInView({ threshold: 0.5 })

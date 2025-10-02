@@ -1,4 +1,5 @@
-@import "/src/app/styles/mixins"
+@use "@/app/styles/mixins" as *
+
 
 .container
 	width: 100%
@@ -36,7 +37,7 @@
 	stroke: var(--white-color)
 
 .occupied
-	fill: var(--secondary-color)
+	fill: var(--blue-3-color)
 
 .selected
 	fill: var(--white-color)
@@ -51,7 +52,7 @@
 
 	text
 		font-weight: bold
-		color: black
+		color: var(--black-color)
 
 	> g
 		cursor: pointer

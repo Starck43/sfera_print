@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, memo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 import PageLayout from '@/components/layout/page-layout'
@@ -47,7 +47,7 @@ const CasesList = () => {
     // Эффект для обработки перехода назад
     useEffect(() => {
         const handlePopState = (event: PopStateEvent) => {
-            if (event.state && event.state.idx !== undefined) {
+            if (event.state?.idx !== undefined) {
                 setActiveCase(event.state.idx)
             } else {
                 setActiveCase(null)
@@ -56,11 +56,8 @@ const CasesList = () => {
 
         // Подписываемся на событие popstate
         window.addEventListener('popstate', handlePopState)
-
         // Чистим подписку при размонтировании компонента
-        return () => {
-            window.removeEventListener('popstate', handlePopState)
-        }
+        return () => window.removeEventListener('popstate', handlePopState)
     }, [])
 
     useEffect(() => {
@@ -89,9 +86,13 @@ const CasesList = () => {
                                 src={
                                     typeof cover === 'object' && 'src' in cover ? cover.src : cover
                                 }
-                                srcSet={typeof cover === 'object' && 'srcset' in cover ? cover.srcset : undefined}
+                                srcSet={
+                                    typeof cover === 'object' && 'srcset' in cover
+                                        ? cover.srcset
+                                        : undefined
+                                }
                                 alt={title}
-                                sizes="(max-width: 684px) 100vw, 50vw"
+                                sizes="100vw"
                                 fill
                                 priority
                                 style={{ objectFit: 'cover' }}
@@ -140,4 +141,4 @@ const CasesList = () => {
     )
 }
 
-export default memo(CasesList)
+export default CasesList

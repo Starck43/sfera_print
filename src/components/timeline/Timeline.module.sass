@@ -1,4 +1,6 @@
-@import "@/app/styles/mixins"
+@use "@/app/styles/mixins" as *
+@use "sass:math"
+
 $border-thick: 0.1rem
 $icon-size: 2rem
 $element-offset-x: $icon-size * 2
@@ -64,7 +66,7 @@ $element-w: 44%
 		border: 1px solid currentColor
 
 	@media only screen and (min-width: 1170px)
-		margin-left: -$icon-size / 2 !important
+		margin-left:  math.div(-$icon-size, 2) !important
 
 .element__content
 	top: calc(50% - $element-offset-y)
@@ -83,7 +85,7 @@ $element-w: 44%
 
 	@media only screen and (min-width: 1170px)
 		> div:first-child
-			$element-offset-x: (100% / $element-w) * (100% / 2 - $element-w)
+			$element-offset-x: math.div(100%, $element-w) * (math.div(100%, 2) - $element-w)
 			width: calc($element-offset-x - $icon-size / 2)
 
 	svg

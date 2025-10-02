@@ -4,7 +4,7 @@ import { checkCookie, setCookie } from '@/shared/lib/helpers/cookie'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { Button } from '@/shared/ui/button'
 import { NavLink } from '@/shared/ui/link'
-import { Col, Row } from '@/shared/ui/stack'
+import { Col } from '@/shared/ui/stack'
 
 import cls from './CookiePopup.module.sass'
 
@@ -49,11 +49,11 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
 
     return (
         <div className={classnames(cls, ['cookie__popup'], { visible })}>
-            <Col gap="xs" align='end'>
+            <Col gap="xs" align="end">
                 <p>
                     Продолжая пользоваться сайтом, Вы{' '}
-                    {!approved_policy ? 'соглашаетесь' : 'согласились'} с использованием файлов cookie.
-                    Ознакомиться с политикой можно &nbsp;
+                    {!approved_policy ? 'соглашаетесь' : 'согласились'} с использованием файлов
+                    cookie. Ознакомиться с политикой можно &nbsp;
                     <NavLink href={file} title="здесь" target="_blank" rel="noopener noreferrer" />.
                 </p>
                 <Button size="small" feature="inverted" bordered rounded onClick={handleClose}>

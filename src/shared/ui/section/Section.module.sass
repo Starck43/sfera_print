@@ -1,4 +1,5 @@
-@import "@/app/styles/mixins"
+@use "@/app/styles/mixins" as *
+
 
 .section
 	position: relative
@@ -13,6 +14,8 @@
 		transition: all 600ms ease-out
 		//transform: none
 		//opacity: 1
+	&:hover
+		transition: transform 0.3s ease-in-out
 
 .title
 	&.upperFirst

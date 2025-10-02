@@ -11,9 +11,6 @@ export interface Page<P> {
 }
 
 export interface PageProps {
-    params: {
-        id: string
-        slug: string
-    }
-    searchParams?: { [key: string]: string | string[] | undefined }
+    params: Promise<{ id: string; slug: string }>
+    searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }

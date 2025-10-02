@@ -10,7 +10,7 @@ import cls from './Slider.module.sass'
 interface ThumbsProps {
     media: Media[]
     activeIndex: number
-    swiperRef: React.RefObject<SwiperCore> | undefined
+    swiperRef: React.RefObject<SwiperCore | null>
 }
 
 const SliderThumbs = ({ media, activeIndex, swiperRef }: ThumbsProps) => {
@@ -26,7 +26,7 @@ const SliderThumbs = ({ media, activeIndex, swiperRef }: ThumbsProps) => {
                         'thumb',
                         idx === activeIndex ? 'active' : undefined
                     ])}
-                    style={{width: 'auto', height: 'auto'}}
+                    style={{ width: 'auto', height: 'auto' }}
                     onClick={() => handleThumbClick(idx)}
                 >
                     <LazyImage

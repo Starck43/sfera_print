@@ -3,8 +3,10 @@ import type { MetadataRoute } from 'next'
 import type { PostType } from '@/components/post'
 
 import { generateSitemapPosts, generateSitemapRoutes } from '@/shared/lib/helpers/sitemap'
-import { getBlog, getCityCases, getDocuments, getFeatures, getTechnologies } from '@/shared/lib/api'
+import { getBlog, getCityCases, getFeatures, getTechnologies } from '@/shared/lib/api'
 import { SITE_URL } from '@/shared/const/page'
+
+export const revalidate = 2592000 // 24 часа * 30 (в секундах)
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const routesUrl = process.env.URL || SITE_URL
@@ -36,11 +38,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             'monthly',
             0.5
         ),
-        ...generateSitemapPosts(
-            await getDocuments<PostType>(),
-            routesUrl + '/documents/[slug]',
-            'monthly',
-            0.5
-        )
+        // ...generateSitemapPosts(
+        //     await getDocuments<PostType>(),
+        //     routesUrl + '/documents/[slug]',
+        //     'monthly',
+        //     0.5
+        // )
     ]
 }

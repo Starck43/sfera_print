@@ -1,5 +1,6 @@
 'use client'
-import { RefObject, useEffect, useMemo, useRef, useState } from 'react'
+
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { useScrollPosition } from '@/shared/lib/hooks/useScrollPosition'
@@ -9,7 +10,7 @@ import TopIcon from '@/svg/arrow-top.svg'
 import cls from './ScrollToTop.module.sass'
 
 const ScrollToTop = () => {
-    const scrollRef = useRef(null) as RefObject<HTMLButtonElement>
+    const scrollRef = useRef(null) as RefObject<HTMLButtonElement | null>
     const [container, setContainer] = useState<HTMLElement | null>(null)
     const scroll = useScrollPosition(container)
 
@@ -17,33 +18,26 @@ const ScrollToTop = () => {
         if (scrollRef.current) {
             setContainer(scrollRef.current.parentElement)
         }
-    }, [scrollRef])
+    }, [])
 
-    //console.log(scrollRef)
-    const scrollToTop = () => {
+    const scrollToTop = useCallback(() => {
         container?.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
-    }
+    }, [container])
 
-    return useMemo(
-        () => (
-            <Button
-                ref={scrollRef}
-                Icon={<TopIcon />}
-                feature="inverted"
-                bordered
-                rounded
-                size="medium"
-                onClick={scrollToTop}
-                className={classnames(cls, [
-                    'scroll_to_top',
-                    scroll?.reachedTarget ? 'visible' : ''
-                ])}
-            />
-        ),
-        [scroll?.reachedTarget, scrollToTop]
+    return (
+        <Button
+            ref={scrollRef}
+            Icon={<TopIcon />}
+            feature="inverted"
+            bordered
+            rounded
+            size="medium"
+            onClick={scrollToTop}
+            className={classnames(cls, ['scroll_to_top', scroll?.reachedTarget ? 'visible' : ''])}
+        />
     )
 }
 

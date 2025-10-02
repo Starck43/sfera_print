@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Script from 'next/script'
+import Image from 'next/image'
 
 const TopMailCounter = ({ enabled }: { enabled: boolean }) => {
     const ID = parseInt(process.env.NEXT_PUBLIC_MAILRU_ID || '')
@@ -25,7 +26,7 @@ const TopMailCounter = ({ enabled }: { enabled: boolean }) => {
             </Script>
             <noscript>
                 <div>
-                    <img
+                    <Image
                         src={`https://top-fwz1.mail.ru/counter?id=${ID};js=na`}
                         style={{ position: 'absolute', left: '-9999px' }}
                         alt="Top.Mail.Ru"

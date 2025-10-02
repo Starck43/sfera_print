@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useRef } from "react"
+import { MutableRefObject, useCallback, useRef } from 'react'
 
 /**
  * A custom hook that allow to cancel a previous callback until the time interval runs out
@@ -17,6 +17,6 @@ export const useDebounce = (callback: (...args: any[]) => void, interval: number
                 callback(...args)
             }, interval)
         },
-        [callback, interval],
+        [callback, interval]
     )
 }

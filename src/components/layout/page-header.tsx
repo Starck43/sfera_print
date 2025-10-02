@@ -15,7 +15,7 @@ interface PageHeaderProps {
     container: string
 }
 
-const PageHeader = ({title, titleTag, onClose: handleOnClose, container}: PageHeaderProps) => {
+const PageHeader = ({ title, titleTag, onClose: handleOnClose, container }: PageHeaderProps) => {
     const { handleClick } = usePageAnimation(container)
     const route = useRouter()
     const onClose = () => {

@@ -23,8 +23,8 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
     if (!html) return null
 
     const linkImgRegex =
-          /(?:<figure [^>]*>\s*)?<a[^>]*?href=["']((?:[^"']*(?!\.\w+))(?:\.(?!\w+))?)["']>\s*<img[^>]*src=["']((?:\S+))['"](?:[^>]*?width=["']?(\d+)["'])?(?:[^>]*?height=["']?(\d+)["'])?(?:[^>]*?alt=["']([^>]+)["'])?>\s*<\/a>(?:\s*<\/figure>)?/gi
-       // /(?:<figure [^>]*>\s*)?<a[^>]*?href=["']((?:[^"'])*\.(mp4|ogg|webm|avi|mov))["']>\s*<img[^>]*src=["']((?:\S+))['"](?:[^>]*?width=["']?(\d+)["'])?(?:[^>]*?height=["']?(\d+)["'])?(?:[^>]*?alt=["']([^>]+)["'])?>\s*<\/a>(?:\s*<\/figure>)?/gi
+        /(?:<figure [^>]*>\s*)?<a[^>]*?href=["']((?:[^"']*(?!\.\w+))(?:\.(?!\w+))?)["']>\s*<img[^>]*src=["']((?:\S+))['"](?:[^>]*?width=["']?(\d+)["'])?(?:[^>]*?height=["']?(\d+)["'])?(?:[^>]*?alt=["']([^>]+)["'])?>\s*<\/a>(?:\s*<\/figure>)?/gi
+    // /(?:<figure [^>]*>\s*)?<a[^>]*?href=["']((?:[^"'])*\.(mp4|ogg|webm|avi|mov))["']>\s*<img[^>]*src=["']((?:\S+))['"](?:[^>]*?width=["']?(\d+)["'])?(?:[^>]*?height=["']?(\d+)["'])?(?:[^>]*?alt=["']([^>]+)["'])?>\s*<\/a>(?:\s*<\/figure>)?/gi
 
     const videoContentReplacement = (
         match: string,
@@ -108,7 +108,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                             alt={domNode.attribs.alt || ''}
                             sizes="(min-width:992px) 70vw, 100vw"
                             fill
-                            style={{ objectFit: 'cover'}}
+                            style={{ objectFit: 'cover' }}
                         />
                     </figure>
                 )

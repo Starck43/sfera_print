@@ -1,4 +1,6 @@
+import { type StaticImageData } from 'next/image'
 import type { Media } from '@/components/post'
+import { BreakpointSource, MediaSource, ResponsiveSource } from '@/shared/types/media'
 
 export const createSrcSet = (srcset: string[] | undefined) => {
     if (!srcset) return { media: undefined, srcset: undefined }
@@ -39,12 +41,71 @@ export function getDeviceImage(
           }
 }
 
-export const createThumbUrl = (src: string, width: number) => {
-    const path = src?.split('.')
-    if (path && path.length > 1) {
-        const ext = path.pop()
-        const thumbName = '_' + width + 'w'
-        return path.join('.') + thumbName + '.' + ext
+// Вспомогательные функции для работы с источниками
+const isResponsiveSource = (source: MediaSource): source is ResponsiveSource => {
+    return typeof source === 'object' && ('landscape' in source || 'portrait' in source)
+}
+const isBreakpointSource = (source: MediaSource): source is BreakpointSource => {
+    return (
+        typeof source === 'object' &&
+        !('landscape' in source) &&
+        !('portrait' in source) &&
+        !('src' in source)
+    )
+}
+const isStaticImageData = (source: any): source is StaticImageData => {
+    return source && typeof source === 'object' && 'src' in source
+}
+// Получение актуального источника на основе условий
+export const getCurrentSource = (
+    source: MediaSource | undefined,
+    orientation: string | null,
+    windowWidth: number
+): string | StaticImageData | undefined => {
+    if (!source) return undefined
+
+    // Простая строка или StaticImageData
+    if (typeof source === 'string' || isStaticImageData(source)) {
+        return source
     }
-    return src
+
+    // Responsive source (ориентация)
+    if (isResponsiveSource(source)) {
+        const isLandscape = orientation === 'landscape'
+
+        if (isLandscape && source.landscape) {
+            return source.landscape
+        }
+
+        if (!isLandscape && source.portrait) {
+            return source.portrait
+        }
+
+        return source.default
+    }
+
+    // Breakpoint source
+    if (isBreakpointSource(source)) {
+        // Сортируем брейкпоинты по убыванию
+        const breakpoints = Object.keys(source)
+            .filter((key) => key !== 'default')
+            .map(Number)
+            .sort((a, b) => b - a)
+
+        // Находим подходящий брейкпоинт
+        const matchingBreakpoint = breakpoints.find((breakpoint) => windowWidth >= breakpoint)
+
+        if (matchingBreakpoint && source[matchingBreakpoint]) {
+            return source[matchingBreakpoint]
+        }
+
+        return source.default
+    }
+
+    return undefined
+}
+// Получение строкового URL из источника
+export const getSourceUrl = (source: string | StaticImageData | undefined): string | undefined => {
+    if (!source) return undefined
+    return typeof source === 'string' ? source : source.src
 }

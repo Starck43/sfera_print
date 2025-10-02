@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
-import { AnimeInstance } from 'animejs'
-import anime from 'animejs/lib/anime.es'
+import { animate, svg } from 'animejs'
+import { type JSAnimation } from 'animejs'
 
 interface CircleAnimationProps {
     rootClassName?: string
@@ -26,49 +26,40 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         onDotClick,
         onStepChange
     } = props
-    const pathAnimationRef = useRef<AnimeInstance | null>(null)
+    const pathAnimationRef = useRef<JSAnimation | null>(null)
     const prefixName = carouselClassName ? `.${carouselClassName}__` : '.'
     const dotsRef = useRef<Element[]>([])
     const currentStep = useRef(-1)
     const pathLength = useRef(0)
 
     useLayoutEffect(() => {
-        anime({
-            targets: '.' + rootClassName,
+        animate('.' + rootClassName, {
             opacity: 1,
             // scale: 1.1,
             duration: 300,
-            easing: 'linear'
+            ease: 'linear'
         })
     }, [rootClassName])
 
     useLayoutEffect(() => {
         if (pathAnimationRef?.current || typeof currentStep === 'undefined') return
 
-        const path: any = anime.path(prefixName + 'circle', 100)
-        pathLength.current = path().totalLength || 0
-        if (!pathLength?.current) return
+        //const path: any = svg.createMotionPath(prefixName + 'circle')
+        // pathLength.current = path().totalLength || 0
+        // if (!pathLength?.current) return
 
         // анимация пути, движущегося по кругу
-        pathAnimationRef.current = anime({
-            targets: prefixName + 'animated-circle',
-            strokeDashoffset: [anime.setDashoffset, 0],
-            easing: 'linear',
+        pathAnimationRef.current = animate(svg.createDrawable(prefixName + 'animated-circle'), {
+            draw: '0 1',
+            ease: 'linear',
             duration: duration,
             delay: delay,
             loop: loop,
             direction: 'normal',
             autoplay: true,
-            begin: function (anim) {
-                anim.animatables[0].target.setAttribute(
-                    'stroke-dasharray',
-                    `${pathLength.current} ${pathLength.current}`
-                )
-            },
-            update: function (anim) {
-                const step = Math.floor((steps / 100) * anim.progress)
+            onUpdate: function (anim) {
+                const step = Math.floor(anim.progress * steps)
                 if (step != currentStep.current) {
-                    // const index = step === steps ? 0 : step
                     onStepChange?.(step)
                     updateSelectedDot(step)
                 }

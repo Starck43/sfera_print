@@ -1,7 +1,6 @@
 'use client'
 
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import Image from 'next/image'
 
 import { ContactItem } from '@/components/contacts'
 
@@ -9,6 +8,7 @@ import { checkCookie } from '@/shared/lib/helpers/cookie'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 
 import { Col, Flex } from '@/shared/ui/stack'
+import { LazyImage } from '@/shared/ui/lazy-image'
 import { CookiePopup } from '@/shared/ui/cookie-popup'
 
 import type { Menu } from './types'
@@ -38,7 +38,6 @@ const Navbar = ({ className }: NavbarProps) => {
                 <NavMenu>
                     <Col gap="sm" align="baseline" justify="start" className={cls.navmenu}>
                         <Flex gap="xs" justify="between" fullWidth style={{ marginBottom: 'auto' }}>
-
                             <Col gap="sm" className={cls.navitems}>
                                 {data?.pages?.map((item) => (
                                     <NavItem key={item.path} {...item} />
@@ -72,8 +71,8 @@ const Navbar = ({ className }: NavbarProps) => {
                                                 animationDelay: `${1000 + idx * 200}ms`
                                             }}
                                         >
-                                            <Image
-                                                src={image || `/svg/socials/${name}.svg`}
+                                            <LazyImage
+                                                src={`/images/socials/${name}.webp`}
                                                 alt={title}
                                                 sizes="100%"
                                                 priority

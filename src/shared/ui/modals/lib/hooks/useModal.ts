@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, MutableRefObject } from 'react'
+import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
 
 interface HookModalProps {
     onSubmit?: () => void
@@ -20,7 +20,7 @@ interface HookModalProps {
 export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModalProps) => {
     const [isShown, setIsShown] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
-    const timerRef = useRef() as MutableRefObject<ReturnType<typeof setTimeout>>
+    const timerRef = useRef(null) as RefObject<ReturnType<typeof setTimeout> | null>
 
     const handleSubmit = useCallback(() => {
         if (onSubmit) {
@@ -64,7 +64,7 @@ export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModal
             window.addEventListener('keydown', onPressKey)
         }
         return () => {
-            clearTimeout(timerRef.current)
+            if (timerRef.current) clearTimeout(timerRef.current)
             window.removeEventListener('keydown', onPressKey)
         }
     }, [isOpen, onPressKey])
