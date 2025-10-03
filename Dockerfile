@@ -39,7 +39,6 @@ FROM base
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup nodejs
 RUN adduser -SDH nextjs

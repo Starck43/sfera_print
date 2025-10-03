@@ -2,6 +2,7 @@ import withBundleAnalyzer from '@next/bundle-analyzer'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: 'standalone',
     trailingSlash: true,
     reactStrictMode: true,
     productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
