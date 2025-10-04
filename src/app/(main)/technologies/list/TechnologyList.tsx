@@ -116,7 +116,7 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                     className="technology-detail"
                 >
                     {isError ? (
-                        <Header title="Ошибка загрузки статьи!" style={{ flex: '0 1 50%' }} />
+                        <Header title="Ошибка загрузки страницы!" style={{ flex: '0 1 50%' }} />
                     ) : (
                         <TechnologyDetails data={post} />
                     )}

@@ -44,14 +44,17 @@ const CircleCarousel = ({ duration, slideDuration, infinite = false }: CarouselP
     const handleOnSlideChange = useCallback(
         (index: number = 0) => {
             if (!items) return
-            const slides = slidesRef.current
 
-            const activeSlide = slides?.children[(index + items.length) % items.length]
-            for (let i = 0; i < items.length; i++) {
-                const item = slides?.children[i]
-                item?.classList.remove(cls.active)
-            }
-            activeSlide?.classList.add(cls.active)
+            requestAnimationFrame(() => {
+                const slides = slidesRef.current
+                const activeSlide = slides?.children[(index + items.length) % items.length]
+
+                for (let i = 0; i < items.length; i++) {
+                    const item = slides?.children[i]
+                    item?.classList.remove(cls.active)
+                }
+                activeSlide?.classList.add(cls.active)
+            })
         },
         [items]
     )

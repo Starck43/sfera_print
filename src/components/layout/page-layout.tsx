@@ -31,7 +31,7 @@ export default function PageLayout(props: PageLayoutProps) {
         className = 'page__layout'
     } = props
 
-    let content = (
+    const content = (
         <Col
             gap={gap}
             justify="between"
@@ -41,16 +41,12 @@ export default function PageLayout(props: PageLayoutProps) {
                 title={title}
                 titleTag={titleTag}
                 onClose={handleOnClose}
-                container={className}
+                container={'.' + className}
             />
             {children}
             <ScrollToTop />
         </Col>
     )
 
-    if (handleOnClose) {
-        content = <Portal target={document.body}>{content}</Portal>
-    }
-
-    return content
+    return <Portal>{content}</Portal>
 }

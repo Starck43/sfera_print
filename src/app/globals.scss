@@ -151,7 +151,7 @@ header {
 
 main {
 	display: block;
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -246,6 +246,10 @@ blockquote {
 		border-radius: 0.8rem;
 		border: var(--border-thickness) solid var(--secondary-color);
 	}
+}
+
+circle.selected_dot {
+	fill: var(--secondary-color) !important;
 }
 
 .html-container {

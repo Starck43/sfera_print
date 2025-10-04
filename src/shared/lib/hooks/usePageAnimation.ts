@@ -1,14 +1,13 @@
 import { useLayoutEffect, useCallback, useRef } from 'react'
 
-export default function usePageAnimation(className: string) {
+export default function usePageAnimation(container: string) {
     const elementRef = useRef<HTMLElement | null>(null)
 
     useLayoutEffect(() => {
-        const el = document.querySelector<HTMLElement>('.' + className)
+        const el = document.querySelector<HTMLElement>(container)
         if (!el) return
         elementRef.current = el
 
-        // появление
         el.animate(
             [
                 { transform: 'translateY(100%)', opacity: 1 },
@@ -20,7 +19,7 @@ export default function usePageAnimation(className: string) {
                 fill: 'forwards'
             }
         )
-    }, [className])
+    }, [container])
 
     const handleClick = useCallback((fn?: () => void) => {
         if (!elementRef.current) {

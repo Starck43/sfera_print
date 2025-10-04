@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
-import { animate, svg } from 'animejs'
-import { type JSAnimation } from 'animejs'
+import { animate, type JSAnimation, svg } from 'animejs'
 
 interface CircleAnimationProps {
     rootClassName?: string
@@ -27,6 +26,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         onStepChange
     } = props
     const pathAnimationRef = useRef<JSAnimation | null>(null)
+    // const [selectedIndex, setSelectedIndex] = useState(0)
     const prefixName = carouselClassName ? `.${carouselClassName}__` : '.'
     const dotsRef = useRef<Element[]>([])
     const currentStep = useRef(-1)
@@ -87,7 +87,11 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
     )
 
     const onClickHandler = useCallback(
-        (index: number) => {
+        (index: number, event?: Event) => {
+            if (event) {
+            event.stopPropagation() // ← Останавливаем всплытие
+            event.preventDefault()
+        }
             runAnimation(false)
             updateSelectedDot(index)
             const path = document.querySelector(prefixName + 'animated-circle') as SVGPathElement
@@ -106,12 +110,12 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         dotsRef.current = Array.from(dots)
 
         dotsRef.current.forEach((element, index) => {
-            element.addEventListener('click', () => onClickHandler(index))
+            element.addEventListener('click', (e) => onClickHandler(index, e))
         })
 
         return () => {
             dotsRef.current.forEach((element, index) => {
-                element.removeEventListener('click', () => onClickHandler(index))
+                element.removeEventListener('click', (e) => onClickHandler(index, e))
             })
         }
     }, [prefixName, rootClassName, onClickHandler])

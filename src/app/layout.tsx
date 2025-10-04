@@ -11,7 +11,6 @@ import { TopMailCounter } from '@/components/mailru-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
-import { CircleCarousel } from '@/shared/ui/circle-carousel'
 
 import './globals.scss'
 
@@ -103,7 +102,6 @@ const accentFont = localFont({
 })
 
 const isDev = process.env.NODE_ENV === 'development'
-const slideDuration = parseInt(process.env.CIRCLE_CAROUSEL_SLIDE_DURATION || '3000')
 
 export default async function RootLayout({
     children = null
@@ -118,20 +116,7 @@ export default async function RootLayout({
             <body>
                 <NavigationProvider>
                     <RouteEvents />
-                    <header id="header">
-                        <BrandLogo />
-                        <BurgerButton />
-                        <Navbar className="navbar" />
-                    </header>
-                    <main id="main">
-                        <PageHeader />
-                        <CircleCarousel
-                            slideDuration={slideDuration}
-                            duration={300}
-                            infinite={!isDev}
-                        />
-                        {children}
-                    </main>
+                    {children}
                 </NavigationProvider>
                 <Suspense fallback={null}>
                     <YandexMetrika enabled={!isDev} />
