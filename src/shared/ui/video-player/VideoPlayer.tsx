@@ -92,12 +92,18 @@ const VideoPlayer = ({
     if (!srcUrl) return null
 
     return (
-        <div ref={inViewRef} style={{ height: '100%', pointerEvents: 'none' }}>
+        <div
+            ref={inViewRef}
+            style={{ position: 'relative', height: '100%', pointerEvents: 'none' }}
+        >
             <Player
                 ref={playerRef}
                 src={srcUrl}
                 loop={loop}
                 onError={onErrorHandler}
+                playsInline
+                disablePictureInPicture
+                disableRemotePlayback
                 muted
                 crossOrigin="anonymous"
                 className={classnames(cls, ['player'], {}, [className])}
