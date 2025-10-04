@@ -14,8 +14,8 @@ export function detectMobile() {
     return devicesToMatch.some((device) => navigator.userAgent.match(device))
 }
 
-export const detectDeviceOrientation = (): 'portrait' | 'landscape' | null => {
-    if (typeof window === 'undefined') return null
+export const detectDeviceOrientation = (): 'portrait' | 'landscape' => {
+    if (typeof window === 'undefined') return 'landscape' // дефолтное значение для SSR
 
     // Для мобильных устройств используем медиа-запрос orientation
     const isMobile = window.matchMedia('(pointer:coarse)').matches
@@ -29,13 +29,22 @@ export const detectDeviceOrientation = (): 'portrait' | 'landscape' | null => {
 }
 
 export const getWindowDimensions = (container?: Element | null) => {
-    let width = 0
-    let height = 0
+    if (typeof window === 'undefined') {
+        return {
+            width: 0,
+            height: 0,
+            ratio: 0,
+            orientation: 'landscape' as const
+        }
+    }
+
+    let width
+    let height
 
     if (container) {
         width = container.clientWidth
         height = container.clientHeight
-    } else if (typeof container === 'undefined' && typeof window !== 'undefined') {
+    } else {
         width = window.innerWidth
         height = window.innerHeight
     }
@@ -44,7 +53,7 @@ export const getWindowDimensions = (container?: Element | null) => {
         width: width,
         height: height,
         ratio: height > 0 ? width / height : 0,
-        orientation: typeof window === 'undefined' ? null : detectDeviceOrientation()
+        orientation: detectDeviceOrientation()
     }
 }
 

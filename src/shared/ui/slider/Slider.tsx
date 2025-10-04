@@ -103,13 +103,14 @@ export const Slider = (props: SliderProps) => {
                                             <LazyImage
                                                 src={imageSrc.src}
                                                 srcSet={imageSrc.srcSet}
+                                                unoptimized={!!imageSrc.srcSet?.length}
+                                                width={orientation === 'portrait' ? 1080 : 1920}
+                                                height={orientation === 'portrait' ? 1920 : 1080}
                                                 alt={title}
                                                 style={{
                                                     width: '100%',
                                                     height: '100%',
                                                 }}
-                                                width={orientation === 'portrait' ? 1080 : 1920}
-                                                height={orientation === 'portrait' ? 1920 : 1080}
                                                 className={cls.image}
                                             />
                                         )}

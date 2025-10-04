@@ -8,12 +8,12 @@ import type { PostType } from '@/components/post'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 
+import { LazyImage } from '@/shared/ui/lazy-image'
 import { Col } from '@/shared/ui/stack'
 
 import CarouselNav from './CarouselNav'
 
 import cls from './CircleCarousel.module.sass'
-import { LazyImage } from '@/shared/ui/lazy-image'
 
 interface CarouselProps {
     duration: number

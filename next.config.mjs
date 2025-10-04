@@ -9,7 +9,6 @@ const nextConfig = {
     images: {
         dangerouslyAllowSVG: true,
         contentDispositionType: 'attachment',
-        unoptimized: true,
         // contentSecurityPolicy: 'default-src \'self\'; script-src \'none\'; sandbox;',
         deviceSizes: [50, 320, 576, 768, 992, 1200, 1400],
         remotePatterns: [
