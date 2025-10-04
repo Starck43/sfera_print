@@ -62,8 +62,8 @@ const VideoPlayer = ({
     }
 
     if (!isMounted) {
-        const serverOrientation = 'landscape' // дефолтная ориентация для SSR
-        const initialPoster = getCurrentSource(poster, serverOrientation, 1200) // дефолтная ширина
+        const serverOrientation = 'landscape'
+        const initialPoster = getCurrentSource(poster, serverOrientation, 1200)
         const posterUrl = getSourceUrl(initialPoster)
 
         if (posterUrl) {

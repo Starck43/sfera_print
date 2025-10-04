@@ -1,6 +1,11 @@
 import { type StaticImageData } from 'next/image'
 import type { Media } from '@/components/post'
-import { BreakpointSource, MediaSource, ResponsiveSource } from '@/shared/types/media'
+import {
+    BreakpointSource,
+    MediaSource,
+    MediaSourceSelector,
+    ResponsiveSource
+} from '@/shared/types/media'
 
 export const createSrcSet = (srcset: string[] | undefined) => {
     if (!srcset) return { media: undefined, srcset: undefined }
@@ -42,61 +47,74 @@ export function getDeviceImage(
 }
 
 // Вспомогательные функции для работы с источниками
-const isResponsiveSource = (source: MediaSource): source is ResponsiveSource => {
-    return typeof source === 'object' && ('landscape' in source || 'portrait' in source)
-}
 const isBreakpointSource = (source: MediaSource): source is BreakpointSource => {
+    if (typeof source !== 'object' || isStaticImageData(source)) return false
+
+    const keys = Object.keys(source)
+    return keys.some((key) => !isNaN(Number(key)))
+}
+
+const isResponsiveSource = (source: MediaSource): source is ResponsiveSource => {
     return (
         typeof source === 'object' &&
-        !('landscape' in source) &&
-        !('portrait' in source) &&
-        !('src' in source)
+        ('landscape' in source || 'portrait' in source || 'default' in source)
     )
 }
+
 const isStaticImageData = (source: any): source is StaticImageData => {
     return source && typeof source === 'object' && 'src' in source
 }
+
+const isMediaSourceSelector = (source: MediaSource): source is MediaSourceSelector => {
+    return typeof source === 'object' && 'select' in source && typeof source.select === 'function'
+}
+
 // Получение актуального источника на основе условий
 export const getCurrentSource = (
     source: MediaSource | undefined,
-    orientation: string | null,
+    orientation: 'landscape' | 'portrait',
     windowWidth: number
 ): string | StaticImageData | undefined => {
     if (!source) return undefined
+
+    // MediaSourceSelector (приоритет самый высокий)
+    if (isMediaSourceSelector(source)) {
+        return source.select(orientation, windowWidth)
+    }
 
     // Простая строка или StaticImageData
     if (typeof source === 'string' || isStaticImageData(source)) {
         return source
     }
 
-    // Responsive source (ориентация)
-    if (isResponsiveSource(source)) {
-        const isLandscape = orientation === 'landscape'
-
-        if (isLandscape && source.landscape) {
-            return source.landscape
-        }
-
-        if (!isLandscape && source.portrait) {
-            return source.portrait
-        }
-
-        return source.default
-    }
-
-    // Breakpoint source
+    // Breakpoint source (приоритет над ориентацией)
     if (isBreakpointSource(source)) {
         // Сортируем брейкпоинты по убыванию
         const breakpoints = Object.keys(source)
-            .filter((key) => key !== 'default')
+            .filter((key) => !isNaN(Number(key)))
             .map(Number)
             .sort((a, b) => b - a)
 
-        // Находим подходящий брейкпоинт
+        // Находим подходящий брейкпоинт (ширина >= breakpoint)
         const matchingBreakpoint = breakpoints.find((breakpoint) => windowWidth >= breakpoint)
 
         if (matchingBreakpoint && source[matchingBreakpoint]) {
             return source[matchingBreakpoint]
+        }
+
+        // Если брейкпоинт не найден, проверяем ориентацию
+        if (source[orientation]) {
+            return source[orientation]
+        }
+
+        // Затем дефолтное значение
+        return source.default
+    }
+
+    // Responsive source (только ориентация)
+    if (isResponsiveSource(source)) {
+        if (source[orientation]) {
+            return source[orientation]
         }
 
         return source.default
@@ -104,6 +122,7 @@ export const getCurrentSource = (
 
     return undefined
 }
+
 // Получение строкового URL из источника
 export const getSourceUrl = (source: string | StaticImageData | undefined): string | undefined => {
     if (!source) return undefined
