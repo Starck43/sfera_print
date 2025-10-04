@@ -1,33 +1,23 @@
-import { CircleCarousel } from '@/shared/ui/circle-carousel'
-import { VideoPlayer } from '@/shared/ui/video-player'
+'use client'
+
+import { LazyImage } from '@/shared/ui/lazy-image'
 
 import coverH from '@/images/header-h-bg.webp'
 import coverV from '@/images/header-v-bg.webp'
-import cls from './PageHeader.module.sass'
-
-// const slidesCount = parseInt(process.env.CIRCLE_CAROUSEL_SLIDES_COUNT || '5')
-const slideDuration = parseInt(process.env.CIRCLE_CAROUSEL_SLIDE_DURATION || '3000')
-const isDev = process.env.NODE_ENV === 'development'
 
 const PageHeader = () => {
     return (
-        <div className={cls.container}>
-            <VideoPlayer
-                src={{
-                    landscape: '/videos/atmo-h-video.mp4',
-                    portrait: '/videos/atmo-v-video.mp4'
-                }}
-                poster={{
-                    landscape: coverH,
-                    portrait: coverV
-                }}
-                autoPlay={!isDev}
-                controls={false}
-                loop={!isDev}
-            />
-
-            <CircleCarousel slideDuration={slideDuration} duration={300} infinite={!isDev} />
-        </div>
+        <LazyImage
+            src={{
+                608: coverH, // для ширины >= 608px - горизонтальное
+                portrait: coverV, // для портретной ориентации
+                landscape: coverH, // для ландшафтной ориентации
+                default: coverH
+            }}
+            alt=""
+            fill
+            style={{ objectFit: 'cover' }}
+        />
     )
 }
 
