@@ -47,7 +47,7 @@ const nextConfig = {
         ignoreDuringBuilds: true
     },
     experimental: {
-        optimizeCss: true,
+        //optimizeCss: true,
         scrollRestoration: true,
         globalNotFound: true
     },
@@ -96,7 +96,7 @@ const nextConfig = {
     //
     //     return config
     // },
-        compress: true,
+    compress: true,
     poweredByHeader: false
 }
 
