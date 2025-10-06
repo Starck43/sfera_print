@@ -1,5 +1,3 @@
-import 'server-only'
-
 import { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -37,7 +35,7 @@ const ContactsPage = async () => {
 
     return (
         <PageLayout title={title} gap="none" sectionMode className="contacts-page">
-            <Col as="section" gap={'md'} align="center" style={{ padding: 0 }}>
+            <Col as="section" gap={'md'} align="center" fullWidth style={{ padding: 0 }}>
                 {parsedContent && (
                     <Section
                         as="div"
@@ -61,7 +59,21 @@ const ContactsPage = async () => {
 
                 {/*Bitrix24 form script*/}
                 <div className={cls.bitrix__form}>
-                    <BitrixForm />
+                    <Header
+                        tag="h3"
+                        title="Форма обратной связи"
+                        transform="upperFirst"
+                        align="center"
+                        className={cls.contacts__title}
+                    />
+
+                    <BitrixForm
+                        fallbackContact={
+                            Array.isArray(sections)
+                                ? sections.find((section: Contact) => section.type === 'email')
+                                : sections
+                        }
+                    />
                 </div>
             </Col>
         </PageLayout>
