@@ -55,7 +55,7 @@ export const metadata: Metadata = {
         }
     },
     other: {
-        'yandex-verification': 'd322f95e36747029'
+        'yandex-verification': 'e9fe13df1fb763c7'
     }
 }
 
