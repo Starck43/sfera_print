@@ -17,7 +17,7 @@ interface NavMenuProps {
 
 const copyright = (
     <span className={cls.copyright}>
-        © {new Date().getFullYear()} ООО «Атмосфера Пространств» Все права защищены
+        © {new Date().getFullYear()} ООО «Сфера Принт» Все права защищены
     </span>
 )
 
