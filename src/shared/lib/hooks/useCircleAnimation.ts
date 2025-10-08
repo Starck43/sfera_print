@@ -30,7 +30,6 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
     const prefixName = carouselClassName ? `.${carouselClassName}__` : '.'
     const dotsRef = useRef<Element[]>([])
     const currentStep = useRef(-1)
-    const pathLength = useRef(0)
 
     useLayoutEffect(() => {
         animate('.' + rootClassName, {
@@ -44,10 +43,6 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
     useLayoutEffect(() => {
         if (pathAnimationRef?.current || typeof currentStep === 'undefined') return
 
-        //const path: any = svg.createMotionPath(prefixName + 'circle')
-        // pathLength.current = path().totalLength || 0
-        // if (!pathLength?.current) return
-
         // анимация пути, движущегося по кругу
         pathAnimationRef.current = animate(svg.createDrawable(prefixName + 'animated-circle'), {
             draw: '0 1',
@@ -58,7 +53,9 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
             direction: 'normal',
             autoplay: true,
             onUpdate: function (anim) {
-                const step = Math.floor(anim.progress * steps)
+                const progress = anim.progress > 1 ? anim.progress / 100 : anim.progress
+                const step = Math.floor(progress * steps) % steps
+
                 if (step != currentStep.current) {
                     onStepChange?.(step)
                     updateSelectedDot(step)
@@ -89,20 +86,14 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
     const onClickHandler = useCallback(
         (index: number, event?: Event) => {
             if (event) {
-            event.stopPropagation() // ← Останавливаем всплытие
-            event.preventDefault()
-        }
+                event.stopPropagation() // ← Останавливаем всплытие
+                event.preventDefault()
+            }
             runAnimation(false)
             updateSelectedDot(index)
-            const path = document.querySelector(prefixName + 'animated-circle') as SVGPathElement
-            if (path) {
-                path.style.strokeDashoffset = (pathLength.current / steps) * (steps - index) + 'px'
-                //const newStrokeDasharray = `${(pathLength.current / steps) * index} ${pathLength.current}`
-                //path.setAttribute('stroke-dasharray', newStrokeDasharray)
-            }
             onDotClick?.(index)
         },
-        [onDotClick, prefixName, runAnimation, steps, updateSelectedDot]
+        [onDotClick, runAnimation, updateSelectedDot]
     )
 
     useEffect(() => {
