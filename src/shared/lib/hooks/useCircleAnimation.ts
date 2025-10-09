@@ -30,6 +30,12 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
     const prefixName = carouselClassName ? `.${carouselClassName}__` : '.'
     const dotsRef = useRef<Element[]>([])
     const currentStep = useRef(-1)
+    const onStepChangeRef = useRef(onStepChange)
+
+    // Keep the latest callback reference
+    useEffect(() => {
+        onStepChangeRef.current = onStepChange
+    }, [onStepChange])
 
     useLayoutEffect(() => {
         animate('.' + rootClassName, {
@@ -40,8 +46,21 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         })
     }, [rootClassName])
 
+    const updateSelectedDot = useCallback(
+        (index: number) => {
+            currentStep.current = index
+            dotsRef.current.forEach((dot) => dot.classList.remove(selectedDotClassName))
+            dotsRef.current[(index + steps) % steps]?.classList.add(selectedDotClassName)
+        },
+        [selectedDotClassName, steps]
+    )
+
     useLayoutEffect(() => {
-        if (pathAnimationRef?.current || typeof currentStep === 'undefined') return
+        // Skip if animation already exists OR if steps is not ready
+        if (pathAnimationRef?.current || !steps) return
+
+        // Store values in closure for onUpdate callback
+        const totalSteps = steps
 
         // анимация пути, движущегося по кругу
         pathAnimationRef.current = animate(svg.createDrawable(prefixName + 'animated-circle'), {
@@ -53,18 +72,22 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
             direction: 'normal',
             autoplay: true,
             onUpdate: function (anim) {
-                const progress = anim.progress > 1 ? anim.progress / 100 : anim.progress
-                const step = Math.floor(progress * steps) % steps
+                // Use iterationProgress for looped animations (0-1 per iteration)
+                // Use progress for non-looped animations (0-1 for entire animation)
+                const rawProgress = anim.iterationProgress || anim.progress
+                const progress = rawProgress > 1 ? rawProgress / 100 : rawProgress
+                const step = Math.floor(progress * totalSteps) % totalSteps
 
-                if (step != currentStep.current) {
-                    onStepChange?.(step)
-                    updateSelectedDot(step)
+                if (step !== currentStep.current) {
+                    currentStep.current = step
+                    onStepChangeRef.current?.(step)
+                    updateSelectedDot?.(step)
                 }
             }
         })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [steps])
 
     const runAnimation = useCallback((action: boolean) => {
         if (action) {
@@ -73,15 +96,6 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
             pathAnimationRef.current?.pause()
         }
     }, [])
-
-    const updateSelectedDot = useCallback(
-        (index: number) => {
-            currentStep.current = index
-            dotsRef.current.forEach((dot) => dot.classList.remove(selectedDotClassName))
-            dotsRef.current[(index + steps) % steps].classList.add(selectedDotClassName)
-        },
-        [selectedDotClassName, steps]
-    )
 
     const onClickHandler = useCallback(
         (index: number, event?: Event) => {
