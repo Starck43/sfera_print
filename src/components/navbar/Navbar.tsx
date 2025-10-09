@@ -72,7 +72,7 @@ const Navbar = ({ className }: NavbarProps) => {
                                             }}
                                         >
                                             <LazyImage
-                                                src={`/images/socials/${name}.webp`}
+                                                src={image || `/images/socials/${name}.webp`}
                                                 alt={title}
                                                 sizes="100%"
                                                 priority
