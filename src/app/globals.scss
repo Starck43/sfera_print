@@ -215,6 +215,10 @@ a {
 	-webkit-tap-highlight-color: transparent;
 }
 
+a svg {
+	color: var(--primary-color);
+}
+
 p {
 	padding-bottom: 0.75em;
 	font-size: 1em;
