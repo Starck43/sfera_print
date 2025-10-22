@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
-import { AnimeInstance } from 'animejs'
-import anime from 'animejs/lib/anime.es'
+import { animate, type JSAnimation, svg } from 'animejs'
 
 interface CircleAnimationProps {
     rootClassName?: string
@@ -26,57 +25,69 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         onDotClick,
         onStepChange
     } = props
-    const pathAnimationRef = useRef<AnimeInstance | null>(null)
+    const pathAnimationRef = useRef<JSAnimation | null>(null)
+    // const [selectedIndex, setSelectedIndex] = useState(0)
     const prefixName = carouselClassName ? `.${carouselClassName}__` : '.'
     const dotsRef = useRef<Element[]>([])
     const currentStep = useRef(-1)
-    const pathLength = useRef(0)
+    const onStepChangeRef = useRef(onStepChange)
+
+    // Keep the latest callback reference
+    useEffect(() => {
+        onStepChangeRef.current = onStepChange
+    }, [onStepChange])
 
     useLayoutEffect(() => {
-        anime({
-            targets: '.' + rootClassName,
+        animate('.' + rootClassName, {
             opacity: 1,
             // scale: 1.1,
             duration: 300,
-            easing: 'linear'
+            ease: 'linear'
         })
     }, [rootClassName])
 
-    useLayoutEffect(() => {
-        if (pathAnimationRef?.current || typeof currentStep === 'undefined') return
+    const updateSelectedDot = useCallback(
+        (index: number) => {
+            currentStep.current = index
+            dotsRef.current.forEach((dot) => dot.classList.remove(selectedDotClassName))
+            dotsRef.current[(index + steps) % steps]?.classList.add(selectedDotClassName)
+        },
+        [selectedDotClassName, steps]
+    )
 
-        const path: any = anime.path(prefixName + 'circle', 100)
-        pathLength.current = path().totalLength || 0
-        if (!pathLength?.current) return
+    useLayoutEffect(() => {
+        // Skip if animation already exists OR if steps is not ready
+        if (pathAnimationRef?.current || !steps) return
+
+        // Store values in closure for onUpdate callback
+        const totalSteps = steps
 
         // анимация пути, движущегося по кругу
-        pathAnimationRef.current = anime({
-            targets: prefixName + 'animated-circle',
-            strokeDashoffset: [anime.setDashoffset, 0],
-            easing: 'linear',
+        pathAnimationRef.current = animate(svg.createDrawable(prefixName + 'animated-circle'), {
+            draw: '0 1',
+            ease: 'linear',
             duration: duration,
             delay: delay,
             loop: loop,
             direction: 'normal',
             autoplay: true,
-            begin: function (anim) {
-                anim.animatables[0].target.setAttribute(
-                    'stroke-dasharray',
-                    `${pathLength.current} ${pathLength.current}`
-                )
-            },
-            update: function (anim) {
-                const step = Math.floor((steps / 100) * anim.progress)
-                if (step != currentStep.current) {
-                    // const index = step === steps ? 0 : step
-                    onStepChange?.(step)
-                    updateSelectedDot(step)
+            onUpdate: function (anim) {
+                // Use iterationProgress for looped animations (0-1 per iteration)
+                // Use progress for non-looped animations (0-1 for entire animation)
+                const rawProgress = anim.iterationProgress || anim.progress
+                const progress = rawProgress > 1 ? rawProgress / 100 : rawProgress
+                const step = Math.floor(progress * totalSteps) % totalSteps
+
+                if (step !== currentStep.current) {
+                    currentStep.current = step
+                    onStepChangeRef.current?.(step)
+                    updateSelectedDot?.(step)
                 }
             }
         })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [steps])
 
     const runAnimation = useCallback((action: boolean) => {
         if (action) {
@@ -86,28 +97,17 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         }
     }, [])
 
-    const updateSelectedDot = useCallback(
-        (index: number) => {
-            currentStep.current = index
-            dotsRef.current.forEach((dot) => dot.classList.remove(selectedDotClassName))
-            dotsRef.current[(index + steps) % steps].classList.add(selectedDotClassName)
-        },
-        [selectedDotClassName, steps]
-    )
-
     const onClickHandler = useCallback(
-        (index: number) => {
+        (index: number, event?: Event) => {
+            if (event) {
+                event.stopPropagation() // ← Останавливаем всплытие
+                event.preventDefault()
+            }
             runAnimation(false)
             updateSelectedDot(index)
-            const path = document.querySelector(prefixName + 'animated-circle') as SVGPathElement
-            if (path) {
-                path.style.strokeDashoffset = (pathLength.current / steps) * (steps - index) + 'px'
-                //const newStrokeDasharray = `${(pathLength.current / steps) * index} ${pathLength.current}`
-                //path.setAttribute('stroke-dasharray', newStrokeDasharray)
-            }
             onDotClick?.(index)
         },
-        [onDotClick, prefixName, runAnimation, steps, updateSelectedDot]
+        [onDotClick, runAnimation, updateSelectedDot]
     )
 
     useEffect(() => {
@@ -115,12 +115,12 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
         dotsRef.current = Array.from(dots)
 
         dotsRef.current.forEach((element, index) => {
-            element.addEventListener('click', () => onClickHandler(index))
+            element.addEventListener('click', (e) => onClickHandler(index, e))
         })
 
         return () => {
             dotsRef.current.forEach((element, index) => {
-                element.removeEventListener('click', () => onClickHandler(index))
+                element.removeEventListener('click', (e) => onClickHandler(index, e))
             })
         }
     }, [prefixName, rootClassName, onClickHandler])

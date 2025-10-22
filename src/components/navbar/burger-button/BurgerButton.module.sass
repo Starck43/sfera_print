@@ -1,0 +1,29 @@
+@use "@/app/styles/mixins" as *
+
+
+.burger
+	position: absolute
+	top: 1.6em
+	right: 1.5em
+	padding: 0 !important
+	color: var(--white-color) !important
+	background-color: transparent !important
+	font-size: 1.4rem
+	// border-radius: 0.6rem !important
+	// border: 1px solid rgb(var(--page-background-color), 0.3) !important
+	// box-shadow: 0 0 2px var(--white-color), 0 0.3em 1em -0.4em var(--box-shadow)
+	z-index: 2
+
+	svg
+		stroke-width: 2px
+
+	+media-min(sm)
+		top: 1.3em
+		font-size: 1.6em !important
+		svg
+			stroke-width: 1.5px
+
+	+media-min(md)
+		top: 1.2em
+		font-size: 1.8em !important
+

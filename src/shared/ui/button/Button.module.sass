@@ -1,6 +1,7 @@
-@import "@/app/styles/mixins"
-@import "@/app/styles/vars"
-@import "@/app/styles/common"
+@use "@/app/styles/mixins" as *
+
+@use "@/app/styles/vars" as *
+@use "@/app/styles/common" as *
 
 $controls-padding: 0.3em
 
@@ -20,13 +21,14 @@ $controls-padding: 0.3em
 	&:not(.clear)
 		padding: .6em .9em
 		color: inherit
-		background-color: inherit
-		//font-family: var(--font-family-secondary)
+		background-color: var(--blue-color)
+		//font-family: var(--font-family-primary)
 		border: var(--border-thickness) solid transparent
 		border-radius: var(--border-radius-default)
 
 		&:hover, &:focus
-			color: var(--secondary-color)
+			color: var(--white-color)
+			background-color: var(--blue-2-color)
 
 	&.with__icon.with__title
 		justify-content: space-between
@@ -57,14 +59,14 @@ $controls-padding: 0.3em
 		color: var(--white-color)
 		background-color: var(--primary-color)
 		&.bordered
-			border-color: black
+			border-color: var(--black-color)
 
 	&.inverted
 		color: var(--primary-color)
 		background-color: white
 		&:hover
 			color: white
-			background-color: var(--secondary-color)
+			background-color: var(--blue-2-color)
 
 	&.shadowed
 		box-shadow: 0 0.3em 1.1em -0.4em var(--box-shadow)

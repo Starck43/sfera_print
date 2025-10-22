@@ -1,4 +1,5 @@
-@import "/src/app/styles/mixins"
+@use "@/app/styles/mixins" as *
+
 
 .cases__container
 	margin-top: var(--translate-y-in-view)
@@ -16,6 +17,8 @@
 	+responsive-ratio(16, 9)
 	margin-bottom: var(--gap)
 	background-color: rgba(var(--grey-color-alpha), 0.2)
+	border-radius: var(--border-radius)
+	overflow: hidden
 	&.skeleton
 		+skeleton-background(#eee)
 

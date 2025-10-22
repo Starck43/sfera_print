@@ -1,4 +1,6 @@
-import { ReactNode } from 'react'
+'use client'
+
+import { ReactNode, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 interface PortalProps {
@@ -7,6 +9,17 @@ interface PortalProps {
 }
 
 export const Portal = (props: PortalProps) => {
-    const { children, target = document.body } = props
-    return createPortal(children, target) as JSX.Element
+    const { children, target } = props
+
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) {
+        return <>{children}</>
+    }
+
+    return createPortal(children, target || document.body)
 }

@@ -2,13 +2,13 @@
 
 import React, { memo, MouseEvent, SyntheticEvent, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import NextImage from 'next/image'
 
 import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
 import type { PostType } from '@/components/post'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 
+import { LazyImage } from '@/shared/ui/lazy-image'
 import { Col } from '@/shared/ui/stack'
 
 import CarouselNav from './CarouselNav'
@@ -44,14 +44,17 @@ const CircleCarousel = ({ duration, slideDuration, infinite = false }: CarouselP
     const handleOnSlideChange = useCallback(
         (index: number = 0) => {
             if (!items) return
-            const slides = slidesRef.current
 
-            const activeSlide = slides?.children[(index + items.length) % items.length]
-            for (let i = 0; i < items.length; i++) {
-                const item = slides?.children[i]
-                item?.classList.remove(cls.active)
-            }
-            activeSlide?.classList.add(cls.active)
+            requestAnimationFrame(() => {
+                const slides = slidesRef.current
+                const activeSlide = slides?.children[(index + items.length) % items.length]
+
+                for (let i = 0; i < items.length; i++) {
+                    const item = slides?.children[i]
+                    item?.classList.remove(cls.active)
+                }
+                activeSlide?.classList.add(cls.active)
+            })
         },
         [items]
     )
@@ -86,7 +89,7 @@ const CircleCarousel = ({ duration, slideDuration, infinite = false }: CarouselP
 
                         {item.cover && (
                             <div className={cls.cover}>
-                                <NextImage
+                                <LazyImage
                                     src={item.cover as string}
                                     alt={item.title}
                                     sizes="100%"

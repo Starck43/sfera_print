@@ -8,20 +8,21 @@ import cls from './CloseButton.module.sass'
 
 export interface CloseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
-    handleOnClick: () => void
+    handleClick: () => void
     children?: ReactNode
 }
 
 // eslint-disable-next-line react/display-name
 export const CloseButton: FC<CloseButtonProps> = memo((props) => {
-    const { handleOnClick, className, children } = props
+    const { handleClick, className, children } = props
 
     return (
         <Button
             Icon={<CloseIcon />}
             feature="clear"
             size="large"
-            onClick={handleOnClick}
+            squared
+            onClick={handleClick}
             className={classnames(cls, ['close__button'], {}, [className])}
         >
             {children}

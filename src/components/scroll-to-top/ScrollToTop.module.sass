@@ -1,4 +1,5 @@
-@import "@/app/styles/mixins"
+@use "@/app/styles/mixins" as *
+@use "sass:color"
 
 .scroll_to_top
 	position: sticky
@@ -6,7 +7,7 @@
 	right: var(--page-padding)
 	margin-left: auto
 	border-radius: 50% !important
-	background-color: transparentize(white, 0.5) !important
+	background-color: color.scale(white, $alpha: -50%) !important
 	transition: all 300ms cubic-bezier(.07, .19, .3, 1.03), visibility 1000ms
 	transform: translate(100px, 0)
 	opacity: 0
@@ -16,6 +17,7 @@
 		font-size: 1rem
 
 	svg
+		stroke-width: 2px
 		transition: transform 200ms
 		transform: scale(0.8)
 
@@ -25,6 +27,7 @@
 
 	&:hover
 		background-color: var(--secondary-color) !important
+		box-shadow: 0 0 0.7em -0.2em var(--box-shadow)
 		svg
 			transform: scale(1)
 		path

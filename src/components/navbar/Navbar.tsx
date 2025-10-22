@@ -1,7 +1,6 @@
 'use client'
 
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import Image from 'next/image'
 
 import { ContactItem } from '@/components/contacts'
 
@@ -9,6 +8,7 @@ import { checkCookie } from '@/shared/lib/helpers/cookie'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 
 import { Col, Flex } from '@/shared/ui/stack'
+import { LazyImage } from '@/shared/ui/lazy-image'
 import { CookiePopup } from '@/shared/ui/cookie-popup'
 
 import type { Menu } from './types'
@@ -58,6 +58,7 @@ const Navbar = ({ className }: NavbarProps) => {
 								       `}</Fragment>
                                         ))}
                                     </style>
+
                                     {data.socials.map(({ name, title, link, image }, idx) => (
                                         <a
                                             key={'social-' + name}
@@ -70,10 +71,11 @@ const Navbar = ({ className }: NavbarProps) => {
                                                 animationDelay: `${1000 + idx * 200}ms`
                                             }}
                                         >
-                                            <Image
-                                                src={image || `/svg/socials/${name}.svg`}
+                                            <LazyImage
+                                                src={image || `/images/socials/${name}.webp`}
                                                 alt={title}
                                                 sizes="100%"
+                                                priority
                                                 fill
                                             />
                                         </a>
@@ -89,18 +91,25 @@ const Navbar = ({ className }: NavbarProps) => {
 
                             {data?.policy && (
                                 <a href={data.policy} target="_blank" className={cls.policy}>
-                                    Политика конфиденциальности
+                                    Политика обработки персональных данных
                                 </a>
                             )}
 
                             {data?.agreement && (
                                 <a href={data.agreement} target="_blank" className={cls.policy}>
-                                    Соглашение на использование материалов
+                                    Положение об обработке персональных данных
                                 </a>
                             )}
+
                             <div onClick={() => setIsCookieOpen(true)} className={cls.policy}>
-                                Соглашение на обработку персональных данных
+                                Согласие на обработку персональных данных
                             </div>
+
+                            {data?.offer && (
+                                <a href={data.offer} target="_blank" className={cls.policy}>
+                                    Оферта по использованию реестровых записей
+                                </a>
+                            )}
                         </Col>
                     </Col>
                 </NavMenu>

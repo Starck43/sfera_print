@@ -30,6 +30,7 @@ export interface City {
     name: string
     longitude: number
     latitude: number
+    portfolio_count: number
 }
 
 export interface CityCases {
@@ -57,6 +58,7 @@ export interface CityProps {
         cx: number
         cy: number
     }
+    portfolioCount: number
 }
 
 export interface RegionCitiesProps {

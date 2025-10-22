@@ -8,7 +8,7 @@ import { EffectFade } from 'swiper/modules'
 import type { Media } from '@/components/post'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
-import { getDeviceSrc } from '@/shared/lib/helpers/image'
+import { getDeviceImage } from '@/shared/lib/helpers/image'
 import { useWindowDimensions } from '@/shared/lib/hooks/useWindowDimensions'
 
 import { Section } from '@/shared/ui/section'
@@ -52,7 +52,7 @@ export const Slider = (props: SliderProps) => {
                         spaceBetween={0}
                         slidesPerView={1}
                         loop={media?.length > 1}
-                        lazyPreloadPrevNext={1}
+                        lazyPreloadPrevNext={2}
                         onBeforeInit={(swiper) => {
                             swiperRef.current = swiper
                         }}
@@ -66,7 +66,7 @@ export const Slider = (props: SliderProps) => {
                                 { id, title, link, image, image_portrait, video, video_portrait },
                                 idx
                             ) => {
-                                const imageSrc = getDeviceSrc(
+                                const imageSrc = getDeviceImage(
                                     orientation === 'portrait' && image_portrait
                                         ? image_portrait
                                         : image
@@ -77,7 +77,7 @@ export const Slider = (props: SliderProps) => {
                                     videoSrc = video_portrait
                                 }
 
-                                if (!imageSrc) return null
+                                if (!imageSrc.src) return null
 
                                 return (
                                     <SwiperSlide
@@ -93,18 +93,24 @@ export const Slider = (props: SliderProps) => {
                                         ])}
                                     >
                                         {videoSrc ? (
-                                            <VideoPlayer src={videoSrc} poster={imageSrc} />
+                                            <VideoPlayer
+                                                src={videoSrc}
+                                                poster={imageSrc.src}
+                                                autoPlay
+                                                controls={false}
+                                            />
                                         ) : (
                                             <LazyImage
-                                                src={imageSrc}
-                                                alt={title}
-                                                quality={85}
-                                                style={{
-                                                    width: '100%',
-                                                    height: 'auto'
-                                                }}
+                                                src={imageSrc.src}
+                                                srcSet={imageSrc.srcSet}
+                                                unoptimized={!!imageSrc.srcSet?.length}
                                                 width={orientation === 'portrait' ? 1080 : 1920}
                                                 height={orientation === 'portrait' ? 1920 : 1080}
+                                                alt={title}
+                                                style={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                }}
                                                 className={cls.image}
                                             />
                                         )}

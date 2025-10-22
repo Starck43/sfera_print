@@ -1,39 +1,29 @@
-import { CircleCarousel } from '@/shared/ui/circle-carousel'
-import { VideoPlayer } from '@/shared/ui/video-player'
 import { LazyImage } from '@/shared/ui/lazy-image'
 
-import cover from '@/images/header-bg.webp'
-import cls from './PageHeader.module.sass'
+import coverH from '@/images/header-h-bg.webp'
+import coverV from '@/images/header-v-bg.webp'
+import { CircleCarousel } from '@/shared/ui/circle-carousel'
 
-// const slidesCount = parseInt(process.env.CIRCLE_CAROUSEL_SLIDES_COUNT || '5')
+const isDev = process.env.NODE_ENV === 'development'
 const slideDuration = parseInt(process.env.CIRCLE_CAROUSEL_SLIDE_DURATION || '3000')
 
-const PageHeader = () => (
-    <div className={cls.container}>
-        <LazyImage
-            src={cover}
-            alt="Рекламно-производственная компания Сфера Принт"
-            sizes={'100%'}
-            fill
-            priority
-            style={{ objectFit: 'cover' }}
-        />
-        {/*<HeaderAnimation/>*/}
-        <VideoPlayer
-            src={'/videos/sp-bg-anim.webm'}
-            preload={process.env.NODE_ENV !== 'development' ? 'auto' : 'none'}
-            autoPlay={process.env.NODE_ENV !== 'development'}
-            loop={false}
-            controls={false}
-            style={{ height: '100%', pointerEvents: 'none' }}
-        />
-
-        <CircleCarousel
-            slideDuration={slideDuration}
-            duration={300}
-            infinite={process.env.NODE_ENV !== 'development'}
-        />
-    </div>
-)
+const PageHeader = () => {
+    return (
+        <>
+            <LazyImage
+                src={{
+                    608: coverH, // для ширины >= 608px - горизонтальное
+                    portrait: coverV, // для портретной ориентации
+                    landscape: coverH, // для ландшафтной ориентации
+                    default: coverH
+                }}
+                alt=""
+                fill
+                style={{ objectFit: 'cover' }}
+            />
+            <CircleCarousel slideDuration={slideDuration} duration={300} infinite={!isDev} />
+        </>
+    )
+}
 
 export default PageHeader

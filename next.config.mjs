@@ -2,12 +2,14 @@ import withBundleAnalyzer from '@next/bundle-analyzer'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: 'standalone',
+    trailingSlash: true,
     reactStrictMode: true,
     productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
     images: {
         dangerouslyAllowSVG: true,
         contentDispositionType: 'attachment',
-        contentSecurityPolicy: 'default-src \'self\'; script-src \'none\'; sandbox;',
+        // contentSecurityPolicy: 'default-src \'self\'; script-src \'none\'; sandbox;',
         deviceSizes: [50, 320, 576, 768, 992, 1200, 1400],
         remotePatterns: [
             {
@@ -22,16 +24,16 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'i.postimg.cc',
+                hostname: '*.postimg.cc',
                 port: ''
             },
             {
                 protocol: 'http',
                 hostname: 'localhost',
-                port: '8000'
+                port: '8005'
             }
         ],
-        minimumCacheTTL: 60 * 60 * 24 * 30,
+        minimumCacheTTL: 60 * 60 * 24 * 30
     },
     logging:
         process.env.NODE_ENV === 'development'
@@ -41,48 +43,61 @@ const nextConfig = {
                 }
             }
             : {},
-    experimental: {
-        cssChunking: 'loose' // default
-    },
-    sassOptions: {
-        outputStyle: 'expanded'
-    },
     eslint: {
         ignoreDuringBuilds: true
     },
-    webpack(config, { dev }) {
-        if (dev) {
-            Object.defineProperty(config, 'devtool', {
-                get() {
-                    return 'source-map'
-                },
-                set() {
-                }
-            })
-        }
-
-        const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))
-
-        config.module.rules.push(
-            {
-                ...fileLoaderRule,
-                test: /\.svg$/i,
-                resourceQuery: /url/
-            },
-            {
-                test: /\.svg$/i,
-                issuer: fileLoaderRule.issuer,
-                resourceQuery: {
-                    not: [...fileLoaderRule.resourceQuery.not, /url/]
-                }, // exclude if *.svg?url
-                use: ['@svgr/webpack']
+    experimental: {
+        //optimizeCss: true,
+        scrollRestoration: true,
+        globalNotFound: true
+    },
+    allowedDevOrigins: ['192.168.1.*', '*.local-origin.dev'],
+    sassOptions: {
+        outputStyle: 'expanded'
+    },
+    turbopack: {
+        rules: {
+            '*.svg': {
+                loaders: ['@svgr/webpack'],
+                as: '*.js'
             }
-        )
-
-        fileLoaderRule.exclude = /\.svg$/i
-
-        return config
-    }
+        }
+    },
+    // webpack(config, { dev }) {
+    //     if (dev) {
+    //         Object.defineProperty(config, 'devtool', {
+    //             get() {
+    //                 return 'source-map'
+    //             },
+    //             set() {
+    //             }
+    //         })
+    //     }
+    //
+    //     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))
+    //
+    //     config.module.rules.push(
+    //         {
+    //             ...fileLoaderRule,
+    //             test: /\.svg$/i,
+    //             resourceQuery: /url/
+    //         },
+    //         {
+    //             test: /\.svg$/i,
+    //             issuer: fileLoaderRule.issuer,
+    //             resourceQuery: {
+    //                 not: [...fileLoaderRule.resourceQuery.not, /url/]
+    //             }, // exclude if *.svg?url
+    //             use: ['@svgr/webpack']
+    //         }
+    //     )
+    //
+    //     fileLoaderRule.exclude = /\.svg$/i
+    //
+    //     return config
+    // },
+    compress: true,
+    poweredByHeader: false
 }
 
 export default withBundleAnalyzer({

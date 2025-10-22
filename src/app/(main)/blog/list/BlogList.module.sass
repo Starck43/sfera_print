@@ -1,0 +1,24 @@
+@use "@/app/styles/mixins" as *
+
+
+.blog__container
+	display: grid
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
+	grid-gap: calc(var(--gap) * 4)
+	grid-column-gap: calc(var(--gap) * 2)
+	width: 100%
+	padding: 0 var(--page-padding) var(--page-padding)
+
+	img
+		margin-bottom: var(--gap)
+		border-radius: var(--border-radius)
+
+	+media-min(xxl)
+		grid-template-columns: repeat(2, 1fr)
+
+.article
+	padding: 0 0 var(--page-padding)
+
+.excerpt
+	flex: auto
+

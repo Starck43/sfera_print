@@ -54,10 +54,15 @@ export const Header = memo((props: HeaderProps) => {
     const Title = tag
     const content = (
         <Title
-            className={classnames(cls, ['title', align, transform], {
-                shadowed,
-                fullWidth
-            }, [!children && !subtitle && !href ? className : ''])}
+            className={classnames(
+                cls,
+                ['title', align, transform],
+                {
+                    shadowed,
+                    fullWidth
+                },
+                [!children && !subtitle && !href ? className : '']
+            )}
             style={style}
         >
             {title}

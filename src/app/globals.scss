@@ -1,21 +1,29 @@
-@import "./styles/mixins";
+@use "./styles/mixins" as *;
 
 :root {
 	--page-background-color: 254, 254, 254;
+	--primary-color: #0d47a1;
+	--secondary-color: #00bfa5;
+
+	--blue-color: #0d47a1;
+	--blue-2-color: #2962ff;
+	--blue-3-color: #2979ff;
+	--cyan-color: #00bfa5;
+	--cyan-2-color: #1de9b6;
+	--cyan-3-color: #64ffda;
 	--white-color: #fefefe;
-	--black-color: #22201e;
+	--black-color: #131a2d;
 	--grey-color: #737681;
 	--light-grey-color: #DFDFDFFF;
-	--primary-color: #478631;
-	--secondary-color: #a3c626;
-	--primary-color-alpha: 71, 134, 49;
-	--secondary-color-alpha: 163, 198, 38;
+
+	--primary-color-alpha: 13, 71, 161;
+	--secondary-color-alpha: 0, 191, 165;
 	--grey-color-alpha: 70, 74, 84;
 
 	--text-color: rgba(var(--grey-color-alpha), 0.7);
-	--link-color: var(--primary-color);
+	--link-color: var(--cyan-color);
 	--navbar-link-color: var(--black-color);
-	--border-color-default: var(--grey-color);
+	--border-color-default: var(--cyan-color);
 
 	--paragraph-container-max-width: 1200px;
 	--container-max-width: 1400px;
@@ -32,12 +40,12 @@
 	--icon-size-md: 1.6em;
 	--icon-size-lg: 2.4em;
 	--border-radius-index: 0.5;
-	--border-radius: clamp(1.4rem, 3vw, 2.4rem);
+	--border-radius: clamp(1.4rem, 3vw, 2.2rem);
 	--border-radius-button: 1.2rem;
 	--border-radius-default: 0px;
 	--border-thickness: 3px;
 	--box-shadow: rgb(0 0 0 / 20%);
-	--overlay-bg-color: rgb(0 0 0 / 20%);
+	--overlay-bg-color: 0, 0, 0;
 	--overlay-z-index: 100;
 	--translate-y-in-view: 3em;
 
@@ -84,7 +92,7 @@ img:not([src]):not([srcset]) {
 }
 
 html {
-	scroll-behavior:smooth;
+	scroll-behavior: smooth;
 	font-size: 15px;
 
 	@media (min-width: 576px) {
@@ -113,53 +121,41 @@ body {
 
 header {
 	position: fixed;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	top: 0;
+	left: 0;
 	width: 100%;
-	height: 100%;
-	background-color: var(--light-grey-color);
+	z-index: 10;
 }
 
 .logo {
 	position: absolute;
-	top: 1em;
-	left: 1em;
-	width: 24%;
-	height: 75px;
-	max-width: 150px;
+	top: 1.6em;
+	left: 1.6em;
+	width: auto;
+	height: 4em;
 	z-index: 1;
-}
 
-.burger {
-	position: absolute;
-	top: 1.5em;
-	right: 1.5em;
-	color: var(--white-color) !important;
-	background-color: rgba(var(--grey-color-alpha), 0.1) !important;
-	border-radius: 0.6rem !important;
-	border: 1px solid rgb(var(--page-background-color), 0.3) !important;
-	box-shadow: 0 0 2px var(--white-color), 0 0.3em 1em -0.4em var(--box-shadow);
-	z-index: 2;
-
-	svg {
-		stroke-width: 2px;
+	img {
+		width: auto;
+		height: 100%;
 	}
 
-	@media (min-width: 576px) {
-		font-size: 1.2rem;
+	@media (min-width: 768px) {
+		height: 4.5rem;
 	}
-	@media (min-width: 992px) {
-		font-size: 1.4rem;
+
+	@media (min-width: 1200px) {
+		height: 5rem;
 	}
 }
 
 main {
 	display: block;
-	position: absolute;
+	position: fixed;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: var(--white-color);
 }
 
 h1 {
@@ -167,9 +163,10 @@ h1 {
 	margin: 0;
 	/*background: linear-gradient(to bottom, rgb(var(--page-background-color), 1), rgb(var(--page-background-color), 0));*/
 	color: var(--secondary-color);
-	font-family: var(--font-family-secondary), sans-serif;
+	font-family: var(--font-family-primary), serif;
 	line-height: var(--line-height-title);
 	font-size: clamp(1.7rem, 0.8rem + 2vw, 3rem);
+	font-weight: 900;
 	text-transform: uppercase;
 	word-break: break-word;
 	z-index: 20;
@@ -177,8 +174,9 @@ h1 {
 
 h2 {
 	margin-top: 6px;
-	color: var(--secondary-color);
-	font-family: var(--font-family-secondary), sans-serif;
+	color: var(--primary-color);
+	font-weight: 900;
+	font-family: var(--font-family-primary), serif;
 	font-size: clamp(1.5rem, 0.8rem + 1.6vw, 2.4rem);
 	line-height: var(--line-height-title);
 	margin-bottom: 0.9rem;
@@ -186,8 +184,8 @@ h2 {
 }
 
 h3 {
-	color: var(--secondary-color);
-	font-family: var(--font-family-secondary), serif;
+	color: var(--primary-color);
+	font-family: var(--font-family-primary), serif;
 	font-size: clamp(1.3rem, 0.8rem + 0.8vw, 1.4rem);
 	line-height: var(--line-height-title);
 	margin-bottom: 0.75rem;
@@ -196,16 +194,16 @@ h3 {
 
 h4 {
 	padding-bottom: 1rem;
-	color: var(--secondary-color);
-	font-family: var(--font-family-secondary), serif;
+	color: var(--primary-color);
+	font-family: var(--font-family-primary), serif;
 	font-size: 1.2rem;
 	line-height: var(--line-height-paragraph);
 	margin-bottom: 0.65rem;
 }
 
 h5 {
-	color: var(--secondary-color);
-	font-family: var(--font-family-secondary), serif;
+	color: var(--primary-color);
+	font-family: var(--font-family-primary), serif;
 	line-height: var(--line-height-paragraph);
 	font-size: 1rem;
 	margin-bottom: 0.5rem;
@@ -215,6 +213,10 @@ a {
 	color: inherit;
 	text-decoration: none;
 	-webkit-tap-highlight-color: transparent;
+}
+
+a svg {
+	color: var(--primary-color);
 }
 
 p {
@@ -283,6 +285,11 @@ blockquote {
 	tbody {
 		gap: calc(var(--gap) + 2vw);
 	}
+
+	iframe {
+		width: 100%;
+		height: 100%;
+	}
 }
 
 .table tr {
@@ -333,6 +340,7 @@ blockquote {
 		@media (min-width: 768px) {
 			height: max-content;
 		}
+
 		.video-player {
 			height: auto;
 		}

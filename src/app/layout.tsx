@@ -1,18 +1,16 @@
 import React, { Suspense } from 'react'
-import type { Metadata } from 'next'
+import { type Metadata } from 'next'
 import localFont from 'next/font/local'
-import Image from 'next/image'
-import Link from 'next/link'
-// import { Montserrat } from 'next/font/google'
 
 import { RouteEvents } from '@/components/routes/route-events'
 import PageHeader from '@/components/page-header'
+import { BrandLogo } from '@/components/brand-logo'
 import { BurgerButton, Navbar } from '@/components/navbar'
 import { YandexMetrika } from '@/components/yandex-metrika'
+import { TopMailCounter } from '@/components/mailru-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
-import BrandLogo from '@/sp-logo.svg'
 
 import './globals.scss'
 
@@ -31,10 +29,10 @@ export const metadata: Metadata = {
         type: 'website',
         siteName: SITE_TITLE,
         url: new URL(process.env.URL || SITE_URL),
-        title: 'Сфера Принт',
-        images: '/sp-logo.svg'
+        title: 'Атмосфера Пространств',
+        images: '/atmo-logo.svg'
     },
-    applicationName: 'sferaprint',
+    applicationName: 'asfp',
     authors: [{ name: 'S. Shabalin', url: 'https://istarck.ru' }],
     creator: 'Stanislav Shabalin',
     formatDetection: {
@@ -57,54 +55,74 @@ export const metadata: Metadata = {
         }
     },
     other: {
-        'yandex-verification': 'd322f95e36747029'
+        'yandex-verification': 'e9fe13df1fb763c7'
     }
 }
 
 const brandFont = localFont({
-    src: './fonts/PFBeauSansPro-Regular.woff2',
-    variable: '--font-family-primary',
-    weight: '400',
-    style: 'normal',
-    display: 'swap'
+    src: [
+        {
+            path: './fonts/Onest-Regular.ttf',
+            weight: '400',
+            style: 'normal'
+        },
+        {
+            path: './fonts/Onest-SemiBold.ttf',
+            weight: '700',
+            style: 'normal'
+        },
+        {
+            path: './fonts/Onest-Black.ttf',
+            weight: '900',
+            style: 'normal'
+        }
+    ],
+    variable: '--font-family-primary'
 })
 
-const titleFont = localFont({
-    src: './fonts/Montserrat-Medium.woff2',
-    //subsets: ['cyrillic'],
-    variable: '--font-family-secondary',
-    weight: '700',
-    display: 'swap'
+const accentFont = localFont({
+    src: [
+        {
+            path: './fonts/inter-28pt-Regular.ttf',
+            weight: '400',
+            style: 'normal'
+        },
+        {
+            path: './fonts/inter-28pt-SemiBold.ttf',
+            weight: '700',
+            style: 'normal'
+        },
+        {
+            path: './fonts/inter-28pt-Black-Italic.ttf',
+            weight: '900',
+            style: 'normal'
+        }
+    ],
+    variable: '--font-family-secondary'
 })
+
+const isDev = process.env.NODE_ENV === 'development'
 
 export default async function RootLayout({
     children = null
 }: Readonly<{ children: React.ReactNode }>) {
-    const analyticsEnabled = process.env.NODE_ENV === 'production'
-
     return (
         <html
             lang="ru"
-            className={`${brandFont.className} ${titleFont.variable}`}
+            className={`${brandFont.className} ${accentFont.variable}`}
+            data-scroll-behavior="smooth"
             suppressHydrationWarning
         >
+            <head>
+                <TopMailCounter enabled={!isDev} />
+            </head>
             <body>
-                <header>
-                    <div className="logo">
-                        <Link href="/">
-                            <BrandLogo />
-                        </Link>
-                    </div>
-                    <NavigationProvider>
-                        <RouteEvents />
-                        <PageHeader />
-                        <BurgerButton />
-                        <Navbar className="navbar" />
-                    </NavigationProvider>
-                </header>
-                {children}
-                <Suspense>
-                    <YandexMetrika enabled={analyticsEnabled} />
+                <NavigationProvider>
+                    <RouteEvents />
+                    {children}
+                </NavigationProvider>
+                <Suspense fallback={null}>
+                    <YandexMetrika enabled={!isDev} />
                 </Suspense>
             </body>
         </html>

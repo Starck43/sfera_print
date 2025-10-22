@@ -89,7 +89,7 @@ export const Modal = (props: ModalProps) => {
                         header
                     )}
                     {showClose && (
-                        <CloseButton className={styles.close__button} handleOnClick={handleClose} />
+                        <CloseButton className={styles.close__button} handleClick={handleClose} />
                     )}
                 </Row>
 

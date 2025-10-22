@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 
 import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
@@ -10,7 +10,7 @@ export function RouteEvents() {
     const ref = useRef(currentPath) // Create a ref to store the previous pathname
     const { showMenu, setPlayHeaderAnimation } = useNavigation()
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!currentPath) return
         // const prevPath = ref.current
         const isHomePage = currentPath.split('/').filter(Boolean).length === 0

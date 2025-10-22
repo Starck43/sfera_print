@@ -7,7 +7,7 @@ import { VerticalTimelineElement } from 'react-vertical-timeline-component'
 
 import type { PostType } from '@/components/post'
 import { classnames } from '@/shared/lib/helpers/classnames'
-import { getDeviceSrc } from '@/shared/lib/helpers/image'
+import { getDeviceImage } from '@/shared/lib/helpers/image'
 import { detectDeviceOrientation } from '@/shared/lib/helpers/dom'
 import { useHover } from '@/shared/lib/hooks/useHover'
 import { LazyImage } from '@/shared/ui/lazy-image'
@@ -21,13 +21,13 @@ export interface TimelineElementProps extends PostType {
 
 // eslint-disable-next-line react/display-name
 export const TimelineElement = memo((props: TimelineElementProps) => {
-    const { title, excerpt, desc, event_date, cover, icon, color } = props
+    const { title, desc, cover, icon } = props
     const [visible, setVisible] = useState(false)
     const [isHover, { onMouseLeave, onMouseEnter }] = useHover()
     const { ref, inView } = useInView({ threshold: 0.5 })
 
     const isMobile = detectDeviceOrientation()
-    const imageSrc = getDeviceSrc(cover)
+    const imageSrc = getDeviceImage(cover)
 
     useEffect(() => {
         if (inView) {
@@ -76,9 +76,10 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
                 {/*    {excerpt && <p className={cls.excerpt}>{excerpt}</p>}*/}
                 {/*</div>*/}
 
-                {imageSrc && (
+                {imageSrc.src && (
                     <LazyImage
-                        src={imageSrc}
+                        src={imageSrc.src}
+                        srcSet={imageSrc.srcSet}
                         alt={title}
                         sizes="(max-width: 1169px) 100vw, 50vw"
                         //unoptimized

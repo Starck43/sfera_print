@@ -1,4 +1,5 @@
-@import "@/app/styles/mixins"
+@use "@/app/styles/mixins" as *
+
 $social_width: 3rem
 
 .navmenu__container
@@ -7,16 +8,16 @@ $social_width: 3rem
 	background-color: var(--white-color)
 
 	+media-min(sm)
-		width: 75%
+		max-width: 75%
 
 	+media-min(md)
-		width: 55%
+		max-width: 55%
 
 	+media-min(lg)
-		width: 45%
+		max-width: 45%
 
 	+media-min(xl)
-		width: 35%
+		max-width: 35%
 
 .navmenu
 	height: 100%
@@ -34,11 +35,14 @@ $social_width: 3rem
 
 .title
 	margin-bottom: 5px
-	font-family: var(--font-family-secondary), serif
-	font-size: clamp(1.8rem, 0.8rem + 1.2vw, 2.4rem)
+	font-family: var(--font-family-primary), serif
+	font-size: clamp(1.5rem, 1rem + 1vw, 2.2rem)
+	font-weight: 900
 	line-height: 1.1
 	text-transform: uppercase
 	color: var(--navbar-link-color)
+	&:hover
+		color: var(--link-color)
 
 .subtitle
 	font-size: 1em
@@ -47,10 +51,10 @@ $social_width: 3rem
 
 .socials
 	position: fixed
+	top: 5rem
+	bottom: 5rem
 	right: var(--modal-padding)
-	top: 0
 	width: $social_width
-	height: 100%
 	img
 		z-index: 1
 
@@ -117,11 +121,12 @@ $social_width: 3rem
 
 	> .policy
 		color: var(--text-color)
+		font-size: 0.8rem
 
 .contact
 	width: auto
 	margin-bottom: 0.5rem
-	color: var(--primary-color)
+	color: var(--link-color)
 	font-weight: bold
 
 	img
@@ -129,6 +134,7 @@ $social_width: 3rem
 
 	svg
 		height: var(--icon-size-xs)
+		color: var(--link-color) !important
 
 .copyright
 	font-size: 0.8rem

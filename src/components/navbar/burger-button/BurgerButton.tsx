@@ -5,6 +5,7 @@ import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
 import { Button } from '@/shared/ui/button'
 
 import BurgerIcon from '@/svg/burger-1.svg'
+import cls from './BurgerButton.module.sass'
 
 const BurgerButton = () => {
     const { showMenu, setShowMenu } = useNavigation()
@@ -14,7 +15,7 @@ const BurgerButton = () => {
             Icon={<BurgerIcon />}
             feature="blank"
             size="medium"
-            className="burger"
+            className={cls.burger}
             onClick={() => setShowMenu(!showMenu)}
         />
     )
