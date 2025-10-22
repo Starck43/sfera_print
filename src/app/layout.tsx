@@ -113,6 +113,9 @@ export default async function RootLayout({
             data-scroll-behavior="smooth"
             suppressHydrationWarning
         >
+            <head>
+                <TopMailCounter enabled={!isDev} />
+            </head>
             <body>
                 <NavigationProvider>
                     <RouteEvents />
@@ -120,7 +123,6 @@ export default async function RootLayout({
                 </NavigationProvider>
                 <Suspense fallback={null}>
                     <YandexMetrika enabled={!isDev} />
-                    <TopMailCounter enabled={!isDev} />
                 </Suspense>
             </body>
         </html>
