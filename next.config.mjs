@@ -24,6 +24,11 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
+                hostname: '*.mail.ru',
+                port: ''
+            },
+            {
+                protocol: 'https',
                 hostname: '*.postimg.cc',
                 port: ''
             },

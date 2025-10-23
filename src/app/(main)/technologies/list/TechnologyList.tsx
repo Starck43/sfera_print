@@ -84,6 +84,7 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                             subTitle={excerpt}
                             align="center"
                             transform="upperFirst"
+                            fullWidth
                         />
                     </Section>
                 ))}
