@@ -9,7 +9,7 @@ async function getPage<T>(slug: string | null = null): Promise<T> {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': 'true'
             },
-            cache: 'force-cache'
+            //cache: 'force-cache'
         },
     )
     if (!res.ok) {

@@ -7,7 +7,7 @@ export async function getPosts(endpoint: string) {
     const res = await fetch(
         normalizeUrlPath(`${process.env.NEXT_PUBLIC_API_SERVER}/api/${endpoint}/`),
         {
-            cache: 'force-cache'
+            //cache: 'force-cache'
         }
     )
 
