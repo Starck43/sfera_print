@@ -1,6 +1,6 @@
 import 'server-only'
 
-async function getPage<T>(slug: string | null = null): Promise<T> {
+async function getPage<T>(slug: string): Promise<T> {
     const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_SERVER}/api/page/` + (slug ? slug + '/' : ''),
         {
@@ -9,8 +9,11 @@ async function getPage<T>(slug: string | null = null): Promise<T> {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': 'true'
             },
-            //cache: 'force-cache'
-        },
+            cache: 'force-cache',
+            next: slug ? {
+                tags: [slug]
+            } : {}
+        }
     )
     if (!res.ok) {
         console.error(res.statusText, `(${res.status})`)
