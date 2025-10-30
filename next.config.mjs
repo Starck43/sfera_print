@@ -38,7 +38,7 @@ const nextConfig = {
                 port: '8005'
             }
         ],
-        minimumCacheTTL: 60 * 60 * 24 * 30
+        // minimumCacheTTL: 60 * 60 * 24 * 30
     },
     logging:
         process.env.NODE_ENV === 'development'
@@ -68,39 +68,6 @@ const nextConfig = {
             }
         }
     },
-    // webpack(config, { dev }) {
-    //     if (dev) {
-    //         Object.defineProperty(config, 'devtool', {
-    //             get() {
-    //                 return 'source-map'
-    //             },
-    //             set() {
-    //             }
-    //         })
-    //     }
-    //
-    //     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))
-    //
-    //     config.module.rules.push(
-    //         {
-    //             ...fileLoaderRule,
-    //             test: /\.svg$/i,
-    //             resourceQuery: /url/
-    //         },
-    //         {
-    //             test: /\.svg$/i,
-    //             issuer: fileLoaderRule.issuer,
-    //             resourceQuery: {
-    //                 not: [...fileLoaderRule.resourceQuery.not, /url/]
-    //             }, // exclude if *.svg?url
-    //             use: ['@svgr/webpack']
-    //         }
-    //     )
-    //
-    //     fileLoaderRule.exclude = /\.svg$/i
-    //
-    //     return config
-    // },
     compress: true,
     poweredByHeader: false
 }

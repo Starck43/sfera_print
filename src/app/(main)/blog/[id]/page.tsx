@@ -11,6 +11,8 @@ import constructMetadata from '@/shared/lib/helpers/metadata'
 import BlogDetails from '../details/BlogDetails'
 import type { PageProps } from '../../../types'
 
+export const revalidate = 86400
+
 export const generateMetadata = async (
     { params }: PageProps,
     parent: ResolvingMetadata
