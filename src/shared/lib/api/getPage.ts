@@ -1,4 +1,4 @@
-//import 'server-only'
+import 'server-only'
 
 async function getPage<T>(slug: string): Promise<T> {
     const res = await fetch(
