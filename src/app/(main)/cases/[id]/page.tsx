@@ -43,13 +43,13 @@ export const generateMetadata = async (
     )
 }
 
-export async function generateStaticParams() {
-    const data = await getCityCases<CityCases>()
-
-    return data?.map((post) => ({
-        id: post.id
-    }))
-}
+// export async function generateStaticParams() {
+//     const data = await getCityCases<CityCases>()
+//
+//     return data?.map((post) => ({
+//         id: post.id
+//     }))
+// }
 
 const CityCasesPage = async ({ params }: PageProps) => {
     const id = (await params).id

@@ -26,13 +26,13 @@ export const generateMetadata = async (
     return constructMetadata({ ...data, posts: media || [], type: 'article' }, await parent)
 }
 
-export async function generateStaticParams() {
-    const posts = await getFeatures<PostType>()
-
-    return posts?.map((post) => ({
-        slug: post.slug
-    }))
-}
+// export async function generateStaticParams() {
+//     const posts = await getFeatures<PostType>()
+//
+//     return posts?.map((post) => ({
+//         slug: post.slug
+//     }))
+// }
 
 const FeaturePage = async ({ params }: PageProps) => {
     const slug = (await params).slug

@@ -30,13 +30,13 @@ export const generateMetadata = async (
     ) as Metadata
 }
 
-export async function generateStaticParams() {
-    const posts: PostType[] = await getTechnologies()
-
-    return posts?.map((post) => ({
-        slug: post.slug
-    }))
-}
+// export async function generateStaticParams() {
+//     const posts: PostType[] = await getTechnologies()
+//
+//     return posts?.map((post) => ({
+//         slug: post.slug
+//     }))
+// }
 
 const TechnologyDetailsPage = async ({ params }: PageProps) => {
     const slug = (await params).slug
