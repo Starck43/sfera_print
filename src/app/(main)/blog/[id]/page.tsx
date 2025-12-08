@@ -26,14 +26,14 @@ export const generateMetadata = async (
 
     return constructMetadata({ ...data, posts: media || [], type: 'article' }, await parent)
 }
-
-export async function generateStaticParams() {
-    const posts = await getBlog<PostType>()
-
-    return posts?.map((post) => ({
-        id: post.id.toString()
-    }))
-}
+//
+// export async function generateStaticParams() {
+//     const posts = await getBlog<PostType>()
+//
+//     return posts?.map((post) => ({
+//         id: post.id.toString()
+//     }))
+// }
 
 const BlogDetailsPage = async ({ params }: PageProps) => {
     const id = (await params).id
