@@ -93,7 +93,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                     domNode.tagName === 'img' ? domNode : (domNode.firstChild as Element)
                 if (!imgNode.attribs.src) return null
 
-                const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
+                const host = process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, imgNode.attribs.src)
                 const width = parseInt(imgNode.attribs?.width || '') || 16
                 const height = parseInt(imgNode.attribs?.height || '') || 9
@@ -115,7 +115,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
             } else if (domNode instanceof Element && domNode.tagName === 'video') {
                 if (!domNode.attribs?.src || !domNode.attribs?.poster) return null
 
-                const host = process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
+                const host = process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || 'localhost:8000'
                 const src = buildAbsoluteUrl(host, domNode.attribs.src)
                 const poster = buildAbsoluteUrl(host, domNode.attribs.poster)
                 const width = parseInt(domNode.attribs?.width || '16')
