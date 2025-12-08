@@ -37,9 +37,21 @@ const nextConfig = {
                 hostname: 'localhost',
                 port: '8005'
             }
-        ],
+        ]
         // minimumCacheTTL: 60 * 60 * 24 * 30
     },
+    // async rewrites() {
+    //     const API_PROXY_URL = process.env.NEXT_PUBLIC_API_SERVER ||
+    //         process.env.API_SERVER ||
+    //         'https://sferaprint.istarck.ru'
+    //
+    //     return [
+    //         {
+    //             source: '/api/:path*',
+    //             destination: `${API_PROXY_URL}/api/:path*`
+    //         },
+    //     ]
+    // },
     logging:
         process.env.NODE_ENV === 'development'
             ? {

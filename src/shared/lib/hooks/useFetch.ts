@@ -22,7 +22,7 @@ export const useFetch = <T>(
         let finalUrl = endpoint
 
         if (!endpoint.startsWith('http')) {
-            const url = `${process.env.NEXT_PUBLIC_API_SERVER}/api/${endpoint}/`
+            const url = `${process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER}/api/${endpoint}/`
             finalUrl = normalizeUrlPath(
                 params ? `${url}?${new URLSearchParams(params).toString()}` : url
             )
