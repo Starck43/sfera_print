@@ -13,7 +13,7 @@ import { LazyImage } from '@/shared/ui/lazy-image'
 
 import cls from './VideoPlayer.module.sass'
 
-interface VideoPlayerProps extends Omit<PlayerProps, 'src' | 'poster'> {
+interface VideoPlayerProps extends Omit<PlayerProps, 'src' | 'poster' | 'style'> {
     src?: MediaSource
     poster?: MediaSource
     alt?: string
@@ -36,6 +36,7 @@ const VideoPlayer = ({
     height,
     sizes,
     className,
+    style,
     ...other
 }: VideoPlayerProps) => {
     const [isMounted, setIsMounted] = useState(false)
@@ -94,7 +95,7 @@ const VideoPlayer = ({
     return (
         <div
             ref={inViewRef}
-            style={{ position: 'relative', height: '100%', pointerEvents: 'none' }}
+            style={{ position: 'relative', height: '100%', pointerEvents: 'none', ...style }}
         >
             <Player
                 ref={playerRef}
