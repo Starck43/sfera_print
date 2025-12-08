@@ -2,11 +2,11 @@ FROM node:alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat curl
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY .env.* package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY *.env .env.* package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
 RUN \
     if [ -f package-lock.json ]; then npm ci; \
@@ -26,11 +26,32 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Build the application
+# === ИСПРАВЛЕНИЕ: Диагностика сети и настройка для сборки ===
+# 1. Добавляем curl для диагностики
+RUN apk add --no-cache curl ca-certificates
+
+# 2. Проверяем доступность API (опционально, для диагностики)
+RUN echo "=== Проверка сети перед сборкой ===" && \
+    echo "IP хоста Docker:" && \
+    cat /etc/hosts && \
+    echo "" && \
+    echo "Проверка DNS:" && \
+    nslookup sferaprint.istarck.ru 2>/dev/null || echo "nslookup не установлен" && \
+    echo "" && \
+    echo "Проверка доступа к API:" && \
+    curl -s -o /dev/null -w "Status: %{http_code}, Time: %{time_total}s\n" \
+    --max-time 5 https://sferaprint.istarck.ru/api/features/ || \
+    echo "API недоступен"
+
+# 3. Устанавливаем переменную для fallback режима
+ENV NEXT_PUBLIC_BUILD_MODE=true
+ENV SKIP_API_DURING_BUILD=true
+
+# 4. Build the application
 RUN \
-    if [ -f package-lock.json ]; then npm run build; \
-    elif [ -f yarn.lock ]; then yarn run build; \
-    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+    if [ -f package-lock.json ]; then SKIP_API_DURING_BUILD=true npm run build; \
+    elif [ -f yarn.lock ]; then SKIP_API_DURING_BUILD=true yarn run build; \
+    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && SKIP_API_DURING_BUILD=true pnpm run build; \
     else echo "Lockfile not found." && exit 1; \
     fi
 
@@ -39,6 +60,10 @@ FROM base
 WORKDIR /app
 
 ENV NODE_ENV=production
+
+# сбрасываем флаг сборки для production
+ENV NEXT_PUBLIC_BUILD_MODE=false
+ENV SKIP_API_DURING_BUILD=false
 
 RUN addgroup nodejs
 RUN adduser -SDH nextjs
@@ -58,4 +83,3 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]
-
