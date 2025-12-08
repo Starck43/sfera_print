@@ -1,8 +1,8 @@
-import 'server-only'
+//import 'server-only'
 
 async function getPage<T>(slug: string): Promise<T> {
     const res = await fetch(
-        `${process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER}/api/page/` + (slug ? slug + '/' : ''),
+        `${process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || "https://sferaprint.istarck.ru"}/api/page/` + (slug ? slug + '/' : ''),
         {
             method: 'GET',
             headers: {

@@ -31,13 +31,13 @@ export const generateMetadata = async (
     ) as Metadata
 }
 
-// export async function generateStaticParams() {
-//     const posts = await getDocuments<PostType>()
-//
-//     return posts?.map((post) => ({
-//         slug: post.slug
-//     }))
-// }
+export async function generateStaticParams() {
+    const posts = await getDocuments<PostType>()
+
+    return posts?.map((post) => ({
+        slug: post.slug
+    }))
+}
 
 const DocumentDetailsPage = async ({ params }: PageProps) => {
     const slug = (await params).slug
