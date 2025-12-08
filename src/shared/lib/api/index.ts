@@ -7,7 +7,12 @@ export async function getPosts(endpoint: string, tag: string = 'posts') {
     const res = await fetch(
         normalizeUrlPath(`${process.env.NEXT_PUBLIC_API_SERVER}/api/${endpoint}/`),
         {
-            cache: "force-cache",
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': 'true'
+            },
+            cache: 'force-cache',
             next: {
                 tags: [endpoint, tag] // Add tags for revalidation
             }
