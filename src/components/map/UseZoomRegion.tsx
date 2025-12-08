@@ -73,7 +73,7 @@ export const useZoomRegion = () => {
                         <g
                             id={`ripples-${city.id}`}
                             className={cls.ripples}
-                            style={{ '--scale': `${1 / scale}` }}
+                            style={{ '--scale': `${1 / scale}` } as React.CSSProperties}
                         >
                             <circle r={14 / scale} stroke="none" className={cls.rp1} />
                             <circle r={14 / scale} stroke="none" className={cls.rp2} />
