@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
 import type { CityProps, ZoomedRegion } from './types'
@@ -13,6 +13,7 @@ export const useZoomRegion = () => {
     } | null>(null)
 
     const [activeCity, setActiveCity] = useState<CityProps | null>(null)
+    const updateZoomedRegionRef = useRef<((region: ZoomedRegion | null) => void) | null>(null)
 
     const onCityClick = useCallback((city: CityProps | null) => {
         if (city !== null) {
@@ -40,9 +41,15 @@ export const useZoomRegion = () => {
         return () => window.removeEventListener('popstate', handlePopState)
     }, [])
 
+    // Используем useEffectEvent для animateRegion
+    const handleAnimateRegion = useEffectEvent(() => {
+        if (zoomedRegion) {
+            animateRegion(zoomedRegion)
+        }
+    })
+
     useEffect(() => {
-        if (!zoomedRegion) return
-        animateRegion(zoomedRegion)
+        handleAnimateRegion()
     }, [zoomedRegion])
 
     const updateZoomedRegion = useCallback((region: ZoomedRegion | null) => {
@@ -52,13 +59,18 @@ export const useZoomRegion = () => {
                     next: undefined,
                     prev: {
                         ...state.next,
-                        onComplete: () => updateZoomedRegion(null)
+                        onComplete: () => updateZoomedRegionRef.current?.(null)
                     }
                 }
             if (region) return { next: region, prev: state?.next || undefined }
             return null
         })
     }, [])
+
+    // Сохраняем функцию в ref для использования в onComplete
+    useEffect(() => {
+        updateZoomedRegionRef.current = updateZoomedRegion
+    }, [updateZoomedRegion])
 
     // Создаем города в выбранном регионе
     const renderCity = useCallback(

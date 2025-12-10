@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     try {
         if (tag) {
             // Revalidate by tag (more reliable for dynamic routes)
-            revalidateTag(tag)
+            revalidateTag(tag, 'max')
             console.log(`[Revalidate] Tag revalidated: ${tag}`)
         }
 
@@ -33,6 +33,8 @@ export async function GET(request: Request) {
 
             await Promise.all(
                 paths.map(async (p) => {
+                    const slug = p === '/' ? '' : p.slice(1) // 'blog', 'cases', и т.д.
+                    revalidateTag(slug, 'max')
                     revalidatePath(p, 'page')
                 })
             )
@@ -45,7 +47,7 @@ export async function GET(request: Request) {
             const pathParts = path.split('/').filter(Boolean)
             if (pathParts.length === 1) {
                 const tag = pathParts[0]
-                revalidateTag(tag)
+                revalidateTag(tag, 'max')
                 console.log(`[Revalidate] Path: ${path}, Tag: ${tag}`)
             }
         }

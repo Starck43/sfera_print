@@ -6,8 +6,8 @@ import { htmlParser } from '@/components/html-parser'
 import { Map } from '@/components/map'
 import type { City } from '@/components/map'
 
+import getPage from '@/shared/lib/api/getPage'
 import constructMetadata from '@/shared/lib/helpers/metadata'
-import { getPage } from '@/shared/lib/api'
 import { Section } from '@/shared/ui/section'
 
 import type { Page } from '../../types'

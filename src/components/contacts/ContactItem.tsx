@@ -10,7 +10,7 @@ interface ContactItemProps {
 
 const ContactItem = ({ item, className }: ContactItemProps) => {
     const Icon = lazy(() => import(`@/svg/${item.type}.svg`))
-    
+
     return item.link ? (
         <NavLink
             title={item.value}

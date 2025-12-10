@@ -94,7 +94,7 @@ const CircleCarousel = ({ duration, slideDuration, infinite = false }: CarouselP
                                     alt={item.title}
                                     sizes="100%"
                                     fill
-                                    priority
+                                    loading="eager"
                                     style={{
                                         opacity: 0,
                                         objectFit: 'contain',

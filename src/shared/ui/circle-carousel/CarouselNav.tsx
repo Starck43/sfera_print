@@ -2,11 +2,11 @@ import React, {
     memo,
     useCallback,
     useEffect,
-    useLayoutEffect,
     useState,
     TouchEvent,
     WheelEvent,
-    useRef
+    useRef,
+    useEffectEvent
 } from 'react'
 
 import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
@@ -29,17 +29,19 @@ interface CarouselNavProps {
 const CarouselNav = (props: CarouselNavProps) => {
     const { steps, slideDuration, infinite = false, onSlideClick, onStepChange } = props
     const { playHeaderAnimation } = useNavigation()
-    const [strokeWidth, setStrokeWidth] = useState(0)
     const touchPosition = useRef<number | null>(null)
     const { setPlayHeaderAnimation } = useNavigation()
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const changeSlideRef = useRef<(direction: number) => void>(() => {})
 
     const handleOnDotClick = useCallback(
         (index: number = 0) => {
-            setPlayHeaderAnimation(false)
+            setCurrentIndex(index)
             onStepChange?.(index)
         },
-        [onStepChange, setPlayHeaderAnimation]
+        [onStepChange]
     )
+
     const { runAnimation, currentSlide, updateSelectedDot } = useCircleAnimation({
         rootClassName: cls.circle__nav,
         carouselClassName: 'carousel_svg',
@@ -51,29 +53,35 @@ const CarouselNav = (props: CarouselNavProps) => {
         onStepChange
     })
 
-    useLayoutEffect(() => {
+    const [strokeWidth] = useState(() => {
         const { width, height } = getWindowDimensions()
-        const calculatedStrokeWidth = calculateStrokeWidth({
+        return calculateStrokeWidth({
             viewport: [width, height],
             viewBox: [115, 115],
             strokeWidth: 0.3,
             scaleFactor: 0.1
         })
-        setStrokeWidth(() => calculatedStrokeWidth)
-    }, [])
+    })
 
     useEffect(() => {
-        runAnimation?.(playHeaderAnimation)
-    }, [playHeaderAnimation, runAnimation])
+        setPlayHeaderAnimation(true)
+    }, [currentIndex, setPlayHeaderAnimation])
 
-    const changeSlide = useCallback(
-        (direction: number) => {
+    const handleRunAnimation = useEffectEvent(() => {
+        runAnimation?.(playHeaderAnimation)
+    })
+
+    useEffect(() => {
+        handleRunAnimation()
+    }, [playHeaderAnimation])
+
+    useEffect(() => {
+        changeSlideRef.current = (direction: number) => {
             const index = (currentSlide.current + direction + steps) % steps
-            handleOnDotClick?.(index)
-            updateSelectedDot?.(index)
-        },
-        [currentSlide, handleOnDotClick, steps, updateSelectedDot]
-    )
+            handleOnDotClick(index)
+            updateSelectedDot(index)
+        }
+    })
 
     const debouncedTrigger = useDebounce(() => {
         touchPosition.current = null
@@ -83,44 +91,33 @@ const CarouselNav = (props: CarouselNavProps) => {
         (e: WheelEvent) => {
             e.stopPropagation()
             debouncedTrigger()
+
             if (touchPosition.current === null) {
                 const offset = e.deltaY
                 touchPosition.current = offset
-                if (offset > 0) {
-                    changeSlide(1)
-                } else {
-                    changeSlide(-1)
-                }
+
+                if (offset > 0) changeSlideRef.current(1)
+                else changeSlideRef.current(-1)
             }
         },
-        [changeSlide, debouncedTrigger]
+        [debouncedTrigger]
     )
 
     const handleTouchStart = (e: TouchEvent) => {
         touchPosition.current = e.touches[0].clientY
     }
 
-    const handleTouchMove = useCallback(
-        (e: TouchEvent) => {
-            if (touchPosition.current === null) {
-                return
-            }
+    const handleTouchMove = useCallback((e: TouchEvent) => {
+        if (touchPosition.current === null) return
 
-            const currentPosition = e.touches[0].clientY
-            const direction = touchPosition.current - currentPosition
+        const currentPosition = e.touches[0].clientY
+        const direction = touchPosition.current - currentPosition
 
-            if (direction > 10) {
-                changeSlide(1)
-            }
+        if (direction > 10) changeSlideRef.current(1)
+        if (direction < -10) changeSlideRef.current(-1)
 
-            if (direction < -10) {
-                changeSlide(-1)
-            }
-
-            touchPosition.current = null
-        },
-        [changeSlide]
-    )
+        touchPosition.current = null
+    }, [])
 
     return (
         <div

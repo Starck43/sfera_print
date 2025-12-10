@@ -5,8 +5,8 @@ import PageLayout from '@/components/layout/page-layout'
 import { htmlParser } from '@/components/html-parser'
 import type { PostType } from '@/components/post'
 
+import getPage from '@/shared/lib/api/getPage'
 import constructMetadata from '@/shared/lib/helpers/metadata'
-import { getPage } from '@/shared/lib/api'
 import { Section } from '@/shared/ui/section'
 
 import type { Page } from '../../types'

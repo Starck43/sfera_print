@@ -1,31 +1,4 @@
-export { default as getPage } from './getPage'
-
-import { normalizeUrlPath } from '@/shared/lib/helpers/url'
-
-export async function getPosts(endpoint: string, tag: string = 'posts') {
-    // get post by endpoint ('<page>/<id | slug>')
-    const res = await fetch(
-        normalizeUrlPath(`${process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || "https://sferaprint.istarck.ru"}/api/${endpoint}/`),
-        {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': 'true'
-            },
-            cache: 'force-cache',
-            next: {
-                tags: [endpoint, tag] // Add tags for revalidation
-            }
-        }
-    )
-
-    if (!res.ok) {
-        console.error(res.statusText, `(${res.status})`)
-        //throw new Error('Failed to load data \n'+res.url)
-    }
-
-    return await res.json()
-}
+import { getPosts } from '@/shared/lib/api/getPosts'
 
 export function getBlog<T>(id: string): Promise<T>
 export function getBlog<T>(): Promise<T[]>

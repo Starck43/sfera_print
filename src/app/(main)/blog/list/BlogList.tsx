@@ -76,7 +76,6 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                                         src={coverSrc.src}
                                         srcSet={coverSrc.srcSet}
                                         alt={title}
-                                        //priority
                                         sizes="(max-width: 684px) 50vw, 100vw"
                                         style={{
                                             width: '100%',

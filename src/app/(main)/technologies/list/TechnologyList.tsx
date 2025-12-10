@@ -68,7 +68,6 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                             <LazyImage
                                 src={cover as string}
                                 alt={title}
-                                //priority
                                 sizes="(max-width: 684px) 50vw, 100vw"
                                 style={{
                                     width: '100%',

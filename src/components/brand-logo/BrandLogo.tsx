@@ -18,7 +18,7 @@ const BrandLogo = () => {
                     alt="Атмосфера Пространств"
                     width={brandImage.width}
                     height={brandImage.height}
-                    priority
+                    preload
                 />
             </Link>
         </div>

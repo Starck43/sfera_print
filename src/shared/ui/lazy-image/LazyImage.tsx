@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import Image, { getImageProps, type ImageProps } from 'next/image'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { createSrcSet, getCurrentSource, getSourceUrl } from '@/shared/lib/helpers/image'
@@ -27,11 +27,15 @@ const LazyImage = ({
     blurDataURL,
     ...rest
 }: LazyImageProps) => {
-    const [isMounted, setIsMounted] = React.useState(false)
     const { orientation, width: windowWidth } = useWindowDimensions()
+    const [isClient, setIsClient] = useState(false)
 
-    useEffect(() => {
-        setIsMounted(true)
+    // Используем useLayoutEffect с requestAnimationFrame
+    useLayoutEffect(() => {
+        // Откладываем установку состояния до следующего кадра анимации
+        requestAnimationFrame(() => {
+            setIsClient(true)
+        })
     }, [])
 
     const onLoadHandler = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -44,8 +48,8 @@ const LazyImage = ({
 
     const currentSrc = getCurrentSource(
         src,
-        isMounted ? orientation : 'landscape',
-        isMounted ? windowWidth : 0
+        isClient ? orientation : 'landscape',
+        isClient ? windowWidth : 0
     )
     const srcUrl = getSourceUrl(currentSrc)
 

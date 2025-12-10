@@ -75,7 +75,7 @@ const Navbar = ({ className }: NavbarProps) => {
                                                 src={image || `/images/socials/${name}.webp`}
                                                 alt={title}
                                                 sizes="100%"
-                                                priority
+                                                loading="eager"
                                                 fill
                                             />
                                         </a>

@@ -109,7 +109,7 @@ export const Slider = (props: SliderProps) => {
                                                 alt={title}
                                                 style={{
                                                     width: '100%',
-                                                    height: '100%',
+                                                    height: '100%'
                                                 }}
                                                 className={cls.image}
                                             />
