@@ -46,7 +46,7 @@ export function generateRegionsMap(
                 regionId: regionId,
                 data: citiesInRegion,
                 regionSvg: {
-                    center: regionCenter,
+                    center: regionCenter
                 }
             }
         }
@@ -55,7 +55,7 @@ export function generateRegionsMap(
             id: regionId,
             properties: {
                 id: feature?.properties?.id,
-                name: feature?.properties?.name,
+                name: feature?.properties?.name
             },
             svg: {
                 bounds: geoPathGenerator.bounds(feature),

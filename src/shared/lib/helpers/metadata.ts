@@ -29,6 +29,11 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
 
     const url =
         new URL(normalizeUrlPath(`${process.env.URL}/${path}`)) || parentMetadata.metadataBase
+
+    const publishedTime = event_date
+        ? new Date(event_date).toISOString()
+        : undefined;
+
     return {
         title: title || parentMetadata.title,
         description: excerpt || parentMetadata.description,
@@ -47,15 +52,15 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
                               .map(({ cover }) => (typeof cover === 'object' ? cover.src : cover))
                       ]
                     : cover
-                    ? [typeof cover === 'object' ? cover.src : cover]
-                    : [
-                          // it means that there is a list of images
-                          ...((images as any[]) || [])
-                              .filter((el) => el.image)
-                              .map(({ image }) => (typeof image === 'object' ? image.src : image))
-                      ],
+                      ? [typeof cover === 'object' ? cover.src : cover]
+                      : [
+                            // it means that there is a list of images
+                            ...((images as any[]) || [])
+                                .filter((el) => el.image)
+                                .map(({ image }) => (typeof image === 'object' ? image.src : image))
+                        ],
             url: url,
-            publishedTime: new Date(event_date || Date.now()).toISOString(),
+            publishedTime: publishedTime,
             type: type
         }
     } as Metadata

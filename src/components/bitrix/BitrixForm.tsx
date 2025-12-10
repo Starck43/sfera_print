@@ -6,6 +6,8 @@ import Script from 'next/script'
 import { type Contact } from '@/components/contacts/types'
 import { Loader } from '@/shared/ui/loader'
 
+const BITRIX_TIMESTAMP = Math.floor(Date.now() / 180000)
+
 export default function BitrixForm({ fallbackContact }: { fallbackContact?: Contact }) {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -31,7 +33,7 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
 
         // Try to move the form immediately if it is already there
         if (moveFormBack()) {
-            setIsLoading(false)
+            setTimeout(() => setIsLoading(false), 0)
             return
         }
 
@@ -84,7 +86,7 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
         <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
             <Script
                 id="bitrix24-form-script"
-                src={`${src}?${(Date.now() / 180000) | 0}`}
+                src={`${src}?${BITRIX_TIMESTAMP}`}
                 strategy="lazyOnload"
                 data-b24-form={data}
                 data-skip-moving="true"
@@ -109,9 +111,7 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
                 </div>
             )}
 
-            <div id="bx24_form_inline">
-                {/* The form will be injected here by Bitrix */}
-            </div>
+            <div id="bx24_form_inline">{/* The form will be injected here by Bitrix */}</div>
         </div>
     )
 }

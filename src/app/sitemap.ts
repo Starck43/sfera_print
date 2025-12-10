@@ -37,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             routesUrl + '/technologies/[slug]',
             'monthly',
             0.5
-        ),
+        )
         // ...generateSitemapPosts(
         //     await getDocuments<PostType>(),
         //     routesUrl + '/documents/[slug]',

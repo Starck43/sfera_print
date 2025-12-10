@@ -22,7 +22,7 @@ export const useFetch = <T>(
         let finalUrl = endpoint
 
         if (!endpoint.startsWith('http')) {
-            finalUrl = `${process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || "https://sferaprint.istarck.ru"}/api/${endpoint}/`
+            finalUrl = `${process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || 'https://sferaprint.istarck.ru'}/api/${endpoint}/`
         }
 
         finalUrl = normalizeUrlPath(

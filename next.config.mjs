@@ -5,8 +5,11 @@ const nextConfig = {
     output: 'standalone',
     trailingSlash: true,
     reactStrictMode: true,
+    cacheComponents: true,
+    reactCompiler: true,
     productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
     images: {
+        dangerouslyAllowLocalIP: true,
         dangerouslyAllowSVG: true,
         contentDispositionType: 'attachment',
         // contentSecurityPolicy: 'default-src \'self\'; script-src \'none\'; sandbox;',
@@ -35,7 +38,6 @@ const nextConfig = {
             {
                 protocol: 'http',
                 hostname: 'localhost',
-                port: '8005'
             }
         ]
         // minimumCacheTTL: 60 * 60 * 24 * 30
@@ -60,11 +62,9 @@ const nextConfig = {
                 }
             }
             : {},
-    eslint: {
-        ignoreDuringBuilds: true
-    },
     experimental: {
         //optimizeCss: true,
+        turbopackFileSystemCacheForDev: true,
         scrollRestoration: true,
         globalNotFound: true
     },

@@ -52,10 +52,10 @@ export const TimelineElement = memo((props: TimelineElementProps) => {
                     isMobile
                         ? undefined
                         : desc || cover
-                        ? isHover
-                            ? onMouseLeave
-                            : onMouseEnter
-                        : undefined
+                          ? isHover
+                              ? onMouseLeave
+                              : onMouseEnter
+                          : undefined
                 }
                 onClick={desc || cover ? (isHover ? onMouseLeave : onMouseEnter) : undefined}
                 onMouseLeave={isMobile ? undefined : onMouseLeave}

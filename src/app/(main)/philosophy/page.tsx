@@ -19,6 +19,7 @@ import ClientsStat from './statistics/ClientsStat'
 import { Partners } from './partners/Partners'
 
 import cls from './Philosophy.module.sass'
+import { Suspense } from 'react'
 
 export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promise<Metadata> => {
     const data = await getPage<Page<any>>('philosophy')
@@ -39,73 +40,77 @@ const PhilosophyPage = async () => {
 
     const parsedContent = htmlParser(content)
 
-    if (!content || !achievements && !stat && !partners) {
+    if (!content || (!achievements && !stat && !partners)) {
         notFound()
     }
 
     return (
-        <PageLayout title={title} gap="none" sectionMode className="philosophy-page">
-            {parsedContent && (
+        <Suspense fallback={null}>
+            <PageLayout title={title} gap="none" sectionMode className="philosophy-page">
+                {parsedContent && (
+                    <Section
+                        gap="none"
+                        className={classnames(cls, ['section'], {}, ['html-container'])}
+                        //style={{ paddingTop: 0 }}
+                    >
+                        {parsedContent}
+                    </Section>
+                )}
                 <Section
-                    gap="none"
-                    className={classnames(cls, ['section'], {}, ['html-container'])}
-                    //style={{ paddingTop: 0 }}
+                    gap="xs"
+                    title={'Наши достижения'}
+                    titleTag="h2"
+                    align="start"
+                    transform="upperFirst"
+                    className={classnames(cls, ['section', 'achievements'], {}, ['grey__style'])}
                 >
-                    {parsedContent}
+                    <Achievements data={achievements as Achievement[]} />
                 </Section>
-            )}
-            <Section
-                gap="xs"
-                title={'Наши достижения'}
-                titleTag="h2"
-                align="start"
-                transform="upperFirst"
-                className={classnames(cls, ['section', 'achievements'], {}, ['grey__style'])}
-            >
-                <Achievements data={achievements as Achievement[]} />
-            </Section>
 
-            <Section
-                title={'Причины выбрать нас'}
-                titleTag="h2"
-                align="end"
-                transform="upperFirst"
-                className={classnames(cls, ['section', 'commom__stat'], {}, ['darkgrey__style'])}
-            >
-                <div className={cls.diagram__container}>
-                    <Image
-                        src={'/images/target-img.webp'}
-                        alt="Причины выбрать нас"
-                        fill
-                        style={{ left: '-3%' }}
-                    />
-                    <CommonStat data={stat as Stat[]} />
-                </div>
-            </Section>
+                <Section
+                    title={'Причины выбрать нас'}
+                    titleTag="h2"
+                    align="end"
+                    transform="upperFirst"
+                    className={classnames(cls, ['section', 'common__stat'], {}, [
+                        'darkgrey__style'
+                    ])}
+                >
+                    <div className={cls.diagram__container}>
+                        <Image
+                            src={'/images/target-img.webp'}
+                            alt="Причины выбрать нас"
+                            fill
+                            style={{ left: '-3%' }}
+                        />
+                        <CommonStat data={stat as Stat[]} />
+                    </div>
+                </Section>
 
-            <Section
-                title={'Наши заказчики'}
-                titleTag="h2"
-                align="center"
-                transform="upperFirst"
-                gap={'none'}
-                className={classnames(cls, ['section'])}
-            >
-                <div className={cls.diagram__container}>
-                    <Image src={'/images/stat-img.webp'} alt="Наши заказчики" fill />
-                    <ClientsStat data={calculatePercentByGroup(partners)} />
-                </div>
-            </Section>
+                <Section
+                    title={'Наши заказчики'}
+                    titleTag="h2"
+                    align="center"
+                    transform="upperFirst"
+                    gap={'none'}
+                    className={classnames(cls, ['section'])}
+                >
+                    <div className={cls.diagram__container}>
+                        <Image src={'/images/stat-img.webp'} alt="Наши заказчики" fill />
+                        <ClientsStat data={calculatePercentByGroup(partners)} />
+                    </div>
+                </Section>
 
-            <Section
-                align="center"
-                gap={'none'}
-                className={classnames(cls, ['section'])}
-                style={{ paddingTop: 0 }}
-            >
-                <Partners data={partners as Partner[]} />
-            </Section>
-        </PageLayout>
+                <Section
+                    align="center"
+                    gap={'none'}
+                    className={classnames(cls, ['section'])}
+                    style={{ paddingTop: 0 }}
+                >
+                    <Partners data={partners as Partner[]} />
+                </Section>
+            </PageLayout>
+        </Suspense>
     )
 }
 

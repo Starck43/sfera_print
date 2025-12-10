@@ -11,7 +11,7 @@ import constructMetadata from '@/shared/lib/helpers/metadata'
 import type { PageProps } from '../../../types'
 import DocumentDetails from '../details/DocumentDetails'
 
-export const revalidate = 86400
+// export const revalidate = 86400
 
 export const generateMetadata = async (
     { params }: PageProps,
@@ -50,7 +50,7 @@ const DocumentDetailsPage = async ({ params }: PageProps) => {
 
     return (
         <PageLayout gap={'none'} sectionMode={false} className="document__details-page">
-            <DocumentDetails/>
+            <DocumentDetails />
         </PageLayout>
     )
 }

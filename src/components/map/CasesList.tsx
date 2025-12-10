@@ -94,7 +94,7 @@ const CasesList = () => {
                                 alt={title}
                                 sizes="100vw"
                                 fill
-                                priority
+                                //loading="eager"
                                 style={{ objectFit: 'cover' }}
                             />
                         )}

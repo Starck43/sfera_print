@@ -1,7 +1,11 @@
+import { defineConfig } from 'eslint/config'
+import nextTypescript from 'eslint-config-next/typescript'
+import reactCompiler from 'eslint-plugin-react-compiler'
+import prettier from 'eslint-plugin-prettier'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { fixupConfigRules } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
+import eslintNext from 'eslint-config-next'
 import js from '@eslint/js'
 import unusedImports from 'eslint-plugin-unused-imports'
 
@@ -13,57 +17,46 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 })
 
-const config = [
-    ...fixupConfigRules(
-        compat.extends(
-            'next/core-web-vitals',
-            //'next/typescript',
-            //'eslint:recommended',
-            //'plugin:react/recommended',
-            'plugin:react-hooks/recommended',
-            'plugin:@typescript-eslint/recommended'
-            //'prettier'
-        )
-    ),
-    {
-        settings: {
-            react: {
-                version: 'detect'
-            },
+export default defineConfig([{
+    extends: [...eslintNext, ...nextTypescript],
+    settings: {
+        react: {
+            version: 'detect'
+        },
 
-            'import/resolver': {
-                node: {
-                    paths: ['.'],
-                    extensions: ['.js', '.jsx', '.ts', '.tsx']
-                }
+        'import/resolver': {
+            node: {
+                paths: ['.'],
+                extensions: ['.js', '.jsx', '.ts', '.tsx']
             }
-        },
-        plugins: {
-            'unused-imports': unusedImports
-        },
-        rules: {
-            '@typescript-eslint/no-explicit-any': 'off',
-            '@typescript-eslint/no-unused-vars': [
-                'warn',
-                {
-                    'args': 'after-used',
-                    'argsIgnorePattern': '^_',
-                    'caughtErrors': 'all',
-                    'caughtErrorsIgnorePattern': '^_',
-                    'destructuredArrayIgnorePattern': '^_',
-                    'varsIgnorePattern': '^_',
-                    'ignoreRestSiblings': true
-                }
-            ],
-            'unused-imports/no-unused-imports': 'warn'
         }
     },
-    {
-        files: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx']
+    plugins: {
+        'unused-imports': unusedImports,
+        'react-compiler': reactCompiler,
+        prettier
     },
-    {
-        ignores: ['.next/', 'node_modules/', 'src/**/*.test.ts']
+    rules: {
+        'react-compiler/react-compiler': 'warn',
+        'prettier/prettier': 'warn',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unused-vars': [
+            'warn',
+            {
+                'args': 'after-used',
+                'argsIgnorePattern': '^_',
+                'caughtErrors': 'all',
+                'caughtErrorsIgnorePattern': '^_',
+                'destructuredArrayIgnorePattern': '^_',
+                'varsIgnorePattern': '^_',
+                'ignoreRestSiblings': true
+            }
+        ],
+        'unused-imports/no-unused-imports': 'warn'
     }
-]
+}, {
+    files: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx']
+}, {
+    ignores: ['.next/', 'node_modules/', 'src/**/*.test.ts']
+}])
 
-export default config
