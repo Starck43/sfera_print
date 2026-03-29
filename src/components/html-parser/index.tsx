@@ -8,6 +8,7 @@ import parse, {
     type HTMLReactParserOptions
 } from 'html-react-parser'
 
+import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
 import { LazyImage } from '@/shared/ui/lazy-image'
 import { VideoPlayer } from '@/shared/ui/video-player'
 
@@ -28,6 +29,7 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
     const videoContentReplacement = (
         match: string,
         linkSrc: string,
+        //ext: string,
         imageSrc: string,
         width: number = 16,
         height: number = 9,
@@ -91,7 +93,11 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
                     domNode.tagName === 'img' ? domNode : (domNode.firstChild as Element)
                 if (!imgNode.attribs.src) return null
 
-                const src = imgNode.attribs.src // buildAbsoluteUrl(host, imgNode.attribs.src)
+                const host =
+                    process.env.API_SERVER ||
+                    process.env.NEXT_PUBLIC_API_SERVER ||
+                    'https://sferaprint.istarck.ru'
+                const src = buildAbsoluteUrl(host, imgNode.attribs.src)
                 const width = parseInt(imgNode.attribs?.width || '') || 16
                 const height = parseInt(imgNode.attribs?.height || '') || 9
 
