@@ -3,10 +3,11 @@ import withBundleAnalyzer from '@next/bundle-analyzer'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'standalone',
-    trailingSlash: true,
     reactStrictMode: true,
-    cacheComponents: true,
+    trailingSlash: true,
+    skipProxyUrlNormalize: true,
     reactCompiler: true,
+    cacheComponents: true,
     productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
     images: {
         dangerouslyAllowLocalIP: true,
@@ -37,7 +38,7 @@ const nextConfig = {
             },
             {
                 protocol: 'http',
-                hostname: 'localhost',
+                hostname: 'localhost'
             }
         ]
         // minimumCacheTTL: 60 * 60 * 24 * 30
@@ -49,9 +50,13 @@ const nextConfig = {
     //
     //     return [
     //         {
+    //             source: '/media/:path*',  // Добавьте это для медиа файлов
+    //             destination: `${API_PROXY_URL}/media/:path*`
+    //         },
+    //         {
     //             source: '/api/:path*',
     //             destination: `${API_PROXY_URL}/api/:path*`
-    //         },
+    //         }
     //     ]
     // },
     logging:
