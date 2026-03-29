@@ -1,6 +1,6 @@
 import type { Contact } from '@/components/contacts/types'
 
-interface Socials {
+export interface Social {
     id: number
     name: string
     title: string
@@ -8,14 +8,20 @@ interface Socials {
     image?: string
 }
 
+export interface Policy {
+    id: number
+    title: string
+    description: string | null
+    policy_type: 'privacy' | 'terms' | 'cookie' | 'other'
+    file_url: string
+    is_active?: boolean
+}
+
 export interface Menu {
     pages: NavItemType[]
     contact: Contact
-    socials?: Socials[]
-    policy?: string
-    agreement?: string
-    cookie?: string
-    offer?: string
+    socials?: Social[]
+    policies?: Policy[]
 }
 
 export interface NavItemType {
