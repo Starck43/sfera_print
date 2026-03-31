@@ -54,11 +54,7 @@
     "typescript": "^5.9.3"
   },
   "resolutions": {
-    "tmp": "^0.2.1"
   },
   "overrides": {
-    "tmp": "^0.2.1",
-    "@types/react": "19.2.7",
-    "@types/react-dom": "19.2.3"
   }
 }
