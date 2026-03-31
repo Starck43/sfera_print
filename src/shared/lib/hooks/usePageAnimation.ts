@@ -19,14 +19,23 @@ export default function usePageAnimation(container: string) {
                 fill: 'forwards'
             }
         )
+
+        // ✅ Обновляем ref при размонтировании
+        return () => {
+            elementRef.current = null
+        }
     }, [container])
 
     const handleClick = useCallback((fn?: () => void) => {
-        if (!elementRef.current) {
+        const el = elementRef.current
+
+        // ✅ Проверяем, что элемент все еще в DOM
+        if (!el || !document.body.contains(el)) {
             fn?.()
             return
         }
-        const anim = elementRef.current.animate(
+
+        const anim = el.animate(
             [
                 { transform: 'translateY(0)', opacity: 1 },
                 { transform: 'translateY(100%)', opacity: 1 }
@@ -37,6 +46,7 @@ export default function usePageAnimation(container: string) {
                 fill: 'forwards'
             }
         )
+
         anim.onfinish = () => {
             fn?.()
         }

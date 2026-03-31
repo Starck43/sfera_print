@@ -43,7 +43,7 @@ export const NavMenu = (props: NavMenuProps) => {
                 contentWidth={getWidthByBreakpoint()}
                 animationTime={400}
                 open={showMenu}
-                closeOnOverlayClick={false}
+                closeOnOverlayClick
                 footer={copyright}
                 onClose={() => setShowMenu(false)}
                 className={classnames(cls, ['navmenu__container'], {}, [className])}
