@@ -4,7 +4,7 @@ import 'server-only'
 
 import { cacheTag } from 'next/cache'
 
-async function getPage<T>(slug: string): Promise<T> {
+export default async function getPage<T>(slug: string): Promise<T> {
     if (slug) cacheTag(slug)
 
     const res = await fetch(
@@ -26,5 +26,3 @@ async function getPage<T>(slug: string): Promise<T> {
 
     return await res.json()
 }
-
-export default getPage

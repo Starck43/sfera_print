@@ -26,6 +26,7 @@ export async function GET(request: Request) {
                 '/cases',
                 '/contacts',
                 '/documents',
+                '/policies',
                 '/features',
                 '/philosophy',
                 '/technologies'
