@@ -30,10 +30,14 @@ const CircleCarousel = ({ duration, slideDuration, infinite = false }: CarouselP
 
     const handleOnSlideClick = useCallback(
         (e: MouseEvent<SVGGElement>, index: number) => {
+            // Проверяем, что клик не по навигации
             const target = e.target as Element
-            if (target.tagName === 'circle') {
+            const isNavCircle = target.closest('.circle__nav') || target.closest('circle')
+
+            if (isNavCircle) {
                 return
             }
+
             setPlayHeaderAnimation(false)
             const route = items?.[index]?.path || ('/' as string)
             router.push(route)

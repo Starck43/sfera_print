@@ -118,12 +118,8 @@ export const htmlParser = (html: string | null): React.ReactNode | null => {
             } else if (domNode instanceof Element && domNode.tagName === 'video') {
                 if (!domNode.attribs?.src || !domNode.attribs?.poster) return null
 
-                const host =
-                    process.env.API_SERVER ||
-                    process.env.NEXT_PUBLIC_API_SERVER ||
-                    'https://sferaprint.istarck.ru'
-                const src = buildAbsoluteUrl(host, domNode.attribs.src)
-                const poster = buildAbsoluteUrl(host, domNode.attribs.poster)
+                const src = domNode.attribs.src // buildAbsoluteUrl(host, domNode.attribs.src)
+                const poster = domNode.attribs.poster // buildAbsoluteUrl(host, domNode.attribs.poster)
                 const width = parseInt(domNode.attribs?.width || '16')
                 const height = parseInt(domNode.attribs?.height || '9')
                 const orientation = width >= height ? ' landscape' : ' portrait'
