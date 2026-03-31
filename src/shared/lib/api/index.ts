@@ -28,6 +28,13 @@ export function getDocuments(slug = ''): Promise<any> {
     return getPosts(endpoint, 'documents')
 }
 
+export function getPolicies<T>(slug: string): Promise<T>
+export function getPolicies<T>(): Promise<T[]>
+export function getPolicies(slug = ''): Promise<any> {
+    const endpoint = `/policies/${slug}`
+    return getPosts(endpoint, 'policies')
+}
+
 export function getCityCases<T>(slug: string): Promise<T>
 export function getCityCases<T>(): Promise<T[]>
 export function getCityCases(slug = ''): Promise<any> {
