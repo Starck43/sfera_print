@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 
 import PageLayout from '@/components/layout/page-layout'
 import { type Contact, Contacts } from '@/components/contacts'
+import { type Policy } from '@/components/navbar/types'
 import { htmlParser } from '@/components/html-parser'
 import { BitrixForm } from '@/components/bitrix'
 
@@ -12,6 +13,8 @@ import constructMetadata from '@/shared/lib/helpers/metadata'
 import { Section } from '@/shared/ui/section'
 import { Col } from '@/shared/ui/stack'
 import { Header } from '@/shared/ui/header'
+import { NavLink } from '@/shared/ui/link'
+import { getPolicies } from '@/shared/lib/api'
 
 import type { Page } from '../../types'
 import cls from './ContactsPage.module.sass'
@@ -28,10 +31,13 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
 
 const ContactsPage = async () => {
     const { title, content = null, sections } = await getPage<Page<Contact>>('contacts')
+    const policies = await getPolicies<Policy>()
 
     if (!content && !sections) {
         notFound()
     }
+
+    const policy_privacy = policies?.find((p: Policy) => p.policy_type === 'privacy')
 
     const parsedContent = htmlParser(content)
 
@@ -77,6 +83,16 @@ const ContactsPage = async () => {
                                     : sections
                             }
                         />
+
+                        {policy_privacy && (
+                            <NavLink
+                                href={policy_privacy.file_url}
+                                title={policy_privacy.title}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={cls.policy}
+                            />
+                        )}
                     </div>
                 </Col>
             </PageLayout>

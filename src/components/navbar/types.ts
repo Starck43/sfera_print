@@ -12,7 +12,7 @@ export interface Policy {
     id: number
     title: string
     description: string | null
-    policy_type: 'privacy' | 'terms' | 'cookie' | 'other'
+    policy_type: 'privacy' | 'terms' | 'cookie' | 'personal_data_consent' | 'other'
     file_url: string
     is_active?: boolean
 }

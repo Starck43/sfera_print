@@ -5,7 +5,7 @@ import 'server-only'
 import { cacheTag } from 'next/cache'
 import { normalizeUrlPath } from '@/shared/lib/helpers/url'
 
-export async function getPosts(endpoint: string, tag: string = 'posts') {
+export async function getPosts<T>(endpoint: string, tag: string = 'posts'): Promise<T> {
     cacheTag(endpoint, tag)
 
     // get post by endpoint ('<page>/<id | slug>')
@@ -18,7 +18,7 @@ export async function getPosts(endpoint: string, tag: string = 'posts') {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': 'true'
-            },
+            }
         }
     )
 

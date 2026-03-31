@@ -39,11 +39,15 @@ const Navbar = ({ className }: NavbarProps) => {
 
     // Находим cookie политику
     const cookiePolicy = useMemo(() => {
-        return transformedData?.policies?.find((policy) => policy.policy_type === 'cookie')
+        return transformedData?.policies?.find(
+            (policy) => policy.policy_type === 'personal_data_consent'
+        )
     }, [transformedData?.policies])
 
     const checkCookiePolicy = useCallback(() => {
-        if (!checkCookie('cookie_policy__asfp') && cookiePolicy) {
+        const cookieStatus = checkCookie('cookie_policy__asfp')
+        // Показываем popup, если cookie нет (undefined) и есть политика
+        if (cookieStatus === undefined && cookiePolicy) {
             setIsCookieOpen(true)
         }
     }, [cookiePolicy])
@@ -112,7 +116,7 @@ const SocialLinks = memo(({ socials }: { socials: Social[] }) => {
         // Убираем анимацию
         element.style.animation = 'none'
         // Принудительно перерисовываем
-        element.offsetHeight // reflow
+        element.offsetHeight
         // Возвращаем анимацию
         element.style.animation = ''
     }
