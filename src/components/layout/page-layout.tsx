@@ -1,11 +1,13 @@
-import React, { ReactNode } from 'react'
+'use client'
 
-import ScrollToTop from '@/components/scroll-to-top/ScrollToTop'
-import { classnames } from '@/shared/lib/helpers/classnames'
+import React, { ReactNode, useState } from 'react'
 
-import type { SizeType } from '@/shared/types/ui'
 import { Portal } from '@/shared/ui/portal'
 import { Col } from '@/shared/ui/stack'
+import { classnames } from '@/shared/lib/helpers/classnames'
+import type { SizeType } from '@/shared/types/ui'
+
+import ScrollToTop from '@/components/scroll-to-top/ScrollToTop'
 import PageHeader from './page-header'
 
 import cls from './Layout.module.sass'

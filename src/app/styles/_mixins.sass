@@ -5,6 +5,7 @@
 @use "sass:math"
 @use 'sass:meta'
 
+
 @mixin transform-pos($x:50%, $y:50%, $zoom:1)
 	position: absolute
 	top: $x
@@ -99,19 +100,19 @@
 
 @function hex-to-rgb($hex)
 	@if string.index(#{$hex}, '#')
-		@return rgb(color.red($hex), color.green($hex), color.blue($hex))
+		@return rgb(color.change($hex, 'red', $space: rgb), color.change($hex, 'green', $space: rgb), color.change($hex, 'blue', $space: rgb))
 	@else
 		@warn "Invalid input. The input must be a string in the format of a hexadecimal color (e.g., #FFFFFF or #000000)."
 		@return none
 
 
-@mixin blur-background($blur:10px, $color:white, $transparentize:0, $filter_transparentize:0)
+@mixin blur-background($blur:10px, $color:white, $transparency:0, $filter_transparency:0)
 	@supports not (backdrop-filter: blur($blur))
-		background-color: color.adjust($color, $alpha: -$transparentize)
+		background-color: color.adjust($color, $alpha: -$transparency)
 
 	@supports (backdrop-filter: blur($blur)) or (-webkit-backdrop-filter: blur($blur))
-		@if $filter_transparentize != 0
-			background-color: color.adjust($color, $alpha: -$filter_transparentize)
+		@if $filter_transparency != 0
+			background-color: color.adjust($color, $alpha: -$filter_transparency)
 
 		backdrop-filter: blur($blur)
 
@@ -123,12 +124,11 @@
 
 	@if $h4 != 0
 		@return calc(#{$parent_h} - #{$h}px - #{$h4})
-
 	@else
 		@return calc(#{$parent_h} - #{$h}px)
 
 
-@mixin animation($name, $animation, $effect:no-fade, $x:0, $y:0, $x1:0, $y1:0)
+@mixin animation($name, $animation, $effect: no-fade, $x: 0, $y: 0, $x1: 0, $y1: 0)
 	animation: animation-#{$name} $animation
 	animation-timing-function: cubic-bezier(.03, .2, .3, 1)
 	animation-fill-mode: both
@@ -140,13 +140,17 @@
 				transform: scale(0)
 				filter: grayscale(1)
 			@else if $effect != no-fade
-				opacity: if($effect == fade-out or $effect != fade-in, 1, 0)
-			@if strip-units($x)+strip-units($y) != 0
+				@if $effect == fade-out
+					opacity: 1
+				@else
+					opacity: 0
+
+			@if strip-units($x) + strip-units($y) != 0
 				transform: translate($x, $y)
+
 		30%
 			@if $effect == zoom
 				transform: scale(1.4)
-				//rotateY(0deg)
 				filter: grayscale(1)
 
 		60%
@@ -154,16 +158,22 @@
 				transform: scale(1)
 				filter: grayscale(1)
 			@else if $effect != no-fade
-				opacity: if($effect == fade-in or $effect == fade-out, 0.5, 1)
+				@if $effect == fade-in or $effect == fade-out
+					opacity: 0.5
+				@else
+					opacity: 1
 
 		100%
 			@if $effect == zoom
 				transform: scale(1)
-				//rotateY(360deg)
 				filter: grayscale(0)
 			@else if $effect != no-fade
-				opacity: if($effect == fade-out, 0, 1)
-			@if strip-units($x1)+strip-units($y1) != 0
+				@if $effect == fade-out
+					opacity: 0
+				@else
+					opacity: 1
+
+			@if strip-units($x1) + strip-units($y1) != 0
 				transform: translate($x1, $y1)
 
 
@@ -279,12 +289,14 @@ $breakpoints: (xs: 320px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
 @mixin media-max($breakpoint)
 	@if map.has-key($breakpoints, $breakpoint)
 		$value: map.get($breakpoints, $breakpoint)
-		@media (max-width: #{if($value == 320px, 320px, $value - 0.01px)})
-			@content
-
+		@if $value == 320px
+			@media (max-width: 320px)
+				@content
+		@else
+			@media (max-width: calc(#{$value} - 0.01px))
+				@content
 	@else
 		@error "Unknown breakpoint #{$breakpoint}. Check your breakpoint definition."
-
 
 @mixin media-min($breakpoint)
 	@if map.has-key($breakpoints, $breakpoint)
@@ -309,13 +321,13 @@ $breakpoints: (xs: 320px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
 		border-left: $size solid transparent
 		border-right: $size solid transparent
 		border-top: $size solid $color
-		margin-top: (0 - math.round($size / 2.5))
+		margin-top: (0 - math.round(math.div($size, 2.5)))
 
 	@else if $direction == up
 		border-left: $size solid transparent
 		border-right: $size solid transparent
 		border-bottom: $size solid $color
-		margin-bottom: 0 - math.round($size / 2.5)
+		margin-bottom: 0 - math.round(math.div($size, 2.5))
 
 	@else if $direction == right
 		border-top: $size solid transparent
@@ -348,12 +360,12 @@ $breakpoints: (xs: 320px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400
 	$w-min: strip-units($w-min)
 	$w-max: strip-units($w-max)
 
-	$k: ($f-max - $f-min)/($w-max - $w-min)
+	$k: math.div($f-max - $f-min, $w-max - $w-min)
 	$b: $f-min - $k * $w-min
 
 	$b: $b + $units
 
-	@return calc(#{$k} * 100vw + #{$b})
+	@return calc($k * 100vw + $b)
 
 
 $pi: 3.1416
@@ -368,7 +380,7 @@ $_precision: 10
 
 	@if $exp < 1
 		@for $i from 0 through -$exp
-			$value: $value / $base
+			$value: math.div($value, $base)
 
 	@return $value
 
@@ -385,10 +397,10 @@ $_precision: 10
 
 @function _to_unitless_rad($angle)
 	@if math.unit($angle) == deg
-		$angle: $angle / 180deg * $pi
+		$angle: math.div($angle, 180deg) * $pi
 
 	@if math.unit($angle) == rad
-		$angle: $angle / 1rad
+		$angle: math.div($angle, 1rad)
 
 	@return $angle
 
@@ -398,7 +410,7 @@ $_precision: 10
 	$sin: $a
 
 	@for $n from 1 through $_precision
-		$sin: $sin + (pow(-1, $n) / fact(2 * $n + 1) ) * pow($a, (2 * $n + 1))
+		$sin: $sin + math.div(pow(-1, $n), fact(2 * $n + 1))  * pow($a, (2 * $n + 1))
 
 	@return $sin
 
@@ -408,7 +420,7 @@ $_precision: 10
 	$cos: 1
 
 	@for $n from 1 through $_precision
-		$cos: $cos + ( pow(-1, $n) / fact(2*$n) ) * pow($a, 2*$n)
+		$cos: $cos +  math.div(pow(-1, $n), fact(2*$n))  * pow($a, 2*$n)
 
 	@return $cos
 

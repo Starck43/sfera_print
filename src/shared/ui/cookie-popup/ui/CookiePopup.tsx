@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { checkCookie, setCookie } from '@/shared/lib/helpers/cookie'
 import { classnames } from '@/shared/lib/helpers/classnames'
@@ -16,36 +16,44 @@ interface CookiePopupProps {
 const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
     const approved_policy = checkCookie('cookie_policy')
     const [visible, setVisible] = useState(false)
-    const timer = useRef(null) as MutableRefObject<any>
+    const timerRef = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
         if (approved_policy && file) {
             window.open(file, '_blank')
         }
 
-        timer.current = setTimeout(
+        timerRef.current = setTimeout(
             () => {
-                //const cookiePolicyAccepted = checkCookie('cookie_policy')
                 setVisible(true)
             },
             !approved_policy ? 2000 : 0
         )
 
-        return () => clearTimeout(timer.current)
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current)
+            }
+        }
+    }, [approved_policy, file])
 
     const handleClose = () => {
-        setCookie('cookie_policy', 'true', 365)
+        setCookie('cookie_policy__asfp', 'true', 365)
         setVisible(false)
 
-        timer.current = setTimeout(() => {
+        timerRef.current = setTimeout(() => {
             onClose()
         }, 600)
-
-        return () => clearTimeout(timer.current)
     }
+
+    // Очистка таймера при размонтировании
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current)
+            }
+        }
+    }, [])
 
     return (
         <div className={classnames(cls, ['cookie__popup'], { visible })}>

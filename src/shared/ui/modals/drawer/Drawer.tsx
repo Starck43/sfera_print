@@ -97,10 +97,9 @@ const DrawerContent = (props: DrawerProps) => {
 
     const onDrawerClick = useCallback(
         (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            e.stopPropagation()
-            if ((e.target as HTMLElement).tagName === 'A') {
-                closeDrawer()
-            } else if (closeOnOverlayClick && e.target === e.currentTarget) {
+            // Закрываем только если клик именно по overlay (фону)
+            // и опция closeOnOverlayClick включена
+            if (closeOnOverlayClick && e.target === e.currentTarget) {
                 closeDrawer()
             }
         },

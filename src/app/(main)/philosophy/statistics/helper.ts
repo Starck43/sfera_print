@@ -74,13 +74,33 @@ export function calculatePercentByGroup(partners: Partner[]): { group: string; p
     // Calculate the total amount of partners
     const totalPartners = partners.length
 
+    if (totalPartners === 0) return []
+
     // Calculate the percentage for each group
-    return Object.entries(categoryCountMap)
+    let result = Object.entries(categoryCountMap)
         .map(([group, count]) => ({
             group,
             percent: (count / totalPartners) * 100
         }))
         .sort((a, b) => b.percent - a.percent)
+
+    // Округляем до 2 знаков и корректируем сумму
+    result = result.map((item) => ({
+        ...item,
+        percent: Math.round(item.percent * 100) / 100
+    }))
+
+    const sum = result.reduce((acc, item) => acc + item.percent, 0)
+    const diff = 100 - sum
+
+    if (Math.abs(diff) > 0.01 && result.length > 0) {
+        result[result.length - 1].percent += diff
+        // Снова округляем последний элемент
+        result[result.length - 1].percent =
+            Math.round(result[result.length - 1].percent * 100) / 100
+    }
+
+    return result
 }
 
 function polarToCartesian(
