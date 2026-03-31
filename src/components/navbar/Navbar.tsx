@@ -39,9 +39,7 @@ const Navbar = ({ className }: NavbarProps) => {
 
     // Находим cookie политику
     const cookiePolicy = useMemo(() => {
-        return transformedData?.policies?.find(
-            (policy) => policy.policy_type === 'personal_data_consent'
-        )
+        return transformedData?.policies?.find((policy) => policy.policy_type === 'cookie')
     }, [transformedData?.policies])
 
     const checkCookiePolicy = useCallback(() => {
