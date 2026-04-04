@@ -76,9 +76,8 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
             <Flex gap="xs" align="baseline">
                 <p>
                     Продолжая пользоваться сайтом, Вы{' '}
-                    {!approved_policy ? 'соглашаетесь' : 'согласились'} с использованием файлов
-                    cookie. Ознакомиться с политикой можно &nbsp;
-                    <NavLink href={file} title="здесь" target="_blank" rel="noopener noreferrer" />.
+                    {!approved_policy ? 'соглашаетесь' : 'согласились'} с использованием файлов&nbsp;
+                    <NavLink href={file} title="cookie" target="_blank" rel="noopener noreferrer" />.
                 </p>
                 <Col gap="auto" align="end" className={cls.btn__group}>
                     <Button size="small" feature="inverted" bordered rounded onClick={handleAccept}>
