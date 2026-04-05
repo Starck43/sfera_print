@@ -3,9 +3,11 @@ node_modules/
 .git*
 .idea/
 .next/
+
+# Environment variables (only commit template files)
+.env
 nginx/
 
 .dockerignore
 Dockerfile
 docker-compose.yml
-

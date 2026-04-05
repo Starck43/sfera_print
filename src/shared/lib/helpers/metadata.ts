@@ -27,12 +27,11 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
         type = 'website'
     } = props
 
-    const url =
-        new URL(normalizeUrlPath(`${process.env.URL}/${path}`)) || parentMetadata.metadataBase
+    const baseUrl = process.env.URL || 'https://asfp.pro'
 
-    const publishedTime = event_date
-        ? new Date(event_date).toISOString()
-        : undefined;
+    const url = new URL(normalizeUrlPath(`${baseUrl}/${path}`)) || parentMetadata.metadataBase
+
+    const publishedTime = event_date ? new Date(event_date).toISOString() : undefined
 
     return {
         title: title || parentMetadata.title,
