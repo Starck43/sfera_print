@@ -62,7 +62,7 @@ const VideoPlayer = ({
         ;(event?.currentTarget as HTMLVideoElement).style.opacity = '0'
     }
 
-    if (!isMounted) {
+    if (!isMounted || !src) {
         const serverOrientation = 'landscape'
         const initialPoster = getCurrentSource(poster, serverOrientation, 1200)
         const posterUrl = getSourceUrl(initialPoster)
@@ -88,9 +88,9 @@ const VideoPlayer = ({
     const currentSrc = getCurrentSource(src, orientation, windowWidth)
     const currentPoster = getCurrentSource(poster, orientation, windowWidth)
     const srcUrl = getSourceUrl(currentSrc)
-    const posterUrl = getSourceUrl(currentPoster)
+    //const srcUrl = `/api/video-proxy?url=${encodeURIComponent(getSourceUrl(currentSrc) as string)}`
 
-    if (!srcUrl) return null
+    const posterUrl = getSourceUrl(currentPoster)
 
     return (
         <div

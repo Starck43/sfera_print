@@ -64,43 +64,50 @@ function rgbToHsl(rgb: { r: number; g: number; b: number }): { h: number; s: num
 }
 
 export function calculatePercentByGroup(partners: Partner[]): { group: string; percent: number }[] {
-    const categoryCountMap: { [key: string]: number } = {}
+    if (!partners.length) return []
 
-    // Count the amount of partners for each group
-    partners.forEach((partner) => {
-        categoryCountMap[partner.group] = (categoryCountMap[partner.group] || 0) + 1
-    })
-
-    // Calculate the total amount of partners
-    const totalPartners = partners.length
-
-    if (totalPartners === 0) return []
-
-    // Calculate the percentage for each group
-    let result = Object.entries(categoryCountMap)
-        .map(([group, count]) => ({
-            group,
-            percent: (count / totalPartners) * 100
-        }))
-        .sort((a, b) => b.percent - a.percent)
-
-    // Округляем до 2 знаков и корректируем сумму
-    result = result.map((item) => ({
-        ...item,
-        percent: Math.round(item.percent * 100) / 100
-    }))
-
-    const sum = result.reduce((acc, item) => acc + item.percent, 0)
-    const diff = 100 - sum
-
-    if (Math.abs(diff) > 0.01 && result.length > 0) {
-        result[result.length - 1].percent += diff
-        // Снова округляем последний элемент
-        result[result.length - 1].percent =
-            Math.round(result[result.length - 1].percent * 100) / 100
+    // Count partners by group
+    const countMap: Record<string, number> = {}
+    for (const partner of partners) {
+        countMap[partner.group] = (countMap[partner.group] || 0) + 1
     }
 
-    return result
+    const total = partners.length
+
+    // compute raw percent with floats
+    const raw = Object.entries(countMap).map(([group, count]) => {
+        const percent = (count / total) * 100
+        return {
+            group,
+            rawPercent: percent,
+            base: Math.floor(percent), // whole number
+            remainder: percent - Math.floor(percent) // fractional part
+        }
+    })
+
+    // compute base sum
+    const baseSum = raw.reduce((sum, x) => sum + x.base, 0)
+
+    // how many percent are missing to 100?
+    let diff = 100 - baseSum
+
+    // distribute missing percentages by largest remainders
+    const sorted = [...raw].sort((a, b) => b.remainder - a.remainder)
+
+    for (let i = 0; i < sorted.length && diff > 0; i++, diff--) {
+        sorted[i].base += 1
+    }
+
+    // build the result and restore original order
+    const result = raw.map((orig) => {
+        const adjusted = sorted.find((s) => s.group === orig.group)!
+        return {
+            group: orig.group,
+            percent: adjusted.base
+        }
+    })
+
+    return result.sort((a, b) => b.percent - a.percent)
 }
 
 function polarToCartesian(

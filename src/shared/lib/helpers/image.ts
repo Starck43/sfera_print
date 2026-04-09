@@ -75,7 +75,7 @@ export const getCurrentSource = (
     orientation: 'landscape' | 'portrait',
     windowWidth: number
 ): string | StaticImageData | undefined => {
-    if (!source) return undefined
+    if (!source) return
 
     // MediaSourceSelector (приоритет самый высокий)
     if (isMediaSourceSelector(source)) {
@@ -124,7 +124,9 @@ export const getCurrentSource = (
 }
 
 // Получение строкового URL из источника
-export const getSourceUrl = (source: string | StaticImageData | undefined): string | undefined => {
+export const getSourceUrl = (
+    source: string | StaticImageData | undefined
+): string | undefined => {
     if (!source) return undefined
     return typeof source === 'string' ? source : source.src
 }

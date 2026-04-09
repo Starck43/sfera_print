@@ -11,27 +11,23 @@ import cls from './Timeline.module.sass'
 
 interface TimelineProps<T> {
     items: T[]
-    topIcon?: ReactElement<ReactSVGElement>
+    topIcon?: ReactElement
     icon?: ReactElement<ReactSVGElement>
 }
 
-const Timeline = <T,>({ items, icon, topIcon }: TimelineProps<T>) => {
-    // const generateColor = calcWheelColor('#52ff0d', '#015f2c', items.length - 1)
-    return (
-        <VerticalTimeline className={cls.timeline} layout="2-columns">
-            {topIcon && (
-                <VerticalTimelineElement visible icon={topIcon} iconClassName={cls.element__icon} />
-            )}
-            {items?.map((item, idx) => (
-                <TimelineElement
-                    key={`timeline-${idx}`}
-                    icon={icon}
-                    // color={generateColor(idx)}
-                    {...(item as PostType)}
-                />
-            ))}
-        </VerticalTimeline>
-    )
-}
+const Timeline = <T,>({ items, topIcon, icon }: TimelineProps<T>) => (
+    <VerticalTimeline className={cls.timeline} layout="2-columns">
+        {topIcon && (
+            <VerticalTimelineElement visible icon={topIcon} iconClassName={cls.element__icon} />
+        )}
+        {items.map((item, idx) => (
+            <TimelineElement
+                key={`timeline-${idx}`}
+                icon={icon}
+                {...(item as PostType)}
+            />
+        ))}
+    </VerticalTimeline>
+)
 
 export default memo(Timeline)

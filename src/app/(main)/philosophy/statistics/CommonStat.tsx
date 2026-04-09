@@ -91,7 +91,7 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
             {refs?.map(({ text }, index) => {
                 const descArray = splitTextIntoArray(data[index].desc || '', 15)
                 const x = text.x.toFixed(2)
-                const y = (text.y - (text.singY < 0 ? -20 : 16 + descArray.length * 10)).toFixed(3)
+                const y = (text.y - (text.singY < 0 ? -20 : 16 + descArray.length * 8)).toFixed(3)
                 return (
                     <g
                         key={`ref-path-${index}`}
@@ -110,7 +110,7 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
                                 <tspan
                                     key={`desc-word-${idx}`}
                                     x={x}
-                                    dy={idx === 0 ? 14 : 10}
+                                    dy={idx === 0 ? 10 : 8}
                                     className={classnames(cls, ['desc'], {}, ['text-desc'])}
                                 >
                                     {word}
