@@ -1,8 +1,11 @@
+'use server'
+
 import { Timeline } from '@/components/timeline'
 import type { Achievement } from '../types'
 
 import AchieveIcon from '@/svg/achieve.svg'
 
-export const Achievements = ({ data }: { data: Achievement[] }) => (
-    <Timeline items={data} icon={<AchieveIcon />} />
-)
+export const Achievements = async ({ data }: { data: Achievement[] }) => {
+    const iconElement = <AchieveIcon /> // вызываем функцию на сервере
+    return <Timeline items={data} icon={iconElement} />
+}

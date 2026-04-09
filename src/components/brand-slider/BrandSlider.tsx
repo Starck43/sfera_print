@@ -19,23 +19,25 @@ const BrandSlider = <T,>({ items }: { items: Partial<T>[] }) => {
     return (
         <Swiper
             modules={[Autoplay]}
+            slidesPerView={3}
+            spaceBetween={8}
+            loop={items.length > 3}
+            autoplay={{
+                delay: 0,
+                disableOnInteraction: true,
+                pauseOnMouseEnter: true
+            }}
+            speed={5000}
             freeMode={{
                 enabled: true,
-                sticky: true
+                momentum: false
             }}
+            allowTouchMove={false}
             mousewheel={{
                 enabled: true,
                 forceToAxis: true
             }}
-            autoplay={{
-                delay: 2000,
-                pauseOnMouseEnter: true
-            }}
             lazyPreloadPrevNext={1}
-            slidesPerView={3}
-            spaceBetween={10}
-            speed={3000}
-            loop={items.length > 3}
             breakpoints={{
                 576: {
                     slidesPerView: 4,
