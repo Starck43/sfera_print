@@ -4,7 +4,7 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const secret = searchParams.get('secret')
-    const path = searchParams.get('path') || '/'
+    const path = searchParams.get('path')
     const tag = searchParams.get('tag')
 
     // Check for secret to confirm this is a valid request
@@ -18,6 +18,8 @@ export async function GET(request: Request) {
             revalidateTag(tag, 'max')
             console.log(`[Revalidate] Tag revalidated: ${tag}`)
         }
+
+        if (!path) return
 
         if (path === '/') {
             const paths = [
