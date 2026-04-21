@@ -31,7 +31,8 @@ export const useFetch = <T>(
 
         try {
             const response = await fetch(finalUrl, {
-                cache: cache ? 'force-cache' : 'no-store'
+                cache: cache ? 'force-cache' : 'no-store',
+                next: { tags: [endpoint] }
             })
             setData(await response.json())
             // console.info(finalUrl)
