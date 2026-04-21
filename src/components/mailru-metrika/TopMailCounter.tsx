@@ -7,11 +7,6 @@ const TopMailCounter = ({ enabled }: { enabled: boolean }) => {
     const ID = process.env.NEXT_PUBLIC_MAILRU_ID
 
     if (!ID || !enabled) {
-        console.log('TopMailCounter: ', {
-            hasId: !!ID,
-            enabled,
-            id: ID
-        })
         return null
     }
 
