@@ -37,6 +37,10 @@ const nextConfig = {
                 port: ''
             },
             {
+                protocol: 'https',
+                hostname: '*.twc1.net'
+            },
+            {
                 protocol: 'http',
                 hostname: 'localhost'
             }

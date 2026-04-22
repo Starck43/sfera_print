@@ -3,16 +3,23 @@ import { normalizeUrlPath } from '@/shared/lib/helpers/url'
 
 type UrlParams = string[][] | Record<string, string> | string | URLSearchParams | null
 
+interface FetchOptions {
+    params?: UrlParams
+    cache?: boolean
+    tags?: string[]
+    deps?: any[]
+}
+
 export const useFetch = <T>(
     endpoint: string | null,
-    params?: UrlParams,
-    cache = true,
-    deps: any[] = []
+    options: FetchOptions = {}
 ): {
     data: T | undefined
     isError: boolean
     revalidate: () => void
 } => {
+    const { params, cache = true, tags = [], deps = [] } = options
+
     const [data, setData] = useState<T>()
     const [error, setError] = useState(false)
 
@@ -32,15 +39,14 @@ export const useFetch = <T>(
         try {
             const response = await fetch(finalUrl, {
                 cache: cache ? 'force-cache' : 'no-store',
-                next: { tags: [endpoint] }
+                next: { tags }
             })
             setData(await response.json())
-            // console.info(finalUrl)
         } catch (error) {
             console.error('Error fetching data:', error)
             setError(true)
         }
-    }, [endpoint, params, cache])
+    }, [endpoint, params, cache, tags])
 
     useLayoutEffect(() => {
         if (deps.length && deps.every((val) => !val && typeof val !== 'number')) return

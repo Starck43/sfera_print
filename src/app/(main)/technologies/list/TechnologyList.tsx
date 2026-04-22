@@ -18,9 +18,7 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
     const [activeTechnology, setActiveTechnology] = useState<number | null>(null)
     const { data: post, isError } = useFetch<PostType>(
         activeTechnology !== null ? items[activeTechnology].path : null,
-        {},
-        true,
-        [activeTechnology]
+        { deps: [activeTechnology] }
     )
 
     const onItemClick = (idx: number | null) => {

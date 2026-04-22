@@ -44,9 +44,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
 
     const { data: city } = useFetch<CityCases>(
         activeCity?.id ? `/city_cases/${activeCity.id}` : null,
-        null,
-        true,
-        [activeCity?.id]
+        { deps: [activeCity?.id] }
     )
 
     const memoizedGenerateRegionsMap = useCallback(
