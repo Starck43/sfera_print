@@ -27,12 +27,7 @@ const CasesList = () => {
     const [nextLink, setNextLink] = useState<string | null | undefined>()
     const [cases, setCases] = useState<PostType[]>([])
 
-    const { data } = useFetch<Cases>(
-        nextLink || '/cases/',
-        null, //{page_size: '1'},
-        true,
-        [inView]
-    )
+    const { data } = useFetch<Cases>(nextLink || '/cases/', { deps: [inView] })
 
     const onItemClick = (idx: number | null) => {
         if (idx !== null) {

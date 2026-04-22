@@ -22,7 +22,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ className }: NavbarProps) => {
-    const { data } = useFetch<Menu>('menu')
+    const { data } = useFetch<Menu>('menu', { tags: ['menu'] })
     const [isCookieOpen, setIsCookieOpen] = useState(false)
 
     const transformedData = useMemo(() => {
@@ -145,9 +145,10 @@ const SocialLinks = memo(({ socials }: { socials: Social[] }) => {
                     <LazyImage
                         src={image || `/images/socials/${name}.webp`}
                         alt={title}
-                        sizes="100%"
+                        width={40}
+                        height={40}
                         loading="eager"
-                        fill
+                        unoptimized
                     />
                 </a>
             ))}

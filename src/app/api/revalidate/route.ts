@@ -4,9 +4,9 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const secret = searchParams.get('secret')
+    const type = searchParams.get('type') || 'page'
     const path = searchParams.get('path')
     const tag = searchParams.get('tag')
-    const type = searchParams.get('type') || 'page'
 
     // Check for secret to confirm this is a valid request
     if (secret !== process.env.SECRET_TOKEN) {
@@ -14,18 +14,20 @@ export async function GET(request: Request) {
     }
 
     // Определяем тип ревалидации (по умолчанию 'page')
-    const revalidateType = type === 'layout' ? 'layout' : type === 'page' ? 'page' : undefined
+    const revalidateType = type === 'layout' ? 'layout' : 'page'
 
     try {
+        // Если передан tag - ревалидируем его
         if (tag) {
-            // Revalidate by tag with 'max' option for Next.js 16+
             revalidateTag(tag, 'max')
             console.log(`[Revalidate] Tag revalidated: ${tag}`)
         }
 
+        // Обработка массовой ревалидации
         if (path === '/') {
             const paths = [
                 '/',
+                '/menu',
                 '/blog',
                 '/cases',
                 '/contacts',
@@ -36,7 +38,6 @@ export async function GET(request: Request) {
                 '/technologies'
             ]
 
-            // Используем for...of для последовательного выполнения
             for (const p of paths) {
                 const slug = p === '/' ? '' : p.slice(1)
                 revalidateTag(slug, 'max')
@@ -44,54 +45,41 @@ export async function GET(request: Request) {
             }
 
             console.log('[Revalidate] All paths revalidated')
-
-            const html = `
-                <h1>Success!</h1>
-                <div>All paths revalidated</div>
-                <a href="/" onclick="window.history.back(); return false;">Go back</a>
-            `
-
-            return new Response(html, {
-                status: 200,
-                headers: {
-                    'Content-Type': 'text/html; charset=utf-8',
-                    'Cache-Control': 'no-store, no-cache, must-revalidate'
-                }
-            })
         }
-
-        if (path) {
+        // Обработка конкретного пути
+        else if (path) {
             revalidatePath(path, revalidateType)
 
-            // Extract and revalidate the specific endpoint tag
+            // Если путь - это один сегмент, ревалидируем его как тег
             const pathParts = path.split('/').filter(Boolean)
             if (pathParts.length === 1) {
-                const extractedTag = pathParts[0]
-                revalidateTag(extractedTag, 'max')
-                console.log(`[Revalidate] Path: ${path}, Tag: ${extractedTag}`)
+                revalidateTag(pathParts[0], 'max')
+                console.log(`[Revalidate] Path: ${path}, Tag: ${pathParts[0]}`)
             }
-
-            const html = `
-                <h1>Success!</h1>
-                <div>Content revalidated for path: ${path} (type: ${revalidateType})</div>
-                <a href="${path}" target="_blank">View page</a> | 
-                <a href="/" onclick="window.history.back(); return false;">Go back</a>
-            `
-
-            return new Response(html, {
-                status: 200,
-                headers: {
-                    'Content-Type': 'text/html; charset=utf-8',
-                    'Cache-Control': 'no-store, no-cache, must-revalidate'
-                }
-            })
         }
 
-        // Если нет ни path, ни tag, возвращаем ошибку
-        return NextResponse.json(
-            { message: 'Either path or tag parameter is required' },
-            { status: 400 }
-        )
+        // Проверка: есть ли что ревалидировать
+        if (!path && !tag) {
+            return NextResponse.json(
+                { message: 'Either path or tag parameter is required' },
+                { status: 400 }
+            )
+        }
+
+        const html = `
+            <h1>Success!</h1>
+            <div>${path === '/' ? 'All paths revalidated' : 'Path: ' + path || 'Tag: ' + tag} (type: ${revalidateType})</div>
+            ${path && path !== '/' ? `<a href="${path}" target="_blank">View page</a> | ` : ''}
+            <a href="/" onclick="window.history.back(); return false;">Go back</a>
+        `
+
+        return new Response(html, {
+            status: 200,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+                'Cache-Control': 'no-store, no-cache, must-revalidate'
+            }
+        })
     } catch (err) {
         console.error('Revalidation error:', err)
         const html = `

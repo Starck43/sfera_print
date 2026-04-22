@@ -22,9 +22,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
     const [activeBlog, setActiveBlog] = useState<number | null>(null)
     const { data: post, isError } = useFetch<PostType>(
         activeBlog !== null ? posts[activeBlog].path : null,
-        {},
-        true,
-        [activeBlog]
+        { deps: [activeBlog] }
     )
 
     const onItemClick = (idx: number | null) => {
