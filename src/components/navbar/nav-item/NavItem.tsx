@@ -21,12 +21,7 @@ const NavItem = (props: NavItemType) => {
     }
 
     return (
-        <Link
-            key={path}
-            href={path}
-            onClick={handleClick}
-            className={isPending ? cls.loading : ''}
-        >
+        <Link key={path} href={path} onClick={handleClick} className={isPending ? cls.loading : ''}>
             <div className={cls.title}>{title}</div>
             <span className={cls.subtitle}>{subtitle}</span>
         </Link>
