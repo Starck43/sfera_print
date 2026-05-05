@@ -1,5 +1,3 @@
-'use client'
-
 import PageHeader from '@/components/page-header'
 import { BrandLogo } from '@/components/brand-logo'
 import { BurgerButton, Navbar } from '@/components/navbar'
