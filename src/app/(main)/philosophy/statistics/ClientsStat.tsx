@@ -2,7 +2,7 @@
 
 import React, { useLayoutEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { createTimeline, svg } from 'animejs'
+import { createTimeline, stagger, svg } from 'animejs'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { calcWheelColor, generateSvgChart, splitTextIntoArray } from './helper'
@@ -50,18 +50,14 @@ const ClientsStat = ({ data }: { data: Stat[] }) => {
             .add(svg.createDrawable('.' + cls.chart + ' .ref-path'), {
                 draw: '0 1',
                 duration: 300,
-                delay: (_, i) => {
-                    return i * 100
-                }
+                delay: stagger(100)
             })
             .add('.' + cls.chart + ' .ref-text', {
                 opacity: 1,
                 translateY: [10, 0],
                 translateX: [10, 0],
                 duration: 500,
-                delay: (_, i) => {
-                    return i * 300
-                }
+                delay: stagger(300)
             })
             .add(percentElements, {
                 ease: 'inOutExpo',

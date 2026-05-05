@@ -2,7 +2,7 @@
 
 import React, { useLayoutEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { createTimeline, svg } from 'animejs'
+import { createTimeline, stagger, svg } from 'animejs'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
 import type { Stat } from '../types'
@@ -47,7 +47,7 @@ const CommonStat = ({ data }: { data: Stat[] }) => {
             .add(svg.createDrawable('.' + cls.stat__diagram + ' .orbit-path'), {
                 draw: '0 1',
                 duration: 1500,
-                delay: (_, i) => i * 100
+                delay: stagger(100)
             })
             .add('.' + cls.stat__diagram + ' .ref-text', {
                 delay: 300,
