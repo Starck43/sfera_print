@@ -51,13 +51,13 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
                               .map(({ cover }) => (typeof cover === 'object' ? cover.src : cover))
                       ]
                     : cover
-                      ? [typeof cover === 'object' ? cover.src : cover]
-                      : [
-                            // it means that there is a list of images
-                            ...((images as any[]) || [])
-                                .filter((el) => el.image)
-                                .map(({ image }) => (typeof image === 'object' ? image.src : image))
-                        ],
+                    ? [typeof cover === 'object' ? cover.src : cover]
+                    : [
+                          // it means that there is a list of images
+                          ...((images as any[]) || [])
+                              .filter((el) => el.image)
+                              .map(({ image }) => (typeof image === 'object' ? image.src : image))
+                      ],
             url: url,
             publishedTime: publishedTime,
             type: type

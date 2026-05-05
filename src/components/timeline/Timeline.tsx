@@ -21,11 +21,7 @@ const Timeline = <T,>({ items, topIcon, icon }: TimelineProps<T>) => (
             <VerticalTimelineElement visible icon={topIcon} iconClassName={cls.element__icon} />
         )}
         {items.map((item, idx) => (
-            <TimelineElement
-                key={`timeline-${idx}`}
-                icon={icon}
-                {...(item as PostType)}
-            />
+            <TimelineElement key={`timeline-${idx}`} icon={icon} {...(item as PostType)} />
         ))}
     </VerticalTimeline>
 )

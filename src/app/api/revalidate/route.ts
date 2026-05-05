@@ -68,7 +68,9 @@ export async function GET(request: Request) {
 
         const html = `
             <h1>Success!</h1>
-            <div>${path === '/' ? 'All paths revalidated' : 'Path: ' + path || 'Tag: ' + tag} (type: ${revalidateType})</div>
+            <div>${
+                path === '/' ? 'All paths revalidated' : 'Path: ' + path || 'Tag: ' + tag
+            } (type: ${revalidateType})</div>
             ${path && path !== '/' ? `<a href="${path}" target="_blank">View page</a> | ` : ''}
             <a href="/" onclick="window.history.back(); return false;">Go back</a>
         `

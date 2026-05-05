@@ -124,9 +124,7 @@ export const getCurrentSource = (
 }
 
 // Получение строкового URL из источника
-export const getSourceUrl = (
-    source: string | StaticImageData | undefined
-): string | undefined => {
+export const getSourceUrl = (source: string | StaticImageData | undefined): string | undefined => {
     if (!source) return undefined
     return typeof source === 'string' ? source : source.src
 }

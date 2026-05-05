@@ -11,7 +11,11 @@ export async function getPosts<T>(endpoint: string, tag: string = 'posts'): Prom
     // get post by endpoint ('<page>/<id | slug>')
     const res = await fetch(
         normalizeUrlPath(
-            `${process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || 'https://sferaprint.istarck.ru'}/api/${endpoint}/`
+            `${
+                process.env.API_SERVER ||
+                process.env.NEXT_PUBLIC_API_SERVER ||
+                'https://sferaprint.istarck.ru'
+            }/api/${endpoint}/`
         ),
         {
             method: 'GET',
