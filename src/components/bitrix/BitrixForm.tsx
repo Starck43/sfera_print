@@ -16,6 +16,14 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
     const src = process.env.NEXT_PUBLIC_BITRIX_FORM_SRC
     const data = process.env.NEXT_PUBLIC_BITRIX_FORM_DATA
 
+    if (!src) {
+        console.error('Bitrix: No form src!')
+    }
+
+    if (!data) {
+        console.error('Bitrix: No form data!')
+    }
+
     useEffect(() => {
         if (!src || !data) return
 

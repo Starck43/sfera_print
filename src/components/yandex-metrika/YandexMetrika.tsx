@@ -15,7 +15,12 @@ const YandexMetrika = ({ enabled }: { enabled: boolean }) => {
         }
     }, [ID, enabled, pathName, searchParams])
 
-    if (!ID || !enabled) return null
+    if (!ID || !enabled) {
+        if (enabled) {
+            console.error('Yandex Metrika: No ID!')
+        }
+        return null
+    }
 
     return (
         <>

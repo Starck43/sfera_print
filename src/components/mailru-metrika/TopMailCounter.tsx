@@ -7,12 +7,15 @@ const TopMailCounter = ({ enabled }: { enabled: boolean }) => {
     const ID = process.env.NEXT_PUBLIC_MAILRU_ID
 
     if (!ID || !enabled) {
+        if (enabled) {
+            console.error('Mail Counter: No ID!')
+        }
         return null
     }
 
     const isValidId = /^\d+$/.test(ID)
     if (!isValidId) {
-        console.error('TopMailCounter: Invalid ID format', ID)
+        console.error('Mail Counter: Invalid ID format', ID)
         return null
     }
 
