@@ -3,9 +3,6 @@ import { type Metadata } from 'next'
 import localFont from 'next/font/local'
 
 import { RouteEvents } from '@/components/routes/route-events'
-import PageHeader from '@/components/page-header'
-import { BrandLogo } from '@/components/brand-logo'
-import { BurgerButton, Navbar } from '@/components/navbar'
 import { YandexMetrika } from '@/components/yandex-metrika'
 import { TopMailCounter } from '@/components/mailru-metrika'
 
