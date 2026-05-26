@@ -182,8 +182,9 @@
 		&:nth-child(#{$i + 1})
 			animation-delay: $start-delay + ($between-delay * $i)
 			@if $bg != null
+				$alpha: 1 - ($i + 1) * 0.1
 				@if meta.type-of($bg) == color
-					background-color: rgba($bg, 1 - ($i + 1) * 0.1)
+					background-color: rgba($bg, $alpha)
 				@else
 					// Для CSS переменных или других значений
 					background-color: $bg
