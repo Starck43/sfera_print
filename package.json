@@ -18,14 +18,14 @@
     "@use-gesture/react": "^10.3.1",
     "animejs": "^4.4.1",
     "html-react-parser": "^5.2.17",
-    "next": "^16.2.7",
+    "next": "^16.3.4",
     "next-video": "^2.8.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-intersection-observer": "^10.1.0",
     "react-vertical-timeline-component": "^3.6.0",
     "server-only": "^0.0.1",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.4",
     "swiper": "^12.2.0"
   },
   "devDependencies": {
