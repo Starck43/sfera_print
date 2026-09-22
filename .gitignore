@@ -48,3 +48,7 @@ videos/*
 !videos/*.js
 !videos/*.ts
 public/_next-video
+
+# agent workspace (local only, never committed)
+.agent/
+.gigacode/
