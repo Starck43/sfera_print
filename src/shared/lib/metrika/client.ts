@@ -1,6 +1,7 @@
 'use client'
 
 import { getCookieValue } from '@/shared/lib/helpers/cookie'
+import { SITE_URL } from '@/shared/const/page'
 
 /**
  * Идентификаторы целей Яндекс.Метрики.
@@ -52,7 +53,7 @@ export const hasMetrikaConsent = isConsentGranted
 
 export const isMessengerLink = (href: string): boolean => {
     try {
-        const hostname = new URL(href, 'https://asfp.pro').hostname.replace(/^www\./, '')
+        const hostname = new URL(href, SITE_URL).hostname.replace(/^www\./, '')
 
         return MESSENGER_HOSTS.includes(hostname)
     } catch {
