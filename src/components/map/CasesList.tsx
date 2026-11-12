@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 import PageLayout from '@/components/layout/page-layout'
@@ -27,7 +27,17 @@ const CasesList = () => {
     const [nextLink, setNextLink] = useState<string | null | undefined>()
     const [cases, setCases] = useState<PostType[]>([])
 
-    const { data } = useFetch<Cases>(nextLink || '/cases/', { deps: [inView] })
+    // Результаты страницы добавляем сразу при ответе сервера,
+    // а ссылку на следующую страницу запоминаем для следующего запроса
+    const handleFetchSuccess = useCallback((response: Cases) => {
+        setCases((prev) => [...prev, ...(response.results || [])])
+        setNextLink(response.next)
+    }, [])
+
+    const { data } = useFetch<Cases>(nextLink || '/cases/', {
+        deps: [inView],
+        onSuccess: handleFetchSuccess
+    })
 
     const onItemClick = (idx: number | null) => {
         if (idx !== null) {
@@ -54,16 +64,6 @@ const CasesList = () => {
         // Чистим подписку при размонтировании компонента
         return () => window.removeEventListener('popstate', handlePopState)
     }, [])
-
-    useEffect(() => {
-        if (!data) return
-        setNextLink(data?.next)
-    }, [data])
-
-    useEffect(() => {
-        setCases((prev) => [...prev, ...(data?.results || [])])
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [nextLink])
 
     const casesContent = useMemo(
         () =>

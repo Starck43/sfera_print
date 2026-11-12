@@ -20,7 +20,15 @@ interface HookModalProps {
 export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModalProps) => {
     const [isShown, setIsShown] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
+    const [wasOpen, setWasOpen] = useState(isOpen)
     const timerRef = useRef(null) as RefObject<ReturnType<typeof setTimeout> | null>
+
+    // Окно монтируется при первом открытии и дальше остаётся в DOM,
+    // чтобы анимация закрытия успела отработать
+    if (isOpen !== wasOpen) {
+        setWasOpen(isOpen)
+        if (isOpen) setIsMounted(true)
+    }
 
     const handleSubmit = useCallback(() => {
         if (onSubmit) {
@@ -60,7 +68,6 @@ export const useModal = ({ onSubmit, onClose, isOpen, animationTime }: HookModal
 
     useEffect(() => {
         if (isOpen) {
-            setIsMounted(true)
             window.addEventListener('keydown', onPressKey)
         }
         return () => {

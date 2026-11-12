@@ -12,11 +12,10 @@ interface LoaderProps {
 }
 
 const Loader = ({ className, duration }: LoaderProps) => {
-    const [isOpening, setIsOpening] = useState(false)
+    const [isOpening, setIsOpening] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
-        setIsOpening(true)
         const timerId = setTimeout(() => {
             setIsOpen(true)
             setIsOpening(false)

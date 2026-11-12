@@ -1,6 +1,6 @@
 {
   "name": "atmosfera",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -17,49 +17,65 @@
     "@react-spring/web": "^10.1.2",
     "@use-gesture/react": "^10.3.1",
     "animejs": "^4.5.0",
-    "html-react-parser": "^6.1.8",
-    "next": "^16.3.6",
-    "next-video": "^2.8.1",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "d3-geo": "^3.1.2",
+    "html-react-parser": "^6.1.9",
+    "next": "^16.4.6",
+    "next-video": "^2.8.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-intersection-observer": "^11.0.1",
     "react-vertical-timeline-component": "^4.0.0",
     "server-only": "^0.0.1",
-    "sharp": "^0.35.4",
-    "swiper": "^14.2.0"
+    "sharp": "^0.35.5",
+    "swiper": "^14.4.0"
   },
   "devDependencies": {
     "@eslint/compat": "^2.1.1",
     "@eslint/eslintrc": "^3.3.7",
     "@eslint/js": "^10.0.1",
-    "@next/bundle-analyzer": "^16.3.6",
+    "@next/bundle-analyzer": "^16.4.6",
     "@svgr/webpack": "^8.1.0",
     "@types/d3-geo": "^3.1.1",
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/react-vertical-timeline-component": "^3.3.6",
-    "@typescript-eslint/eslint-plugin": "^8.70.1",
-    "@typescript-eslint/parser": "^8.70.1",
+    "@typescript-eslint/eslint-plugin": "^8.72.2",
+    "@typescript-eslint/parser": "^8.72.2",
     "babel-plugin-react-compiler": "^1.0.0",
-    "baseline-browser-mapping": "^2.11.25",
+    "baseline-browser-mapping": "^2.11.36",
     "critters": "^0.0.25",
-    "d3-geo": "^3.1.1",
-    "eslint": "^10.11.0",
-    "eslint-config-next": "^16.3.6",
-    "eslint-plugin-prettier": "^5.5.6",
+    "eslint": "^10.14.0",
+    "eslint-config-next": "^16.4.6",
+    "eslint-plugin-prettier": "^5.5.7",
     "eslint-plugin-react-compiler": "^19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "sass": "^1.105.0",
+    "prettier": "^3.10.1",
+    "sass": "^1.108.2",
     "typescript": "^5.9.3"
   },
   "resolutions": {},
   "overrides": {
-    "postcss": "8.5.10",
-    "react-intersection-observer": "^11.0.1"
+    "postcss": "^8.5.23",
+    "source-map-js": "^1.2.2",
+    "undici": "^6.29.1",
+    "minimatch@^10": "^11.0.1",
+    "zod@^4": "^4.6.7",
+    "react-intersection-observer": "^11.0.1",
+    "zod-validation-error": "^4.0.2",
+    "eslint-plugin-react": {
+      "eslint": "$eslint"
+    },
+    "eslint-plugin-import": {
+      "eslint": "$eslint"
+    },
+    "eslint-plugin-jsx-a11y": {
+      "eslint": "$eslint"
+    }
   },
   "allowScripts": {
+    "@parcel/watcher": true,
     "sharp": true,
     "react-vertical-timeline-component": true,
     "unrs-resolver": true
