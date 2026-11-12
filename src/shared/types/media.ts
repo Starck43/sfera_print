@@ -21,8 +21,4 @@ export type MediaSourceSelector = {
 }
 
 export type MediaSource =
-    | string
-    | StaticImageData
-    | ResponsiveSource
-    | BreakpointSource
-    | MediaSourceSelector
+    string | StaticImageData | ResponsiveSource | BreakpointSource | MediaSourceSelector

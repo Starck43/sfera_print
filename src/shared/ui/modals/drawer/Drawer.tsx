@@ -2,7 +2,11 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 
-import { useAnimationModules } from '@/shared/lib/providers/AnimationProvider'
+import {
+    gestureModule,
+    springModule,
+    useAnimationModules
+} from '@/shared/lib/providers/AnimationProvider'
 import { classnames } from '@/shared/lib/helpers/classnames'
 
 import { Col, Row } from '@/shared/ui/stack'
@@ -46,7 +50,10 @@ const DrawerContent = (props: DrawerProps) => {
 
     const drawerRef = useRef<HTMLDivElement>(null)
     const lastFocusedElement = useRef<HTMLElement | null>(null)
-    const { Spring, Gesture } = useAnimationModules()
+    // Модули анимации доступны только после загрузки (см. AnimationProvider),
+    // поэтому обращаемся к ним напрямую, а не через контекст
+    const Spring = springModule!
+    const Gesture = gestureModule!
     const [{ x, y }, api] = Spring.useSpring(() => ({
         native: true,
         x: position === 'left' ? -width : width,

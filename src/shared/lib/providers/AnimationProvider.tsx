@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 type SpringType = typeof import('@react-spring/web')
 type GestureType = typeof import('@use-gesture/react')
@@ -11,30 +11,47 @@ interface AnimationContextPayload {
 
 const AnimationContext = createContext<AnimationContextPayload>({})
 
+/**
+ * Модули анимации подгружаются асинхронно, поэтому храним их на уровне модуля.
+ * Обращаться к ним нужно напрямую (springModule.useSpring), а не через объект из
+ * контекста: вызов хука на значении, полученном из контекста, считается динамическим.
+ */
+export let springModule: SpringType | undefined
+export let gestureModule: GestureType | undefined
+
 // both libraries depend on each other
 const getAsyncAnimationModules = async () =>
     Promise.all([import('@react-spring/web'), import('@use-gesture/react')])
+
+const loadAnimationModules = async (): Promise<void> => {
+    const [Spring, Gesture] = await getAsyncAnimationModules()
+
+    springModule = Spring
+    gestureModule = Gesture
+}
 
 export const useAnimationModules = () =>
     useContext(AnimationContext) as Required<AnimationContextPayload>
 
 export const AnimationProvider = ({ children }: { children: ReactNode }) => {
-    const SpringRef = useRef<SpringType>(undefined)
-    const GestureRef = useRef<GestureType>(undefined)
     const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
-        getAsyncAnimationModules().then(([Spring, Gesture]) => {
-            SpringRef.current = Spring
-            GestureRef.current = Gesture
-            setIsLoaded(true)
+        let cancelled = false
+
+        loadAnimationModules().then(() => {
+            if (!cancelled) setIsLoaded(true)
         })
+
+        return () => {
+            cancelled = true
+        }
     }, [])
 
     const value = useMemo(
         () => ({
-            Gesture: GestureRef.current,
-            Spring: SpringRef.current,
+            Gesture: gestureModule,
+            Spring: springModule,
             isLoaded
         }),
         [isLoaded]

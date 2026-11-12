@@ -1,12 +1,13 @@
 'use client'
 
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef } from 'react'
 import type { PlayerProps } from 'next-video'
 import Player from 'next-video/player'
 import { useInView } from 'react-intersection-observer'
 
 import { type MediaSource } from '@/shared/types/media'
 import { useWindowDimensions } from '@/shared/lib/hooks/useWindowDimensions'
+import { useIsClient } from '@/shared/lib/hooks/useIsClient'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { getCurrentSource, getSourceUrl } from '@/shared/lib/helpers/image'
 import { LazyImage } from '@/shared/ui/lazy-image'
@@ -39,15 +40,11 @@ const VideoPlayer = ({
     style,
     ...other
 }: VideoPlayerProps) => {
-    const [isMounted, setIsMounted] = useState(false)
+    const isMounted = useIsClient()
     const { ref: inViewRef, inView } = useInView({ threshold: 0.5 })
     const playerRef = useRef<HTMLVideoElement | any>(null)
 
     const { orientation, width: windowWidth } = useWindowDimensions()
-
-    useEffect(() => {
-        setIsMounted(true)
-    }, [])
 
     useEffect(() => {
         if (!playerRef.current || !autoPlay) return

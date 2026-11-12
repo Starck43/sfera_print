@@ -1,6 +1,6 @@
 'use client'
 
-import React, { memo, useEffect, useMemo, useState } from 'react'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import PageLayout from '@/components/layout/page-layout'
 import type { PostType } from '@/components/post'
@@ -21,15 +21,18 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
         { deps: [activeTechnology] }
     )
 
-    const onItemClick = (idx: number | null) => {
-        if (idx !== null) {
-            history.pushState({ idx }, '', items[idx].path)
-            setActiveTechnology(idx)
-        } else {
-            history.back()
-            setActiveTechnology(null)
-        }
-    }
+    const onItemClick = useCallback(
+        (idx: number | null) => {
+            if (idx !== null) {
+                history.pushState({ idx }, '', items[idx].path)
+                setActiveTechnology(idx)
+            } else {
+                history.back()
+                setActiveTechnology(null)
+            }
+        },
+        [items]
+    )
 
     // Эффект для обработки перехода назад
     useEffect(() => {
@@ -87,8 +90,7 @@ const TechnologyList = ({ items }: { items: PostType[] }) => {
                 ))}
             </div>
         ),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [items]
+        [items, onItemClick]
     )
 
     if (!items?.length) {

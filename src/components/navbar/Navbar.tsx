@@ -115,7 +115,7 @@ const SocialLinks = memo(({ socials }: { socials: Social[] }) => {
         // Убираем анимацию
         element.style.animation = 'none'
         // Принудительно перерисовываем
-        element.offsetHeight
+        element.getBoundingClientRect()
         // Возвращаем анимацию
         element.style.animation = ''
     }
