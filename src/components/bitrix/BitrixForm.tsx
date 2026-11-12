@@ -1,14 +1,38 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Script from 'next/script'
 
 import { type Contact } from '@/components/contacts/types'
 import { Loader } from '@/shared/ui/loader'
 import { getUtmFromCookies, type UtmParams } from '@/shared/lib/utm'
+import { getClientID, onClientID, reachGoal, YM_CLIENT_ID_PROPERTY } from '@/shared/lib/metrika'
 
 // Временная метка для обновления скрипта формы
 const BITRIX_TIMESTAMP = Math.floor(Date.now() / 180000)
+
+/** Контроллер CRM-формы, доступный из события b24:form:init */
+interface BitrixFormController {
+    setProperty?: (key: string, value: string) => void
+}
+
+interface BitrixWindow extends Window {
+    b24form?: {
+        App?: {
+            list?: () => BitrixFormController[]
+        }
+    }
+}
+
+/**
+ * Контроллер формы из реестра виджета — резервный способ получить объект формы
+ */
+const findFormController = (): BitrixFormController | null => {
+    const forms = (window as BitrixWindow).b24form?.App?.list?.()
+    if (!Array.isArray(forms)) return null
+
+    return forms.find((form) => typeof form?.setProperty === 'function') ?? null
+}
 
 // Константы для UTM полей формы Bitrix
 const UTM_FIELD_MAP = {
@@ -24,6 +48,7 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
     const [error, setError] = useState<string | null>(null)
     const [isFormReady, setIsFormReady] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
+    const formRef = useRef<BitrixFormController | null>(null)
 
     const src = process.env.NEXT_PUBLIC_BITRIX_FORM_SRC
     const data = process.env.NEXT_PUBLIC_BITRIX_FORM_DATA
@@ -32,6 +57,19 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
     if (!src || !data) {
         console.error('Bitrix: Отсутствует конфигурация формы')
     }
+
+    /**
+     * Передаёт ClientID Метрики в CRM-форму
+     */
+    const applyClientID = useCallback((form?: BitrixFormController | null) => {
+        const target = form ?? formRef.current
+        if (!target?.setProperty) return
+
+        const clientID = getClientID()
+        if (!clientID) return
+
+        target.setProperty(YM_CLIENT_ID_PROPERTY, clientID)
+    }, [])
 
     /**
      * Заполняет UTM-поля в форме Bitrix
@@ -140,6 +178,45 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
         })
     }
 
+    /**
+     * События CRM-формы Bitrix24:
+     * b24:form:init — объект формы, b24:form:send:success — успешная отправка
+     */
+    useEffect(() => {
+        const handleInit = (event: Event) => {
+            const detail = (event as CustomEvent<{ object?: BitrixFormController }>).detail
+            const form = detail?.object
+            if (!form?.setProperty) return
+
+            formRef.current = form
+            applyClientID(form)
+        }
+
+        const handleSuccess = () => {
+            reachGoal('zayavka')
+        }
+
+        const handleError = (event: Event) => {
+            console.warn(
+                'Bitrix: Отправка формы завершилась ошибкой',
+                (event as CustomEvent<{ data?: unknown }>).detail?.data
+            )
+        }
+
+        window.addEventListener('b24:form:init', handleInit)
+        window.addEventListener('b24:form:send:success', handleSuccess)
+        window.addEventListener('b24:form:send:error', handleError)
+
+        const unsubscribe = onClientID(() => applyClientID())
+
+        return () => {
+            window.removeEventListener('b24:form:init', handleInit)
+            window.removeEventListener('b24:form:send:success', handleSuccess)
+            window.removeEventListener('b24:form:send:error', handleError)
+            unsubscribe()
+        }
+    }, [applyClientID])
+
     // Эффект для отслеживания появления формы
     useEffect(() => {
         if (!src || !data) return
@@ -152,6 +229,7 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
             setIsLoading(false)
             setIsFormReady(true)
             interceptFormSubmit()
+            applyClientID(findFormController())
             return
         }
 
@@ -166,6 +244,7 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
                             setIsFormReady(true)
                             interceptFormSubmit()
                         }
+                        applyClientID(findFormController())
                         break
                     }
                 }

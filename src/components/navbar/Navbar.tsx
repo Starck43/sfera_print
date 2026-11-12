@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useMemo, useState, useCallback, memo } from 'react'
 
 import { checkCookie } from '@/shared/lib/helpers/cookie'
+import { MESSENGER_SOCIALS } from '@/shared/lib/metrika'
 import { useFetch } from '@/shared/lib/hooks/useFetch'
 import { getMediaUrl } from '@/shared/lib/helpers/url'
 import { Col, Flex } from '@/shared/ui/stack'
@@ -140,6 +141,7 @@ const SocialLinks = memo(({ socials }: { socials: Social[] }) => {
                     target="_blank"
                     className={image ? cls.social__image__link : cls.social__link}
                     style={{ animationDelay: `${1000 + idx * 200}ms` }}
+                    data-metrika-goal={MESSENGER_SOCIALS.includes(name) ? 'messenger' : undefined}
                     onMouseEnter={handleMouseEnter}
                 >
                     <LazyImage
