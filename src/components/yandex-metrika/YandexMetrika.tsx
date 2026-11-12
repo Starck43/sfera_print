@@ -4,16 +4,26 @@ import React, { useEffect } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import Script from 'next/script'
 
+import { METRIKA_ID, resolveClientID } from '@/shared/lib/metrika'
+
 const YandexMetrika = ({ enabled }: { enabled: boolean }) => {
     const pathName = usePathname()
     const searchParams = useSearchParams()
-    const ID = parseInt(process.env.NEXT_PUBLIC_YANDEX_ID || '')
+    const ID = METRIKA_ID
 
     useEffect(() => {
-        if (enabled && ID && window?.ym) {
+        if (enabled && ID && window.ym) {
             window.ym(ID, 'hit', window.location.href)
         }
     }, [ID, enabled, pathName, searchParams])
+
+    useEffect(() => {
+        if (!process.env.NEXT_PUBLIC_YANDEX_ID) {
+            console.warn(
+                `Yandex Metrika: не задана NEXT_PUBLIC_YANDEX_ID, используется счётчик ${ID}`
+            )
+        }
+    }, [ID])
 
     if (!ID || !enabled) {
         if (enabled) {
@@ -24,7 +34,12 @@ const YandexMetrika = ({ enabled }: { enabled: boolean }) => {
 
     return (
         <>
-            <Script id="yandex-metrika">
+            <Script
+                id="yandex-metrika"
+                onReady={() => {
+                    resolveClientID()
+                }}
+            >
                 {`
                     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                     m[i].l=1*new Date();
