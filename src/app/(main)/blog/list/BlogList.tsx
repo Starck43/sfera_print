@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import PageLayout from '@/components/layout/page-layout'
 import type { PostType } from '@/components/post'
@@ -25,15 +25,18 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
         { deps: [activeBlog] }
     )
 
-    const onItemClick = (idx: number | null) => {
-        if (idx !== null) {
-            history.pushState({ idx }, '', posts[idx].path)
-            setActiveBlog(idx)
-        } else {
-            history.back()
-            setActiveBlog(null)
-        }
-    }
+    const onItemClick = useCallback(
+        (idx: number | null) => {
+            if (idx !== null) {
+                history.pushState({ idx }, '', posts[idx].path)
+                setActiveBlog(idx)
+            } else {
+                history.back()
+                setActiveBlog(null)
+            }
+        },
+        [posts]
+    )
 
     // Эффект для обработки перехода назад
     useEffect(() => {
@@ -101,8 +104,7 @@ const BlogList = ({ posts }: { posts: PostType[] }) => {
                 )}
             </div>
         ),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [posts]
+        [posts, onItemClick]
     )
 
     if (!posts?.length) {

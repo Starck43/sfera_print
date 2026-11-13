@@ -3,7 +3,7 @@ import { type Metadata } from 'next'
 import localFont from 'next/font/local'
 
 import { RouteEvents } from '@/components/routes/route-events'
-import { YandexMetrika } from '@/components/yandex-metrika'
+import { MetrikaGoals, YandexMetrika } from '@/components/yandex-metrika'
 import { TopMailCounter } from '@/components/mailru-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
@@ -121,6 +121,7 @@ export default async function RootLayout({
                 <Suspense fallback={null}>
                     <YandexMetrika enabled={!isDev} />
                 </Suspense>
+                <MetrikaGoals />
             </body>
         </html>
     )

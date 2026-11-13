@@ -1,4 +1,6 @@
-import { CSSProperties, ElementType, memo } from 'react'
+'use client'
+
+import { CSSProperties, ElementType, memo, useEffect } from 'react'
 
 import { classnames } from '@/shared/lib/helpers/classnames'
 
@@ -16,9 +18,19 @@ interface OverlayProps {
 // eslint-disable-next-line react/display-name
 export const Overlay = memo((props: OverlayProps) => {
     const { as = 'div', open, show, onClick, className, style } = props
-    document.body.style.overflow = show ? 'hidden' : ''
-
     const Tag = as
+
+    // Блокировку прокрутки задаём в эффекте, а не во время рендера
+    useEffect(() => {
+        if (!show) return
+
+        document.body.style.overflow = 'hidden'
+
+        return () => {
+            document.body.style.overflow = ''
+        }
+    }, [show])
+
     return (
         <Tag
             aria-modal
