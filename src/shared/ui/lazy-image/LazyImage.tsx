@@ -15,6 +15,11 @@ const placeholder =
 interface LazyImageProps extends Omit<ImageProps, 'srcSet' | 'src'> {
     src?: MediaSource
     srcSet?: string[]
+    /**
+     * Изображение показывается сразу, без ожидания загрузки и без анимации.
+     * Нужно для LCP-элемента, который должен быть виден ещё до гидрации.
+     */
+    instant?: boolean
 }
 
 const LazyImage = ({
@@ -25,6 +30,7 @@ const LazyImage = ({
     height,
     className = '',
     blurDataURL,
+    instant = false,
     ...rest
 }: LazyImageProps) => {
     const { orientation, width: windowWidth } = useWindowDimensions()
@@ -55,6 +61,8 @@ const LazyImage = ({
 
     if (!srcUrl) return null
 
+    const imageClassName = classnames(cls, ['image'], {}, [className, instant ? cls.loaded : ''])
+
     // Если нет srcSet, используем обычный Image
     if (!srcSet || srcSet.length === 0) {
         return (
@@ -64,7 +72,7 @@ const LazyImage = ({
                 width={width}
                 height={height}
                 fill={!width && !height}
-                className={classnames(cls, ['image'], {}, [className])}
+                className={imageClassName}
                 onLoad={onLoadHandler}
                 onError={onErrorHandler}
                 placeholder={blurDataURL ? 'blur' : 'empty'}
@@ -86,7 +94,7 @@ const LazyImage = ({
         placeholder: blurDataURL ? 'blur' : ('empty' as any),
         blurDataURL: blurDataURL || placeholder,
         ...rest,
-        className: classnames(cls, ['image'], {}, [className])
+        className: imageClassName
     }
 
     const { props: imageProps } = getImageProps(props)

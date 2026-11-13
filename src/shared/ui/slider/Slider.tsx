@@ -96,6 +96,7 @@ export const Slider = (props: SliderProps) => {
                                             <VideoPlayer
                                                 src={videoSrc}
                                                 poster={imageSrc.src}
+                                                alt={title}
                                                 autoPlay
                                                 controls={false}
                                             />

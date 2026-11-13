@@ -1,8 +1,13 @@
 import React, { memo } from 'react'
 import { Post, type PostType } from '@/components/post'
 
-const TechnologyDetails = ({ data }: { data: PostType | undefined }) => (
-    <Post data={data} style={{ paddingTop: 0 }} />
+interface TechnologyDetailsProps {
+    data: PostType | undefined
+    titleTag?: 'h1' | 'h2' | 'h3'
+}
+
+const TechnologyDetails = ({ data, titleTag }: TechnologyDetailsProps) => (
+    <Post data={data} style={{ paddingTop: 0 }} titleTag={titleTag} />
 )
 
 export default memo(TechnologyDetails)
