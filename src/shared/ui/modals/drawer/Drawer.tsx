@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import {
     gestureModule,
@@ -8,10 +8,11 @@ import {
     useAnimationModules
 } from '@/shared/lib/providers/AnimationProvider'
 import { classnames } from '@/shared/lib/helpers/classnames'
+import { addEscapeLayer } from '@/shared/lib/helpers/escape'
 
 import { Col, Row } from '@/shared/ui/stack'
 import { Portal } from '@/shared/ui/portal'
-import { ROOT_ID } from '@/shared/const/page'
+import { OVERLAY_Z_INDEX, ROOT_ID } from '@/shared/const/page'
 
 import type { DrawerProps } from '../types'
 import { CloseButton } from '../../button'
@@ -121,17 +122,20 @@ const DrawerContent = (props: DrawerProps) => {
         }
     }, [open, openDrawer, closeDrawer])
 
-    // Обработка нажатия Escape
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                closeDrawer(e)
-            }
-        }
+    // Escape закрывает только верхний слой: страница, открытая поверх меню,
+    // забирает его первой, и меню под ней остаётся
+    const [escapeId] = useState(() => Symbol('drawer'))
+    const closeDrawerRef = useRef(closeDrawer)
 
-        document.addEventListener('keydown', handleKeyDown)
-        return () => document.removeEventListener('keydown', handleKeyDown)
-    }, [closeDrawer])
+    useEffect(() => {
+        closeDrawerRef.current = closeDrawer
+    })
+
+    useEffect(() => {
+        if (!open) return
+
+        return addEscapeLayer(escapeId, OVERLAY_Z_INDEX, () => closeDrawerRef.current())
+    }, [open, escapeId])
 
     const bind = Gesture.useDrag(
         ({ last, velocity: [vx, vy], direction: [dx, dy], movement: [mx, my], cancel }) => {
