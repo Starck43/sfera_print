@@ -1,0 +1,38 @@
+@use "../../../styles/mixins" as *
+
+
+.feature__container
+	display: grid
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))
+	grid-gap: var(--gap)
+	width: 100%
+	padding: 0 var(--page-padding)
+
+	+media-min(xxl)
+		grid-template-columns: repeat(3, 1fr)
+
+	article
+		padding: var(--gap)
+		border: var(--border-thickness) transparent dotted
+		border-radius: var(--border-radius)
+
+		h2
+			font-size: clamp(1.2rem, .8rem + 0.5vw, 1.4rem)
+
+		img
+			margin-top: 0.75rem
+
+		&:hover
+			border: var(--border-thickness) var(--border-color-default) solid
+			transform: scale(1.02) !important
+			box-shadow: 0 0 1.4rem -0.2rem var(--box-shadow)
+
+.link
+	display: flex
+	flex-direction: column
+	gap: 0.5rem
+	width: 100%
+	height: 100%
+
+.excerpt
+	flex: auto

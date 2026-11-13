@@ -2,8 +2,13 @@ import React from 'react'
 
 import { Post, type PostType } from '@/components/post'
 
-const BlogDetails = ({ data }: { data: PostType | undefined }) => (
-    <Post data={data} style={{ paddingTop: 0 }} />
+interface BlogDetailsProps {
+    data: PostType | undefined
+    titleTag?: 'h1' | 'h2' | 'h3'
+}
+
+const BlogDetails = ({ data, titleTag }: BlogDetailsProps) => (
+    <Post data={data} style={{ paddingTop: 0 }} titleTag={titleTag} />
 )
 
 export default BlogDetails

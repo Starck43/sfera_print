@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { normalizeUrlPath } from '@/shared/lib/helpers/url'
 
 type UrlParams = string[][] | Record<string, string> | string | URLSearchParams | null
 
@@ -11,8 +10,13 @@ interface FetchOptions<T = unknown> {
     onSuccess?: (data: T) => void
 }
 
-const API_SERVER =
-    process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || 'https://sferaprint.istarck.ru'
+/**
+ * Все запросы к бэкенду выполняются через собственный origin.
+ * Адрес бэкенда известен только на сервере: его подставляет proxy
+ * (см. src/proxy.ts), поэтому в клиентский бандл не попадает
+ * абсолютный адрес API и запросы не зависят от CORS.
+ */
+const API_BASE_PATH = '/api'
 
 /**
  * Приводит массив зависимостей к строке, чтобы его можно было использовать
@@ -22,6 +26,25 @@ const serializeDeps = (deps: unknown[]): string =>
     deps
         .map((dep) => (typeof dep === 'object' && dep !== null ? JSON.stringify(dep) : String(dep)))
         .join('|')
+
+/**
+ * Собирает адрес запроса:
+ * - относительные endpoint'ы превращаются в путь на текущем origin (/api/<endpoint>/)
+ * - абсолютные адреса используются как есть
+ * - query-параметры не ломаются о завершающий слеш
+ */
+const buildUrl = (endpoint: string, paramsKey: string): string => {
+    const [rawPath, rawQuery = ''] = endpoint.split('?')
+    const query = [rawQuery, paramsKey].filter(Boolean).join('&')
+
+    if (rawPath.startsWith('http')) {
+        return `${rawPath}${query ? `?${query}` : ''}`
+    }
+
+    const path = rawPath.replace(/^\/+|\/+$/g, '')
+
+    return `${API_BASE_PATH}/${path}/${query ? `?${query}` : ''}`
+}
 
 export const useFetch = <T>(
     endpoint: string | null,
@@ -52,16 +75,8 @@ export const useFetch = <T>(
     const request = useMemo(() => {
         if (!endpoint) return null
 
-        let finalUrl = endpoint
-
-        if (!endpoint.startsWith('http')) {
-            finalUrl = `${API_SERVER}/api/${endpoint}/`
-        }
-
-        finalUrl = normalizeUrlPath(paramsKey ? `${finalUrl}?${paramsKey}` : finalUrl)
-
         return {
-            url: finalUrl,
+            url: buildUrl(endpoint, paramsKey),
             init: {
                 cache: cache ? ('force-cache' as const) : ('no-store' as const),
                 next: { tags: tagsKey ? tagsKey.split(',') : [] }

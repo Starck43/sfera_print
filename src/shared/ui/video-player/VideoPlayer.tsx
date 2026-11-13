@@ -6,6 +6,7 @@ import Player from 'next-video/player'
 import { useInView } from 'react-intersection-observer'
 
 import { type MediaSource } from '@/shared/types/media'
+import { useNavigation } from '@/shared/lib/providers/NavigationProvider'
 import { useWindowDimensions } from '@/shared/lib/hooks/useWindowDimensions'
 import { useIsClient } from '@/shared/lib/hooks/useIsClient'
 import { classnames } from '@/shared/lib/helpers/classnames'
@@ -43,17 +44,20 @@ const VideoPlayer = ({
     const isMounted = useIsClient()
     const { ref: inViewRef, inView } = useInView({ threshold: 0.5 })
     const playerRef = useRef<HTMLVideoElement | any>(null)
+    // Фоновое видео главного экрана не должно крутиться, пока открыто боковое меню:
+    // через полупрозрачный фон дровера его видно, а пауза экономит ресурсы
+    const { showMenu } = useNavigation()
 
     const { orientation, width: windowWidth } = useWindowDimensions()
 
     useEffect(() => {
         if (!playerRef.current || !autoPlay) return
-        if (inView) {
+        if (inView && !showMenu) {
             playerRef.current.play().catch(() => {})
         } else {
             playerRef.current.pause()
         }
-    }, [autoPlay, inView])
+    }, [autoPlay, inView, showMenu])
 
     const onErrorHandler = (event: any): void => {
         ;(event?.currentTarget as HTMLVideoElement).style.opacity = '0'

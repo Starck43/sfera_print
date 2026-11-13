@@ -7,9 +7,13 @@ import { MetrikaGoals, YandexMetrika } from '@/components/yandex-metrika'
 import { TopMailCounter } from '@/components/mailru-metrika'
 
 import { NavigationProvider } from '@/shared/lib/providers/NavigationProvider'
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/shared/const/page'
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/shared/const/page'
+import { OG_IMAGE, OG_IMAGE_ALT, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@/shared/const/seo'
+import { getSiteUrl } from '@/shared/lib/helpers/seo'
 
 import './globals.scss'
+
+const siteUrl = getSiteUrl()
 
 export const metadata: Metadata = {
     title: {
@@ -18,16 +22,31 @@ export const metadata: Metadata = {
     },
     description: SITE_DESCRIPTION,
     keywords: ['изготовление рекламы', 'фотопечать', 'рекламная продукция'],
-    metadataBase: new URL(process.env.URL || SITE_URL),
+    metadataBase: new URL(siteUrl),
     alternates: {
-        canonical: new URL(process.env.URL || SITE_URL)
+        canonical: `${siteUrl}/`
     },
     openGraph: {
         type: 'website',
         siteName: SITE_TITLE,
-        url: new URL(process.env.URL || SITE_URL),
-        title: 'Атмосфера Пространств',
-        images: '/atmo-logo.svg'
+        locale: 'ru_RU',
+        url: `${siteUrl}/`,
+        title: SITE_TITLE,
+        description: SITE_DESCRIPTION,
+        images: [
+            {
+                url: OG_IMAGE,
+                width: OG_IMAGE_WIDTH,
+                height: OG_IMAGE_HEIGHT,
+                alt: OG_IMAGE_ALT
+            }
+        ]
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: SITE_TITLE,
+        description: SITE_DESCRIPTION,
+        images: [OG_IMAGE]
     },
     applicationName: 'asfp',
     authors: [{ name: 'S. Shabalin', url: 'https://istarck.ru' }],
@@ -59,42 +78,47 @@ export const metadata: Metadata = {
 const brandFont = localFont({
     src: [
         {
-            path: './fonts/Onest-Regular.ttf',
+            path: './fonts/Onest_Regular.woff2',
             weight: '400',
             style: 'normal'
         },
         {
-            path: './fonts/Onest-SemiBold.ttf',
-            weight: '700',
+            path: './fonts/Onest_SemiBold.woff2',
+            weight: '600',
             style: 'normal'
         },
         {
-            path: './fonts/Onest-Black.ttf',
+            path: './fonts/Onest_Black.woff2',
             weight: '900',
             style: 'normal'
         }
     ],
+    display: 'swap',
+    preload: true,
     variable: '--font-family-primary'
 })
 
 const accentFont = localFont({
     src: [
         {
-            path: './fonts/inter-28pt-Regular.ttf',
+            path: './fonts/inter_28pt_Regular.woff2',
             weight: '400',
             style: 'normal'
         },
         {
-            path: './fonts/inter-28pt-SemiBold.ttf',
-            weight: '700',
+            path: './fonts/inter_28pt_SemiBold.woff2',
+            weight: '600',
             style: 'normal'
         },
         {
-            path: './fonts/inter-28pt-Black-Italic.ttf',
+            path: './fonts/inter_28pt_Black_Italic.woff2',
             weight: '900',
-            style: 'normal'
+            style: 'italic'
         }
     ],
+    display: 'swap',
+    // Вторичный шрифт не используется в вёрстке, поэтому его файлы не попадают в preload
+    preload: false,
     variable: '--font-family-secondary'
 })
 

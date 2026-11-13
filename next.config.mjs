@@ -48,22 +48,8 @@ const nextConfig = {
         ]
         // minimumCacheTTL: 60 * 60 * 24 * 30
     },
-    // async rewrites() {
-    //     const API_PROXY_URL = process.env.NEXT_PUBLIC_API_SERVER ||
-    //         process.env.API_SERVER ||
-    //         'https://sferaprint.istarck.ru'
-    //
-    //     return [
-    //         {
-    //             source: '/media/:path*',  // Добавьте это для медиа файлов
-    //             destination: `${API_PROXY_URL}/media/:path*`
-    //         },
-    //         {
-    //             source: '/api/:path*',
-    //             destination: `${API_PROXY_URL}/api/:path*`
-    //         }
-    //     ]
-    // },
+    // Проксирование запросов к API бэкенда выполняет src/proxy.ts:
+    // адрес бэкенда известен только на сервере (API_SERVER)
     logging:
         process.env.NODE_ENV === 'development'
             ? {

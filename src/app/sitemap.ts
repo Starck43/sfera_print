@@ -2,45 +2,48 @@ import type { MetadataRoute } from 'next'
 
 import type { PostType } from '@/components/post'
 
-import { generateSitemapPosts, generateSitemapRoutes } from '@/shared/lib/helpers/sitemap'
-import { getBlog, getCityCases, getFeatures, getTechnologies } from '@/shared/lib/api'
-import { SITE_URL } from '@/shared/const/page'
+import {
+    generateSitemapPosts,
+    generateSitemapRoutes,
+    getLastModified
+} from '@/shared/lib/helpers/sitemap'
+import { getBlog, getCityCases, getDocuments, getFeatures, getTechnologies } from '@/shared/lib/api'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const routesUrl = process.env.URL || SITE_URL
+    const [cases, blog, features, technologies, documents] = await Promise.all([
+        getCityCases<PostType>(),
+        getBlog<PostType>(),
+        getFeatures<PostType>(),
+        getTechnologies<PostType>(),
+        getDocuments<PostType>()
+    ])
+
+    // Дата последнего изменения содержимого: она меняется только вместе с контентом
+    const lastContentUpdate = [
+        ...(cases || []),
+        ...(blog || []),
+        ...(features || []),
+        ...(technologies || []),
+        ...(documents || [])
+    ]
+        .map(getLastModified)
+        .filter((date): date is string => Boolean(date))
+        .sort()
+        .pop()
+
     return [
-        ...generateSitemapRoutes(['cases'], routesUrl, 'weekly', 1),
-        ...generateSitemapRoutes(['blog', 'philosophy'], routesUrl, 'weekly', 0.8),
+        ...generateSitemapRoutes(['cases'], 'weekly', 1, lastContentUpdate),
+        ...generateSitemapRoutes(['blog', 'philosophy'], 'weekly', 0.8, lastContentUpdate),
         ...generateSitemapRoutes(
             ['', 'features', 'technologies', 'documents', 'contacts'],
-            routesUrl,
             'monthly',
-            0.5
+            0.5,
+            lastContentUpdate
         ),
-        ...generateSitemapPosts(
-            await getCityCases<PostType>(),
-            routesUrl + '/cases/[id]',
-            'weekly',
-            1
-        ),
-        ...generateSitemapPosts(await getBlog<PostType>(), routesUrl + '/blog/[id]', 'weekly', 0.8),
-        ...generateSitemapPosts(
-            await getFeatures<PostType>(),
-            routesUrl + '/features/[slug]',
-            'monthly',
-            0.5
-        ),
-        ...generateSitemapPosts(
-            await getTechnologies<PostType>(),
-            routesUrl + '/technologies/[slug]',
-            'monthly',
-            0.5
-        )
-        // ...generateSitemapPosts(
-        //     await getDocuments<PostType>(),
-        //     routesUrl + '/documents/[slug]',
-        //     'monthly',
-        //     0.5
-        // )
+        ...generateSitemapPosts(cases, '/cases/[id]', 'weekly', 1),
+        ...generateSitemapPosts(blog, '/blog/[id]', 'weekly', 0.8),
+        ...generateSitemapPosts(features, '/features/[slug]', 'monthly', 0.5),
+        ...generateSitemapPosts(technologies, '/technologies/[slug]', 'monthly', 0.5),
+        ...generateSitemapPosts(documents, '/documents/[slug]', 'monthly', 0.5)
     ]
 }

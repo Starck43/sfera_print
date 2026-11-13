@@ -15,12 +15,6 @@ interface NavMenuProps {
     className?: string
 }
 
-const copyright = (
-    <span className={cls.copyright}>
-        © {new Date().getFullYear()} ООО «Сфера Принт» Все права защищены
-    </span>
-)
-
 const getWidthByBreakpoint = () => {
     const width = window.innerWidth
     if (width >= 1200) return '35%' // xl
@@ -35,6 +29,14 @@ export const NavMenu = (props: NavMenuProps) => {
     const { showMenu, setShowMenu } = useNavigation()
 
     if (!showMenu) return null
+
+    // Год вычисляется внутри компонента: на этапе предрендера меню закрыто,
+    // и значение new Date() сделало бы страницу нестабильной
+    const copyright = (
+        <span className={cls.copyright}>
+            © {new Date().getFullYear()} ООО «Сфера Принт» Все права защищены
+        </span>
+    )
 
     return (
         <AnimationProvider>

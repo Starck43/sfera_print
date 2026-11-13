@@ -110,16 +110,6 @@ export default Navbar
 
 // Компонент для социальных сетей
 const SocialLinks = memo(({ socials }: { socials: Social[] }) => {
-    const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        const element = e.currentTarget
-        // Убираем анимацию
-        element.style.animation = 'none'
-        // Принудительно перерисовываем
-        element.getBoundingClientRect()
-        // Возвращаем анимацию
-        element.style.animation = ''
-    }
-
     return (
         <Col gap="xs" align="end" className={cls.socials}>
             <style>
@@ -142,7 +132,6 @@ const SocialLinks = memo(({ socials }: { socials: Social[] }) => {
                     className={image ? cls.social__image__link : cls.social__link}
                     style={{ animationDelay: `${1000 + idx * 200}ms` }}
                     data-metrika-goal={MESSENGER_SOCIALS.includes(name) ? 'messenger' : undefined}
-                    onMouseEnter={handleMouseEnter}
                 >
                     <LazyImage
                         src={image || `/images/socials/${name}.webp`}

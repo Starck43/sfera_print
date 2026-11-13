@@ -1,3 +1,4 @@
+import type { PostType } from '@/components/post'
 import { LazyImage } from '@/shared/ui/lazy-image'
 
 import coverH from '@/images/header-h-bg.webp'
@@ -7,7 +8,7 @@ import { CircleCarousel } from '@/shared/ui/circle-carousel'
 const isDev = process.env.NODE_ENV === 'development'
 const slideDuration = parseInt(process.env.CIRCLE_CAROUSEL_SLIDE_DURATION || '3000')
 
-const PageHeader = () => {
+const PageHeader = ({ items }: { items: PostType[] }) => {
     return (
         <>
             <LazyImage
@@ -21,7 +22,12 @@ const PageHeader = () => {
                 fill
                 style={{ objectFit: 'cover' }}
             />
-            <CircleCarousel slideDuration={slideDuration} duration={300} infinite={!isDev} />
+            <CircleCarousel
+                items={items}
+                slideDuration={slideDuration}
+                duration={300}
+                infinite={!isDev}
+            />
         </>
     )
 }
