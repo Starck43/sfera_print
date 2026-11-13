@@ -21,6 +21,14 @@
 			width: 70%
 			left: 30%
 
+// Прозрачный слой мимо страницы: гасит клики по главному экрану и меню под ней
+// и закрывает страницу. Лежит выше меню, но ниже самой страницы
+.backdrop
+	+push--fixed(0)
+	background-color: transparent
+	cursor: pointer
+	z-index: calc(var(--overlay-z-index) + 1)
+
 .header
 	flex: 0 1 auto
 	padding: var(--page-padding)
