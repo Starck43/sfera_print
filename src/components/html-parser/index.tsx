@@ -8,7 +8,6 @@ import parse, {
     type HTMLReactParserOptions
 } from 'html-react-parser'
 
-import { buildAbsoluteUrl } from '@/shared/lib/helpers/url'
 import { LazyImage } from '@/shared/ui/lazy-image'
 import { VideoPlayer } from '@/shared/ui/video-player'
 

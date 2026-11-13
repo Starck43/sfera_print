@@ -1,5 +1,6 @@
 import type { Metadata, ResolvedMetadata } from 'next'
 import { normalizeUrlPath } from '@/shared/lib/helpers/url'
+import { SITE_URL } from '@/shared/const/page'
 
 interface MetadataProps<P> {
     title: string
@@ -27,7 +28,7 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
         type = 'website'
     } = props
 
-    const baseUrl = process.env.URL || 'https://asfp.pro'
+    const baseUrl = process.env.URL || SITE_URL
 
     const url = new URL(normalizeUrlPath(`${baseUrl}/${path}`)) || parentMetadata.metadataBase
 
@@ -51,13 +52,13 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
                               .map(({ cover }) => (typeof cover === 'object' ? cover.src : cover))
                       ]
                     : cover
-                    ? [typeof cover === 'object' ? cover.src : cover]
-                    : [
-                          // it means that there is a list of images
-                          ...((images as any[]) || [])
-                              .filter((el) => el.image)
-                              .map(({ image }) => (typeof image === 'object' ? image.src : image))
-                      ],
+                      ? [typeof cover === 'object' ? cover.src : cover]
+                      : [
+                            // it means that there is a list of images
+                            ...((images as any[]) || [])
+                                .filter((el) => el.image)
+                                .map(({ image }) => (typeof image === 'object' ? image.src : image))
+                        ],
             url: url,
             publishedTime: publishedTime,
             type: type

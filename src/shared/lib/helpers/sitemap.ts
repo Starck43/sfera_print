@@ -1,14 +1,7 @@
 import { normalizeUrlPath } from '@/shared/lib/helpers/url'
 
 type frequencyType =
-    | 'always'
-    | 'hourly'
-    | 'daily'
-    | 'weekly'
-    | 'monthly'
-    | 'yearly'
-    | 'never'
-    | undefined
+    'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never' | undefined
 
 export function generateSitemapRoutes(
     routes: string[],
