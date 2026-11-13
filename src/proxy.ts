@@ -8,7 +8,10 @@ import { getUtmFromUrl, setUtmCookies } from '@/shared/lib/utm'
  */
 const APP_API_ROUTES = ['/api/create-lead', '/api/health', '/api/revalidate', '/api/video-proxy']
 
-const getApiServer = (): string => process.env.API_SERVER || 'http://localhost:8005'
+// Тот же порядок фолбэков, что и у серверных запросов (getPage/getPosts):
+// пропущенная в окружении контейнера переменная не должна ронять API и медиа
+const getApiServer = (): string =>
+    process.env.API_SERVER || process.env.NEXT_PUBLIC_API_SERVER || 'https://sferaprint.istarck.ru'
 
 export function proxy(request: NextRequest) {
     const response = NextResponse.next()
