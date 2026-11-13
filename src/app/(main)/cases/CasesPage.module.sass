@@ -2,3 +2,11 @@
 	padding-top: 0 !important
 	padding-bottom: 0 !important
 	margin-top: calc(var(--translate-y-in-view) * -1)
+
+	// На десктопе карта тянется на остаток высоты страницы, а не по высоте своего
+	// содержимого: иначе размеры карты и её viewBox подпитывают друг друга и SVG
+	// растёт бесконечно. На мобильных вместо карты выводится список кейсов,
+	// ему нужно тянуться по контенту.
+	@media (min-width: 768px) and (orientation: landscape)
+		flex: 1 1 0 !important
+		min-height: 0
