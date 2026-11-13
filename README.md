@@ -55,7 +55,7 @@ handing a release over.
 | `NEXT_PUBLIC_BITRIX_FORM_DATA`  | build         | Bitrix24 CRM form id (`inline/<id>/<hash>`)                                 |
 | `NEXT_PUBLIC_YANDEX_ID`          | build         | Yandex Metrica counter                                                      |
 | `NEXT_PUBLIC_MAILRU_ID`          | build         | Mail.ru (Top.Mail.Ru) counter                                               |
-| `CIRCLE_CAROUSEL_SLIDE_DURATION`| build         | Home carousel autoplay delay, ms (default `3000`)                           |
+| `CIRCLE_CAROUSEL_SLIDE_DURATION`| build         | Home carousel autoplay delay, ms (default `3000`); the number of slides is the number of features returned by the backend |
 | `URL`                           | server/build  | Canonical site origin for metadata, sitemap and robots (default `https://asfp.pro`) |
 | `ANALYZE`                       | build         | `true` — build with the bundle analyzer                                     |
 
