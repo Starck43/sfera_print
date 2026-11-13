@@ -12,7 +12,7 @@ export const UTM_EXPIRY_DAYS = 90
 export const UTM_EXPIRY_SECONDS = UTM_EXPIRY_DAYS * 24 * 60 * 60
 
 export type UtmParams = {
-    [K in typeof UTM_KEYS[number]]: string
+    [K in (typeof UTM_KEYS)[number]]: string
 }
 
 /**
@@ -72,4 +72,3 @@ export function setUtmCookies(
         secure: isProduction
     })
 }
-

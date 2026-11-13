@@ -85,9 +85,7 @@ const useCircleAnimation = (props: CircleAnimationProps) => {
                 }
             }
         })
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [steps])
+    }, [steps, prefixName, duration, delay, loop, updateSelectedDot])
 
     const runAnimation = useCallback((action: boolean) => {
         if (action) {

@@ -1,16 +1,40 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Script from 'next/script'
 
 import { type Contact } from '@/components/contacts/types'
 import { Loader } from '@/shared/ui/loader'
 import { getUtmFromCookies, type UtmParams } from '@/shared/lib/utm'
+import { getClientID, onClientID, reachGoal, YM_CLIENT_ID_PROPERTY } from '@/shared/lib/metrika'
 
 // Временная метка для обновления скрипта формы
 const BITRIX_TIMESTAMP = Math.floor(Date.now() / 180000)
 
-// Константы для UTM полей формы Bitrix
+/** Контроллер CRM-формы, доступный из события b24:form:init */
+interface BitrixFormController {
+    setProperty?: (key: string, value: string) => void
+}
+
+interface BitrixWindow extends Window {
+    b24form?: {
+        App?: {
+            list?: () => BitrixFormController[]
+        }
+    }
+}
+
+/**
+ * Контроллер формы из реестра виджета — резервный способ получить объект формы
+ */
+const findFormController = (): BitrixFormController | null => {
+    const forms = (window as BitrixWindow).b24form?.App?.list?.()
+    if (!Array.isArray(forms)) return null
+
+    return forms.find((form) => typeof form?.setProperty === 'function') ?? null
+}
+
+// Ключи скрытых полей CRM-формы для UTM-меток
 const UTM_FIELD_MAP = {
     utm_source: 'UTM_SOURCE',
     utm_medium: 'UTM_MEDIUM',
@@ -22,8 +46,8 @@ const UTM_FIELD_MAP = {
 export default function BitrixForm({ fallbackContact }: { fallbackContact?: Contact }) {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
-    const [isFormReady, setIsFormReady] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
+    const formRef = useRef<BitrixFormController | null>(null)
 
     const src = process.env.NEXT_PUBLIC_BITRIX_FORM_SRC
     const data = process.env.NEXT_PUBLIC_BITRIX_FORM_DATA
@@ -34,201 +58,101 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
     }
 
     /**
-     * Заполняет UTM-поля в форме Bitrix
+     * Передаёт в CRM-форму скрытые поля: ClientID Метрики и UTM-метки.
+     * Значения уходят в properties, поэтому в CRM-форме должны быть
+     * соответствующие скрытые поля с шаблонами %ym_client_id%, %UTM_SOURCE% и т.д.
      */
-    const fillUtmFields = () => {
-        // Получаем UTM из cookies
+    const applyProperties = useCallback((form?: BitrixFormController | null) => {
+        const target = form ?? formRef.current
+        const setProperty = target?.setProperty
+        if (!setProperty) return
+
+        const clientID = getClientID()
+        if (clientID) {
+            setProperty(YM_CLIENT_ID_PROPERTY, clientID)
+        }
+
         const utmParams = getUtmFromCookies()
-
-        // Проверяем, есть ли хоть какие-то UTM
-        const hasAnyUtm = Object.values(utmParams).some((value) => value)
-        if (!hasAnyUtm) {
-            console.warn('Bitrix: UTM-метки не найдены')
-            return
-        }
-
-        console.log('Bitrix: Заполнение UTM-полей:', utmParams)
-
-        // Ищем форму Bitrix в DOM
-        const form = document.querySelector('.b24-form') as HTMLFormElement
-        if (!form) {
-            console.warn('Bitrix: Форма не найдена в DOM')
-            return
-        }
-
-        // Ищем скрытые поля или создаем их
         Object.entries(UTM_FIELD_MAP).forEach(([utmKey, fieldName]) => {
             const value = utmParams[utmKey as keyof UtmParams]
-            if (!value) return
-
-            // Ищем существующее поле
-            let input = form.querySelector(`input[name="${fieldName}"]`) as HTMLInputElement
-
-            // Если поле не найдено, создаем его
-            if (!input) {
-                input = document.createElement('input')
-                input.type = 'hidden'
-                input.name = fieldName
-                form.appendChild(input)
+            if (value) {
+                setProperty(fieldName, value)
             }
-
-            input.value = value
         })
-
-        // Дополнительно: пытаемся найти и заполнить поля через iframe, если есть
-        const iframe = document.querySelector('.b24-form-iframe') as HTMLIFrameElement
-        if (iframe && iframe.contentWindow) {
-            try {
-                // Отправляем сообщение в iframe с UTM данными
-                iframe.contentWindow.postMessage(
-                    {
-                        type: 'FILL_UTM_FIELDS',
-                        data: utmParams
-                    },
-                    '*'
-                )
-            } catch (e) {
-                // Игнорируем ошибки
-            }
-        }
-    }
+    }, [])
 
     /**
-     * Перемещает форму обратно в наш контейнер
+     * Перемещает форму в наш контейнер
      */
-    const moveFormBack = (): boolean => {
+    const moveFormBack = useCallback((): boolean => {
         const form = document.querySelector('.b24-form')
         const container = containerRef.current
 
         if (form && container && form.parentNode !== container) {
             container.appendChild(form)
-
-            // После перемещения формы заполняем UTM
-            setTimeout(fillUtmFields, 100)
             return true
         }
         return false
-    }
+    }, [])
 
     /**
-     * Перехватывает отправку формы для добавления UTM
+     * События CRM-формы Bitrix24:
+     * b24:form:init — объект формы, b24:form:send:success — успешная отправка
      */
-    const interceptFormSubmit = () => {
-        const form = document.querySelector('.b24-form') as HTMLFormElement
-        if (!form) return
+    useEffect(() => {
+        const handleInit = (event: Event) => {
+            const detail = (event as CustomEvent<{ object?: BitrixFormController }>).detail
+            const form = detail?.object
+            if (!form?.setProperty) return
 
-        // Проверяем, существует ли метод submit
-        if (typeof form.submit !== 'function') {
-            console.warn('Bitrix: form.submit не является функцией')
-            return
+            formRef.current = form
+            applyProperties(form)
         }
 
-        // Сохраняем оригинальный метод отправки
-        const originalSubmit = form.submit.bind(form)
-
-        // Переопределяем метод submit
-        form.submit = function () {
-            // Заполняем UTM перед отправкой
-            fillUtmFields()
-            // Вызываем оригинальный метод
-            return originalSubmit()
+        const handleSuccess = () => {
+            reachGoal('zayavka')
         }
 
-        // Также перехватываем событие submit
-        form.addEventListener('submit', () => {
-            fillUtmFields()
-        })
-    }
+        const handleError = (event: Event) => {
+            console.warn(
+                'Bitrix: Отправка формы завершилась ошибкой',
+                (event as CustomEvent<{ data?: unknown }>).detail?.data
+            )
+        }
 
-    // Эффект для отслеживания появления формы
+        window.addEventListener('b24:form:init', handleInit)
+        window.addEventListener('b24:form:send:success', handleSuccess)
+        window.addEventListener('b24:form:send:error', handleError)
+
+        const unsubscribe = onClientID(() => applyProperties())
+
+        return () => {
+            window.removeEventListener('b24:form:init', handleInit)
+            window.removeEventListener('b24:form:send:success', handleSuccess)
+            window.removeEventListener('b24:form:send:error', handleError)
+            unsubscribe()
+        }
+    }, [applyProperties])
+
+    // Отслеживаем появление формы, загруженной скриптом Bitrix24
     useEffect(() => {
         if (!src || !data) return
 
-        // Флаг для предотвращения повторных вызовов
-        let isMounted = true
+        const observer = new MutationObserver(() => {
+            if (!moveFormBack()) return
 
-        // Пытаемся переместить форму сразу, если она уже есть
-        if (moveFormBack()) {
+            observer.disconnect()
             setIsLoading(false)
-            setIsFormReady(true)
-            interceptFormSubmit()
-            return
-        }
-
-        // Настраиваем MutationObserver для отслеживания появления формы
-        const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                if (mutation.addedNodes.length) {
-                    if (moveFormBack()) {
-                        observer.disconnect()
-                        if (isMounted) {
-                            setIsLoading(false)
-                            setIsFormReady(true)
-                            interceptFormSubmit()
-                        }
-                        break
-                    }
-                }
-            }
+            applyProperties(findFormController())
         })
 
-        // Начинаем наблюдение за document.body
         observer.observe(document.body, {
             childList: true,
             subtree: true
         })
 
-        // Таймаут для остановки ожидания
-        const timeout = setTimeout(() => {
-            observer.disconnect()
-            if (isMounted && isLoading) {
-                console.warn('Bitrix: Истекло время ожидания загрузки формы')
-                setIsLoading(false)
-                // Пробуем заполнить UTM, если форма все же появилась
-                setTimeout(fillUtmFields, 500)
-            }
-        }, 10000)
-
-        // Обработчик сообщений от iframe
-        const handleMessage = (event: MessageEvent) => {
-            if (event.data && event.data.type === 'FORM_READY') {
-                if (isMounted) {
-                    setIsLoading(false)
-                    setIsFormReady(true)
-                    fillUtmFields()
-                }
-            }
-        }
-
-        window.addEventListener('message', handleMessage)
-
-        return () => {
-            isMounted = false
-            observer.disconnect()
-            clearTimeout(timeout)
-            window.removeEventListener('message', handleMessage)
-        }
-    }, [src, data]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    // Дополнительный эффект для попытки заполнения UTM при изменении формы
-    useEffect(() => {
-        if (isFormReady) {
-            // Периодически проверяем, не появились ли новые поля
-            const interval = setInterval(() => {
-                fillUtmFields()
-            }, 2000)
-
-            // Останавливаем проверку через 10 секунд
-            const timeout = setTimeout(() => {
-                clearInterval(interval)
-            }, 10000)
-
-            return () => {
-                clearInterval(interval)
-                clearTimeout(timeout)
-            }
-        }
-    }, [isFormReady])
+        return () => observer.disconnect()
+    }, [src, data, moveFormBack, applyProperties])
 
     // Если нет конфигурации, показываем ошибку
     if (!src || !data) {
@@ -265,8 +189,10 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
                 }}
                 onLoad={() => {
                     console.log('Bitrix: Скрипт формы загружен')
-                    // Пробуем заполнить UTM после загрузки
-                    setTimeout(fillUtmFields, 1000)
+                    if (moveFormBack()) {
+                        setIsLoading(false)
+                        applyProperties(findFormController())
+                    }
                 }}
             />
 

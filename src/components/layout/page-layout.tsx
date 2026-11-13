@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode } from 'react'
 
 import { Portal } from '@/shared/ui/portal'
 import { Col } from '@/shared/ui/stack'

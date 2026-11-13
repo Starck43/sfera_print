@@ -1,10 +1,11 @@
 'use client'
 
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { memo, useCallback, useMemo, useState } from 'react'
 
 import PageLayout from '@/components/layout/page-layout'
 
 import { useWindowDimensions } from '@/shared/lib/hooks/useWindowDimensions'
+import { useIsClient } from '@/shared/lib/hooks/useIsClient'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import useDynamicSVG from '@/shared/lib/hooks/useDynamicSVG'
 import { changeSvgText } from '@/shared/lib/helpers/svg'
@@ -27,29 +28,18 @@ interface MapProps {
 }
 
 const Map = ({ pageTitle, cities }: MapProps) => {
-    const [isClient, setIsClient] = useState(false)
-    const containerRef = useRef<HTMLDivElement>(null)
-    const { width = 0, height = 0 } = useWindowDimensions(containerRef.current)
-    const [regionsData, setRegionsData] = useState<Region[]>([])
-    const [citiesData, setCitiesData] = useState<Record<number, RegionCitiesProps>>({})
+    const isClient = useIsClient()
+    const [container, setContainer] = useState<HTMLDivElement | null>(null)
+    const { width = 0, height = 0 } = useWindowDimensions(container)
     // const [selectedRegion, setSelectedRegion] = useState<number | null>(null)
     const { zoomedRegion, showZoomedRegion, setZoomedRegion, activeCity, setActiveCity } =
         useZoomRegion()
 
     const isPortrait = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < 1
 
-    useEffect(() => {
-        setIsClient(true)
-    }, [])
-
     const { data: city } = useFetch<CityCases>(
         activeCity?.id ? `/city_cases/${activeCity.id}` : null,
         { deps: [activeCity?.id] }
-    )
-
-    const memoizedGenerateRegionsMap = useCallback(
-        () => generateRegionsMap(geoJson as GeoJson, cities, [width, height]),
-        [cities, width, height]
     )
 
     const { svgContent: locationSvg, attributes: locationSvgAttr } = useDynamicSVG({
@@ -64,12 +54,22 @@ const Map = ({ pageTitle, cities }: MapProps) => {
         }
     })
 
-    useEffect(() => {
-        if (!width || isPortrait) return
-        const { regionsData: regions, citiesData } = memoizedGenerateRegionsMap()
-        setRegionsData(regions)
-        setCitiesData(citiesData)
-    }, [memoizedGenerateRegionsMap, isPortrait, width])
+    // Регионы и города пересчитываются при рендере, а не в эффекте
+    const { regionsData, citiesData } = useMemo(() => {
+        if (!width || isPortrait) {
+            return {
+                regionsData: [] as Region[],
+                citiesData: {} as Record<number, RegionCitiesProps>
+            }
+        }
+
+        const generated = generateRegionsMap(geoJson as GeoJson, cities, [width, height])
+
+        return {
+            regionsData: generated.regionsData,
+            citiesData: generated.citiesData
+        }
+    }, [cities, width, height, isPortrait])
 
     // const selectRegionClick = useCallback((id: number) => {
     // 	if (selectedRegion === id) {
@@ -224,7 +224,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
 
     if (!isClient) {
         return (
-            <div className={cls.container} ref={containerRef}>
+            <div className={cls.container} ref={setContainer}>
                 <Loader />
             </div>
         )
@@ -238,7 +238,7 @@ const Map = ({ pageTitle, cities }: MapProps) => {
     // Выводим маркеры с отметкой количества городов на карте регионов
     return (
         <>
-            <div id="regionsData" className={cls.container} ref={containerRef}>
+            <div id="regionsData" className={cls.container} ref={setContainer}>
                 <svg
                     className={classnames(cls, ['svg-map'], {
                         zoomed: !!zoomedRegion

@@ -8,6 +8,7 @@ const nextConfig = {
     skipProxyUrlNormalize: true,
     reactCompiler: true,
     cacheComponents: true,
+    partialPrefetching: true,
     productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
     images: {
         dangerouslyAllowLocalIP: true,
