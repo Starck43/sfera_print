@@ -9,6 +9,8 @@ export {
     isMessengerLink,
     isMetrikaGoal,
     notifyConsentGranted,
+    notifyConsentDeclined,
+    notifyCounterReady,
     onClientID,
     reachGoal,
     requestClientID,

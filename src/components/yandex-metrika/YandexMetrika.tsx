@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import Script from 'next/script'
 
-import { METRIKA_ID, resolveClientID } from '@/shared/lib/metrika'
+import { METRIKA_ID, notifyCounterReady, resolveClientID } from '@/shared/lib/metrika'
 
 const YandexMetrika = ({ enabled }: { enabled: boolean }) => {
     const pathName = usePathname()
@@ -16,6 +16,20 @@ const YandexMetrika = ({ enabled }: { enabled: boolean }) => {
             window.ym(ID, 'hit', window.location.href)
         }
     }, [ID, enabled, pathName, searchParams])
+
+    /**
+     * Счётчик готов, когда inline-скрипт выполнился и определил `window.ym`.
+     * `onReady` у next/script для inline-кода срабатывает до его выполнения,
+     * поэтому проверяем наличие счётчика напрямую.
+     */
+    useEffect(() => {
+        if (!enabled || !window.ym) return
+
+        // Счётчик поднялся — отправляем цели, накопленные до этого
+        notifyCounterReady()
+        // ClientID запрашивается только после согласия на cookie
+        resolveClientID()
+    }, [enabled])
 
     useEffect(() => {
         if (!process.env.NEXT_PUBLIC_YANDEX_ID) {
@@ -34,25 +48,20 @@ const YandexMetrika = ({ enabled }: { enabled: boolean }) => {
 
     return (
         <>
-            <Script
-                id="yandex-metrika"
-                onReady={() => {
-                    resolveClientID()
-                }}
-            >
+            <Script id="yandex-metrika">
                 {`
                     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                     m[i].l=1*new Date();
                     for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
                     k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
                     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-            
+
                     ym(${ID}, "init", {
                       defer: true,
                       clickmap:true,
                       trackLinks:true,
                       accurateTrackBounce:true
-                    });    
+                    });
                 `}
             </Script>
             <noscript>
