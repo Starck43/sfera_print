@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { checkCookie, setCookie } from '@/shared/lib/helpers/cookie'
 import { classnames } from '@/shared/lib/helpers/classnames'
-import { METRIKA_ID, notifyConsentGranted } from '@/shared/lib/metrika'
+import { notifyConsentDeclined, notifyConsentGranted } from '@/shared/lib/metrika'
 import { Button } from '@/shared/ui/button'
 import { NavLink } from '@/shared/ui/link'
 import { Col, Flex } from '@/shared/ui/stack'
@@ -52,10 +52,10 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
         // Отказ от cookie — ставим флаг, чтобы не показывать снова
         setCookie('cookie_policy__asfp', 'false', 365)
 
-        // Отключаем Яндекс Метрику
-        if (typeof window !== 'undefined' && window.ym) {
-            window.ym(METRIKA_ID, 'setUserParams', { cookie_consent: false })
-        }
+        // Сообщаем счётчику Метрики, что cookie собирать нельзя.
+        // Счётчик поднимается на каждой странице, поэтому отказ из
+        // прошлого визита тоже нужно учесть — это делает сам модуль.
+        notifyConsentDeclined()
 
         setVisible(false)
 
