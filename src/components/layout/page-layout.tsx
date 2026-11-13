@@ -37,7 +37,7 @@ export default function PageLayout(props: PageLayoutProps) {
     } = props
 
     const router = useRouter()
-    const { handleClick } = usePageAnimation('.' + className)
+    const { handleClick, isVisible } = usePageAnimation('.' + className)
     // Страница закрывается одной анимацией — стрелкой, Escape или кликом мимо,
     // поэтому повторные вызовы во время закрытия игнорируются
     const isClosing = useRef(false)
@@ -46,10 +46,19 @@ export default function PageLayout(props: PageLayoutProps) {
         if (isClosing.current) return
 
         isClosing.current = true
-        handleClick(handleOnClose ?? (() => router.push('/')))
+        handleClick(() => {
+            const onClosed = handleOnClose ?? (() => router.push('/'))
+
+            onClosed()
+            // После перехода страница может быть открыта снова без перемонтирования:
+            // флаг нужно снять, иначе её больше не получится закрыть
+            window.setTimeout(() => {
+                isClosing.current = false
+            }, 500)
+        })
     }, [handleClick, handleOnClose, router])
 
-    useEscapeToClose(closePage)
+    useEscapeToClose(closePage, isVisible)
 
     const content = (
         <>
