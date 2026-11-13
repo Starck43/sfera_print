@@ -87,6 +87,12 @@ html *::-webkit-scrollbar-thumb {
 	user-select: none;
 }
 
+// Браузерная синяя рамка фокуса убрана: у элементов есть свои состояния наведения
+:focus,
+:focus-visible {
+	outline: none;
+}
+
 img:not([src]):not([srcset]) {
 	display: none;
 }
