@@ -53,15 +53,30 @@ const CarouselNav = (props: CarouselNavProps) => {
         onStepChange
     })
 
-    const [strokeWidth] = useState(() => {
-        const { width, height } = getWindowDimensions()
-        return calculateStrokeWidth({
-            viewport: [width, height],
-            viewBox: [115, 115],
-            strokeWidth: 0.3,
-            scaleFactor: 0.1
-        })
-    })
+    // Толщину дуги нельзя считать в инициализаторе состояния: карусель рендерится
+    // на сервере, где window недоступен, и значение 0 залипло бы навсегда.
+    // Считаем после монтирования и пересчитываем при ресайзе окна.
+    const [strokeWidth, setStrokeWidth] = useState(0)
+
+    useEffect(() => {
+        const updateStrokeWidth = () => {
+            const { width, height } = getWindowDimensions()
+
+            setStrokeWidth(
+                calculateStrokeWidth({
+                    viewport: [width, height],
+                    viewBox: [115, 115],
+                    strokeWidth: 0.3,
+                    scaleFactor: 0.1
+                })
+            )
+        }
+
+        updateStrokeWidth()
+        window.addEventListener('resize', updateStrokeWidth)
+
+        return () => window.removeEventListener('resize', updateStrokeWidth)
+    }, [])
 
     useEffect(() => {
         setPlayHeaderAnimation(true)

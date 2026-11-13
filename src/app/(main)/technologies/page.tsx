@@ -2,11 +2,14 @@ import { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import PageLayout from '@/components/layout/page-layout'
+import { JsonLd } from '@/components/json-ld'
 import { htmlParser } from '@/components/html-parser'
 import type { PostType } from '@/components/post'
 
 import getPage from '@/shared/lib/api/getPage'
 import constructMetadata from '@/shared/lib/helpers/metadata'
+import { breadcrumbJsonLd, jsonLdGraph } from '@/shared/lib/helpers/seo'
+import { PAGE_DESCRIPTIONS } from '@/shared/const/seo'
 import { Section } from '@/shared/ui/section'
 
 import type { Page } from '../../types'
@@ -19,7 +22,15 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
         notFound()
     }
 
-    return constructMetadata(data, await parent)
+    return constructMetadata(
+        {
+            ...data,
+            description: PAGE_DESCRIPTIONS.technologies,
+            path: '/technologies',
+            type: 'website'
+        },
+        await parent
+    )
 }
 
 const TechnologiesPage = async () => {
@@ -36,10 +47,21 @@ const TechnologiesPage = async () => {
     const parsedContent = htmlParser(content)
 
     return (
-        <PageLayout title={title} gap={'none'} sectionMode className="technologies-page">
-            {parsedContent && <Section className="html-container">{parsedContent}</Section>}
-            <TechnologyList items={technologiesData || []} />
-        </PageLayout>
+        <>
+            <JsonLd
+                data={jsonLdGraph([
+                    breadcrumbJsonLd([
+                        { name: 'Главная', path: '/' },
+                        { name: 'Технологии', path: '/technologies' }
+                    ])
+                ])}
+            />
+
+            <PageLayout title={title} gap={'none'} sectionMode className="technologies-page">
+                {parsedContent && <Section className="html-container">{parsedContent}</Section>}
+                <TechnologyList items={technologiesData || []} />
+            </PageLayout>
+        </>
     )
 }
 

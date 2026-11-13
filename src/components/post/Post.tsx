@@ -20,9 +20,10 @@ interface ContentProps {
     data?: PostType | undefined
     className?: string
     style?: CSSProperties
+    titleTag?: 'h1' | 'h2' | 'h3'
 }
 
-const Post = ({ data, style, className }: ContentProps) => {
+const Post = ({ data, style, className, titleTag = 'h2' }: ContentProps) => {
     if (!data) return <Loader />
 
     const { title, cover: image, media, event_date, desc } = data
@@ -33,7 +34,7 @@ const Post = ({ data, style, className }: ContentProps) => {
 
         return (
             <Section className={className} style={style}>
-                <Header title={title} tag="h2" transform="upperCase" className={cls.header} />
+                <Header title={title} tag={titleTag} transform="upperCase" className={cls.header} />
                 {imageSrc.src ? (
                     <div className={cls.cover__wrapper}>
                         <LazyImage src={imageSrc.src} srcSet={imageSrc.srcSet} alt={title} fill />
@@ -55,7 +56,7 @@ const Post = ({ data, style, className }: ContentProps) => {
                     subTitle={
                         event_date && <div className={cls.date}>{formatDate(event_date)}</div>
                     }
-                    tag="h2"
+                    tag={titleTag}
                     transform="upperCase"
                 />
                 {parsedContent && <div className="html-container">{parsedContent}</div>}

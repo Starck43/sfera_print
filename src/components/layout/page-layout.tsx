@@ -41,7 +41,7 @@ export default function PageLayout(props: PageLayoutProps) {
         >
             <PageHeader
                 title={title}
-                titleTag={titleTag}
+                titleTag={title ? titleTag : 'div'}
                 onClose={handleOnClose}
                 container={'.' + className}
             />

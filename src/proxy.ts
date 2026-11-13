@@ -2,21 +2,42 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getUtmFromUrl, setUtmCookies } from '@/shared/lib/utm'
 
+/**
+ * Маршруты, которые обслуживает само приложение (src/app/api).
+ * Их нельзя проксировать на бэкенд, иначе они станут недоступны.
+ */
+const APP_API_ROUTES = ['/api/create-lead', '/api/health', '/api/revalidate', '/api/video-proxy']
+
+const getApiServer = (): string => process.env.API_SERVER || 'http://localhost:8005'
+
 export function proxy(request: NextRequest) {
     const response = NextResponse.next()
     const { pathname, search } = request.nextUrl
 
+    // Запросы к API бэкенда проксируются на сервере.
+    // Браузер при этом обращается только к текущему origin:
+    // абсолютный адрес бэкенда не попадает в клиентский бандл
+    // и запросы не зависят от CORS.
+    if (pathname.startsWith('/api/')) {
+        const route = pathname.replace(/\/+$/, '')
+
+        if (APP_API_ROUTES.includes(route)) {
+            return response
+        }
+
+        const targetUrl = `${getApiServer()}${pathname}${search}`
+        return NextResponse.rewrite(new URL(targetUrl))
+    }
+
     // Обработка медиа-файлов
     if (pathname.startsWith('/media/')) {
-        const apiServer = process.env.API_SERVER || 'http://localhost:8005'
-        const targetUrl = `${apiServer}${pathname}`
+        const targetUrl = `${getApiServer()}${pathname}${search}`
         return NextResponse.rewrite(new URL(targetUrl))
     }
 
     // Обработка политик
     if (pathname.startsWith('/policies/')) {
-        const apiServer = process.env.API_SERVER || 'http://localhost:8005'
-        const targetUrl = `${apiServer}/media/policies${pathname.slice(9)}`
+        const targetUrl = `${getApiServer()}/media/policies${pathname.slice(9)}${search}`
         return NextResponse.rewrite(new URL(targetUrl))
     }
 
@@ -32,6 +53,7 @@ export const config = {
     matcher: [
         '/media/:path*',
         '/policies/:path*',
+        '/api/:path*',
         '/((?!api|_next/static|_next/image|favicon.ico).*)'
     ]
 }

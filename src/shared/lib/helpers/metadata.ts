@@ -1,14 +1,16 @@
 import type { Metadata, ResolvedMetadata } from 'next'
-import { normalizeUrlPath } from '@/shared/lib/helpers/url'
-import { SITE_URL } from '@/shared/const/page'
+
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/shared/const/page'
+import { buildUrl, getDefaultOgImage, getSiteUrl, resolveImageSrc } from '@/shared/lib/helpers/seo'
 
 interface MetadataProps<P> {
     title: string
     excerpt?: string
+    description?: string
     keywords?: string | string[]
     event_date?: string
     cover?: any
-    path: string
+    path?: string
     posts?: P[] | null
     type?: 'article' | 'website'
 }
@@ -20,6 +22,7 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
     const {
         title,
         excerpt,
+        description,
         keywords,
         event_date,
         cover,
@@ -28,40 +31,53 @@ export default function constructMetadata<T extends MetadataProps<P>, P>(
         type = 'website'
     } = props
 
-    const baseUrl = process.env.URL || SITE_URL
+    const parentTitle = typeof parentMetadata.title === 'string' ? parentMetadata.title : SITE_TITLE
+    const parentDescription =
+        typeof parentMetadata.description === 'string'
+            ? parentMetadata.description
+            : SITE_DESCRIPTION
 
-    const url = new URL(normalizeUrlPath(`${baseUrl}/${path}`)) || parentMetadata.metadataBase
+    const metaTitle = title || parentTitle
+    const metaDescription = description || excerpt || parentDescription
+
+    // Канонический адрес строится только из маршрута: данные из API не содержат
+    // надёжного пути, из-за чего в og:url попадало "/undefined/".
+    const url = buildUrl(path)
 
     const publishedTime = event_date ? new Date(event_date).toISOString() : undefined
 
+    const ogImages = (() => {
+        const fromCover = resolveImageSrc(cover)
+        if (fromCover) return [fromCover]
+
+        const fromPosts = ((images as any[]) || [])
+            .map((el) => resolveImageSrc(el?.cover) || resolveImageSrc(el?.image))
+            .filter((src): src is string => Boolean(src))
+
+        return fromPosts.length ? [fromPosts[0]] : [getDefaultOgImage()]
+    })()
+
     return {
-        title: title || parentMetadata.title,
-        description: excerpt || parentMetadata.description,
-        keywords: keywords || '',
-        metadataBase: url,
+        title: metaTitle,
+        description: metaDescription,
+        keywords: keywords || undefined,
+        metadataBase: new URL(getSiteUrl()),
         alternates: { canonical: url },
         openGraph: {
-            title: title || parentMetadata.title,
-            description: excerpt || parentMetadata.description,
-            images:
-                typeof cover === 'undefined'
-                    ? [
-                          // it means that there is a list of posts with the own covers
-                          ...((images as any[]) || [])
-                              .filter((el) => el.cover?.src ?? el.cover)
-                              .map(({ cover }) => (typeof cover === 'object' ? cover.src : cover))
-                      ]
-                    : cover
-                      ? [typeof cover === 'object' ? cover.src : cover]
-                      : [
-                            // it means that there is a list of images
-                            ...((images as any[]) || [])
-                                .filter((el) => el.image)
-                                .map(({ image }) => (typeof image === 'object' ? image.src : image))
-                        ],
-            url: url,
-            publishedTime: publishedTime,
-            type: type
+            type,
+            siteName: SITE_TITLE,
+            locale: 'ru_RU',
+            url,
+            title: metaTitle,
+            description: metaDescription,
+            images: ogImages,
+            publishedTime: publishedTime
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: metaTitle,
+            description: metaDescription,
+            images: ogImages
         }
     } as Metadata
 }

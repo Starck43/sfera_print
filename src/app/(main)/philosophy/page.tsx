@@ -1,13 +1,17 @@
 import { Metadata, ResolvingMetadata } from 'next'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 
 import PageLayout from '@/components/layout/page-layout'
+import { JsonLd } from '@/components/json-ld'
 import { htmlParser } from '@/components/html-parser'
 
 import getPage from '@/shared/lib/api/getPage'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import constructMetadata from '@/shared/lib/helpers/metadata'
+import { breadcrumbJsonLd, jsonLdGraph } from '@/shared/lib/helpers/seo'
+import { PAGE_DESCRIPTIONS } from '@/shared/const/seo'
 import { Section } from '@/shared/ui/section'
 
 import type { Page } from '../../types'
@@ -27,7 +31,15 @@ export const generateMetadata = async (_: any, parent: ResolvingMetadata): Promi
         notFound()
     }
 
-    return constructMetadata(data, await parent)
+    return constructMetadata(
+        {
+            ...data,
+            description: PAGE_DESCRIPTIONS.philosophy,
+            path: '/philosophy',
+            type: 'website'
+        },
+        await parent
+    )
 }
 
 const PhilosophyPage = async () => {
@@ -44,73 +56,90 @@ const PhilosophyPage = async () => {
     }
 
     return (
-        <PageLayout title={title} gap="none" sectionMode className="philosophy-page">
-            {parsedContent && (
+        <>
+            <JsonLd
+                data={jsonLdGraph([
+                    breadcrumbJsonLd([
+                        { name: 'Главная', path: '/' },
+                        { name: 'Философия', path: '/philosophy' }
+                    ])
+                ])}
+            />
+
+            <PageLayout title={title} gap="none" sectionMode className="philosophy-page">
+                {parsedContent && (
+                    <Section
+                        gap="none"
+                        className={classnames(cls, ['section'], {}, ['html-container'])}
+                        //style={{ paddingTop: 0 }}
+                    >
+                        {parsedContent}
+                    </Section>
+                )}
                 <Section
-                    gap="none"
-                    className={classnames(cls, ['section'], {}, ['html-container'])}
-                    //style={{ paddingTop: 0 }}
+                    gap="xs"
+                    title={'Наши достижения'}
+                    titleTag="h2"
+                    align="start"
+                    transform="upperFirst"
+                    className={classnames(cls, ['section', 'achievements'], {}, ['grey__style'])}
                 >
-                    {parsedContent}
+                    <Achievements data={achievements as Achievement[]} />
                 </Section>
-            )}
-            <Section
-                gap="xs"
-                title={'Наши достижения'}
-                titleTag="h2"
-                align="start"
-                transform="upperFirst"
-                className={classnames(cls, ['section', 'achievements'], {}, ['grey__style'])}
-            >
-                <Achievements data={achievements as Achievement[]} />
-            </Section>
 
-            <Section
-                title={'Причины выбрать нас'}
-                titleTag="h2"
-                align="end"
-                transform="upperFirst"
-                className={classnames(cls, ['section', 'common__stat'], {}, ['darkgrey__style'])}
-            >
-                <div className={cls.diagram__container}>
-                    <Image
-                        src={'/images/target-img.webp'}
-                        alt="Причины выбрать нас"
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        style={{ left: '-3%' }}
-                    />
-                    <CommonStat data={stat as Stat[]} />
-                </div>
-            </Section>
+                <Section
+                    title={'Причины выбрать нас'}
+                    titleTag="h2"
+                    align="end"
+                    transform="upperFirst"
+                    className={classnames(cls, ['section', 'common__stat'], {}, [
+                        'darkgrey__style'
+                    ])}
+                >
+                    <div className={cls.diagram__container}>
+                        <Image
+                            src={'/images/target-img.webp'}
+                            alt="Причины выбрать нас"
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            style={{ left: '-3%' }}
+                        />
+                        <CommonStat data={stat as Stat[]} />
+                    </div>
+                </Section>
 
-            <Section
-                title={'Наши заказчики'}
-                titleTag="h2"
-                align="center"
-                transform="upperFirst"
-                gap={'none'}
-                className={classnames(cls, ['section'])}
-            >
-                <div className={cls.diagram__container}>
-                    <Image
-                        src={'/images/stat-img.webp'}
-                        alt="Наши заказчики"
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <ClientsStat data={calculatePercentByGroup(partners)} />
-                </div>
-            </Section>
+                <Section
+                    title={'Наши заказчики'}
+                    titleTag="h2"
+                    align="center"
+                    transform="upperFirst"
+                    gap={'none'}
+                    className={classnames(cls, ['section'])}
+                >
+                    <div className={cls.diagram__container}>
+                        <Image
+                            src={'/images/stat-img.webp'}
+                            alt="Наши заказчики"
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                        <ClientsStat data={calculatePercentByGroup(partners)} />
+                    </div>
+                </Section>
 
-            <Section
-                align="center"
-                gap={'none'}
-                className={classnames(cls, ['section', 'clients'])}
-            >
-                <Partners data={partners as Partner[]} />
-            </Section>
-        </PageLayout>
+                <Section
+                    align="center"
+                    gap={'none'}
+                    className={classnames(cls, ['section', 'clients'])}
+                >
+                    {/* Слайдер логотипов использует автопрокрутку: он читает текущее время,
+                    поэтому рендерится отдельным потоком, а не во время предрендера */}
+                    <Suspense fallback={null}>
+                        <Partners data={partners as Partner[]} />
+                    </Suspense>
+                </Section>
+            </PageLayout>
+        </>
     )
 }
 
