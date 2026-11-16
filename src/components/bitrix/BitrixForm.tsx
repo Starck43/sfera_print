@@ -64,7 +64,9 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
      */
     const applyProperties = useCallback((form?: BitrixFormController | null) => {
         const target = form ?? formRef.current
-        const setProperty = target?.setProperty
+        // Метод контроллера работает с приватными полями и требует свой this:
+        // вызов через деструктуризацию падает с Private element is not present
+        const setProperty = target?.setProperty?.bind(target)
         if (!setProperty) return
 
         const clientID = getClientID()
