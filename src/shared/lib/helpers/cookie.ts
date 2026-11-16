@@ -2,7 +2,9 @@ export function setCookie(key: string, value: string, days: number) {
     const date = new Date()
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
     const expires = 'expires=' + date.toUTCString()
-    document.cookie = key + '=' + value + '; ' + expires
+    // Без path= cookie достаётся только текущему каталогу: согласие, данное
+    // на /cases/kirov/, не видно на остальных страницах сайта
+    document.cookie = `${key}=${value}; ${expires}; path=/; SameSite=Lax`
 }
 
 export function getCookieValue(key: string): string | undefined {
