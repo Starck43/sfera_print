@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { createPortal } from 'react-dom'
 
 import { checkCookie, setCookie } from '@/shared/lib/helpers/cookie'
 import { classnames } from '@/shared/lib/helpers/classnames'
@@ -14,9 +15,20 @@ interface CookiePopupProps {
     onClose: () => void
 }
 
+const subscribeToNothing = () => () => {}
+
+/** Портал можно создавать только на клиенте: на сервере нет document */
+const useIsClient = () =>
+    useSyncExternalStore(
+        subscribeToNothing,
+        () => true,
+        () => false
+    )
+
 const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
     const approved_policy = checkCookie('cookie_policy__asfp')
     const [visible, setVisible] = useState(false)
+    const isClient = useIsClient()
     const timerRef = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
@@ -73,7 +85,9 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
         }
     }, [])
 
-    return (
+    if (!isClient) return null
+
+    return createPortal(
         <div className={classnames(cls, ['cookie__popup'], { visible })}>
             <Flex gap="xs" align="baseline">
                 <p>
@@ -94,7 +108,8 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
                     )}
                 </Col>
             </Flex>
-        </div>
+        </div>,
+        document.body
     )
 }
 
