@@ -1,11 +1,10 @@
 export {
-    UTM_KEYS,
-    UTM_EXPIRY_DAYS,
-    UTM_EXPIRY_SECONDS,
-    getUtmFromUrl,
-    hasUtmParams,
-    setUtmCookies,
-    type UtmParams
-} from './server'
+    TRACKING_KEYS,
+    TRACKING_STORAGE_DAYS,
+    getTrackingFromUrl,
+    mergeTrackingParams,
+    type TrackingKey,
+    type TrackingParams
+} from './params'
 
-export { getUtmFromCookies, useUtmParams } from './client'
+export { captureTrackingParams, getTrackingParams, persistTrackingParams } from './storage'

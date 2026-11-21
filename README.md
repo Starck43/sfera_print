@@ -90,7 +90,14 @@ a server-only secret (`API_SERVER`) and requests do not depend on CORS.
 - Server-side helpers (`src/shared/lib/api/getPage.ts`, `getPosts.ts`) fetch the
   backend directly, are marked `server-only` and cache with tags equal to the
   page slug / list name, which `/api/revalidate` invalidates.
-- `src/proxy.ts` also captures UTM parameters and stores them in cookies.
+- `src/shared/lib/utm` captures `yclid` and UTM parameters from the landing URL
+  (`src/components/tracking-params` does it on every navigation). Two storage
+  tiers: `sessionStorage` always, for the current visit; `localStorage` for
+  `TRACKING_STORAGE_DAYS` (90) days only after cookie consent — the same consent
+  event that unlocks the Metrika ClientID. Non-empty values overwrite, empty
+  ones never erase what an ad click saved. `src/components/bitrix/BitrixForm.tsx`
+  passes them into the CRM form as hidden properties named `yclid`,
+  `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`.
 
 `public/media/` holds local fallback files (placeholder covers and a sample
 policy PDF). They let the Image Optimizer serve images without an external host

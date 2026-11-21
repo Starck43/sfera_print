@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { getUtmFromUrl, setUtmCookies } from '@/shared/lib/utm'
 
 /**
  * Маршруты, которые обслуживает само приложение (src/app/api).
@@ -44,10 +43,9 @@ export function proxy(request: NextRequest) {
         return NextResponse.rewrite(new URL(targetUrl))
     }
 
-    // Захват и сохранение UTM-параметров
-    const fullUrl = `${request.nextUrl.origin}${pathname}${search}`
-    const utmParams = getUtmFromUrl(fullUrl)
-    setUtmCookies(request, response, utmParams)
+    // Захват UTM-меток и yclid выполняется на клиенте (src/shared/lib/utm):
+    // долгая полоса хранения ставится только после согласия на cookie,
+    // поэтому на сервере, до решения посетителя, писать нечего
 
     return response
 }

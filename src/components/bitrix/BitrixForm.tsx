@@ -5,7 +5,7 @@ import Script from 'next/script'
 
 import { type Contact } from '@/components/contacts/types'
 import { Loader } from '@/shared/ui/loader'
-import { getUtmFromCookies, type UtmParams } from '@/shared/lib/utm'
+import { getTrackingParams, TRACKING_KEYS } from '@/shared/lib/utm'
 import { getClientID, onClientID, reachGoal, YM_CLIENT_ID_PROPERTY } from '@/shared/lib/metrika'
 
 // Временная метка для обновления скрипта формы
@@ -34,15 +34,6 @@ const findFormController = (): BitrixFormController | null => {
     return forms.find((form) => typeof form?.setProperty === 'function') ?? null
 }
 
-// Ключи скрытых полей CRM-формы для UTM-меток
-const UTM_FIELD_MAP = {
-    utm_source: 'UTM_SOURCE',
-    utm_medium: 'UTM_MEDIUM',
-    utm_campaign: 'UTM_CAMPAIGN',
-    utm_content: 'UTM_CONTENT',
-    utm_term: 'UTM_TERM'
-} as const
-
 export default function BitrixForm({ fallbackContact }: { fallbackContact?: Contact }) {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -58,9 +49,14 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
     }
 
     /**
-     * Передаёт в CRM-форму скрытые поля: ClientID Метрики и UTM-метки.
-     * Значения уходят в properties, поэтому в CRM-форме должны быть
-     * соответствующие скрытые поля с шаблонами %ym_client_id%, %UTM_SOURCE% и т.д.
+     * Передаёт в CRM-форму скрытые поля: ClientID Метрики, номер рекламного
+     * клика (yclid) и UTM-метки.
+     *
+     * Имена свойств — ровно те, под которые в форме заведены скрытые поля:
+     * ym_client_id, yclid, utm_source, utm_medium, utm_campaign, utm_content,
+     * utm_term. Значения уходят в properties, поэтому в CRM-форме им должны
+     * соответствовать скрытые поля с шаблонами %ym_client_id%, %yclid%,
+     * %utm_source% и т.д.
      */
     const applyProperties = useCallback((form?: BitrixFormController | null) => {
         const target = form ?? formRef.current
@@ -74,11 +70,12 @@ export default function BitrixForm({ fallbackContact }: { fallbackContact?: Cont
             setProperty(YM_CLIENT_ID_PROPERTY, clientID)
         }
 
-        const utmParams = getUtmFromCookies()
-        Object.entries(UTM_FIELD_MAP).forEach(([utmKey, fieldName]) => {
-            const value = utmParams[utmKey as keyof UtmParams]
+        // Пустые значения не передаём: они затёрли бы то, что уже есть в лиде
+        const trackingParams = getTrackingParams()
+        TRACKING_KEYS.forEach((key) => {
+            const value = trackingParams[key]
             if (value) {
-                setProperty(fieldName, value)
+                setProperty(key, value)
             }
         })
     }, [])

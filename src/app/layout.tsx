@@ -3,6 +3,7 @@ import { type Metadata } from 'next'
 import localFont from 'next/font/local'
 
 import { RouteEvents } from '@/components/routes/route-events'
+import { TrackingParams } from '@/components/tracking-params'
 import { MetrikaGoals, YandexMetrika } from '@/components/yandex-metrika'
 import { TopMailCounter } from '@/components/mailru-metrika'
 
@@ -140,6 +141,9 @@ export default async function RootLayout({
             <body>
                 <NavigationProvider>
                     <RouteEvents />
+                    <Suspense fallback={null}>
+                        <TrackingParams />
+                    </Suspense>
                     {children}
                 </NavigationProvider>
                 <Suspense fallback={null}>

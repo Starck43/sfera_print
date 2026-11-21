@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { checkCookie, setCookie } from '@/shared/lib/helpers/cookie'
 import { classnames } from '@/shared/lib/helpers/classnames'
 import { notifyConsentDeclined, notifyConsentGranted } from '@/shared/lib/metrika'
+import { persistTrackingParams } from '@/shared/lib/utm'
 import { Button } from '@/shared/ui/button'
 import { NavLink } from '@/shared/ui/link'
 import { Col, Flex } from '@/shared/ui/stack'
@@ -54,6 +55,10 @@ const CookiePopup = ({ file, onClose }: CookiePopupProps) => {
 
         // После согласия можно запрашивать ClientID Метрики
         notifyConsentGranted()
+
+        // ...и сохранять UTM-метки с yclid на 90 дней — до этого они
+        // жили только в рамках вкладки (см. src/shared/lib/utm)
+        persistTrackingParams()
 
         timerRef.current = setTimeout(() => {
             onClose()
